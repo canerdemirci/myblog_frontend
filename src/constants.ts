@@ -1,0 +1,1 @@
+export const POST_COVER_ASPECT_RATIO = 40/21
