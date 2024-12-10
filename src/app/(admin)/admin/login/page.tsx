@@ -20,6 +20,7 @@ import './styles.scss'
 export default function LoginPage() {
     const router = useRouter()
     const pinRef = useRef<HTMLInputElement[]>([])
+    
     const [error, setError] = useState<boolean>(false)
     const [pending, setPending] = useState<boolean>(false)
 
@@ -27,9 +28,11 @@ export default function LoginPage() {
         setPending(true)
         
         nextApi.post(routeMap.api.login.root, { pin: pin })
-            .then(_ => router.push(routeMap.admin.root))
-            .catch(_ => setError(true))
-            .finally(() => {
+            .then(_ => {
+                router.push(routeMap.admin.root)
+            })
+            .catch(_ => {
+                setError(true)
                 setPending(false)
                 pinRef.current?.forEach(input => (input.value = ""));
                 pinRef && pinRef.current && pinRef.current[0].focus()

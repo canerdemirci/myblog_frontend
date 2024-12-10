@@ -6,6 +6,8 @@ import { useRouter, useSearchParams } from "next/navigation"
 
 import Image from 'next/image'
 
+import rehypeSanitize from "rehype-sanitize"
+
 import { routeMap } from "@/app/(admin)/routeMap"
 import { ApiError, createPost, deleteCover, getPost, getTags, updatePost, uploadCover } from "@/blog_api"
 import { createPostJoiSchema } from "@/utils"
@@ -299,6 +301,9 @@ export default function UpsertPostPage() {
                             data-color-mode="light"
                             height={800}
                             onChange={(value) => setContent(value)}
+                            previewOptions={{
+                                rehypePlugins: [[rehypeSanitize]],
+                            }}
                         />
                         {/* Post tags select */}
                         <CheckboxesTags

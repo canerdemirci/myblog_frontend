@@ -15,6 +15,10 @@ export function paginationDataSliceIndexes(
     return [start, end]
 }
 
+export function shortKey() {
+    return Date.now().toString(36) + Math.random().toString(36).substring(2, 5);
+}
+
 export async function sha256(input: string): Promise<string> {
     const encoder = new TextEncoder()
     const data = encoder.encode(input)
@@ -74,4 +78,32 @@ export const createTagJoiSchema = Joi.object({
         'string.empty': 'Etiket adı boş bırakılamaz.',
         'string.max': 'Etiket adı en fazla 100 karakter olabilir.'
     })
+})
+
+export const createNoteJoiSchema = Joi.object({
+    content: Joi.string().required().messages({
+        'string.required': 'Not içeriği boş bırakılamaz.',
+        'string.empty': 'Not içeriği boş bırakılamaz.',
+    })
+})
+
+export const createUserJoiSchema = Joi.object({
+    email: Joi.string().required().max(320).email({tlds: false}).messages({
+        'string.required': 'Email boş bırakılamaz.',
+        'string.empty': 'Email boş bırakılamaz.',
+        'string.max': 'Email en fazla 320 karakter uzunluğunda olabilir.',
+        'string.email': 'Email formatı yanlış.'
+    }),
+    password: Joi.string().required().min(10).max(50).messages({
+        'string.required': 'Parola boş bırakılamaz.',
+        'string.empty': 'Parola boş bırakılamaz.',
+        'string.max': 'Parola en az 10, en fazla 50 karakter olmalıdır.',
+        'string.min': 'Parola en az 10, en fazla 50 karakter olmalıdır.'
+    }),
+    password2: Joi.string().required().min(10).max(50).messages({
+        'string.required': 'Parola boş bırakılamaz.',
+        'string.empty': 'Parola boş bırakılamaz.',
+        'string.max': 'Parola en az 10, en fazla 50 karakter olmalıdır.',
+        'string.min': 'Parola en az 10, en fazla 50 karakter olmalıdır.'
+    }),
 })

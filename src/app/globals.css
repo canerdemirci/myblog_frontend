@@ -2,8 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --flamingo-queen-1: #e799ff;
+  --flamingo-queen-2: #f500b4;
+  --flamingo-queen-3: #b70045;
+  --flamingo-queen-4: #661b00;
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+.note-anim {
+  background-image: linear-gradient(
+    var(--angle),
+    #6ec9f0, #f500b4, #c1e62e
+  );
+  animation: spin 3s linear infinite;
+}
+
+.note-anim-cover:hover {
+  transition-duration: 1s;
+  transform-origin: center;
+  transform: scale(1.05);
+  transition-property: transform;
+  transition-timing-function: ease-out;
+}
+
+@keyframes spin {
+  to {
+    --angle: 360deg;
+  }
 }

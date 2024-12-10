@@ -8,6 +8,8 @@ import { routeMap } from '../../../routeMap'
 // Material icons
 import MenuIcon from '@mui/icons-material/Menu'
 import ArticleIcon from '@mui/icons-material/Article'
+import NoteIcon from '@mui/icons-material/Note'
+import NoteAddIcon from '@mui/icons-material/NoteAdd'
 import TagIcon from '@mui/icons-material/Tag'
 import CommentIcon from '@mui/icons-material/Comment'
 import CreateIcon from '@mui/icons-material/Article'
@@ -38,6 +40,16 @@ export default function Header() {
             title: 'Makaleler',
             href: routeMap.admin.posts.root,
             icon: <ArticleIcon />
+        },
+        {
+            title: 'Notlar',
+            href: routeMap.admin.notes.root,
+            icon: <NoteIcon />
+        },
+        {
+            title: 'Yeni Not',
+            href: routeMap.admin.notes.createNote,
+            icon: <NoteAddIcon />
         },
         {
             title: 'Etiketler',

@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react"
 
-import { ApiError, createTag, deleteTag, getTags } from "@/blog_api"
+import { ApiError } from "@/blog_api"
+import { createTag, deleteTag, getTags } from "@/blog_api/tag_repo"
 import { UIOperations } from "@/types/enums"
 import { createTagJoiSchema, paginationDataSliceIndexes, sortTags } from "@/utils"
 
 // My components
+import StaggeredContent from "@/app/(components)/StaggeredContent"
 import Header from "../(components)/Header"
 import UIBreadcrumbs from "../(components)/UIBreadcrumbs"
 import ConfirmationDialog from "../(components)/ConfirmationDialog"
@@ -235,15 +237,21 @@ export default function TagsPage() {
                         onSubmit={() => handleCreateTagEvent()}
                     />
                     {/* Display skeleton, error element, no data element, table */}
-                    {
-                        tagsLoading
-                            ? <UISkeleton format={2} />
-                            : tagsFetchError !== null
-                                ? <ErrorElement />
-                                : tags.length < 1
-                                    ? <NoData />
-                                    : TagsTable()
-                    }
+                    <StaggeredContent
+                        loading={{
+                            status: tagsLoading,
+                            content: (<UISkeleton format={2} />)
+                        }}
+                        error={{
+                            status: tagsFetchError !== null,
+                            content: (<ErrorElement />)
+                        }}
+                        content={{
+                            empty: tags.length === 0,
+                            emptyContent: (<NoData />),
+                            content: TagsTable()
+                        }}
+                    />
                 </Box>
             </Container>
         </Box>

@@ -2,13 +2,11 @@
 
 import { useEffect, useState } from "react"
 
-import { ApiError, deleteCover } from "@/blog_api"
-import { deletePost, getPosts } from "@/blog_api/post_repo"
+import { ApiError } from "@/blog_api"
+import { deleteNote, getNotes } from "@/blog_api/note_repo"
 import { UIOperations } from "@/types/enums"
 import { routeMap } from "../../routeMap"
 import { paginationDataSliceIndexes } from "@/utils"
-
-import Image from 'next/image'
 
 // My components
 import StaggeredContent from "@/app/(components)/StaggeredContent"
@@ -30,8 +28,6 @@ import TableHead from "@mui/material/TableHead"
 import TableBody from "@mui/material/TableBody"
 import Paper from "@mui/material/Paper"
 import Link from "@mui/material/Link"
-import Chip from "@mui/material/Chip"
-import Avatar from "@mui/material/Avatar"
 import Box from "@mui/material/Box"
 import Container from "@mui/material/Container"
 import IconButton from "@mui/material/IconButton"
@@ -41,79 +37,67 @@ import TablePagination from "@mui/material/TablePagination"
 
 // Material icons
 import DeleteIcon from "@mui/icons-material/Delete"
-import EditIcon from "@mui/icons-material/Edit"
 import OpenIcon from "@mui/icons-material/OpenInNew"
 import ShareIcon from "@mui/icons-material/Share"
 import CommentIcon from "@mui/icons-material/Comment"
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 
-export default function PostsPage() {
-    // For fetching posts
-    const [posts, setPosts] = useState<Post[]>([])
-    const [postsFetchError, setPostsFetchError] = useState<ApiError | null>(null)
-    const [postsLoading, setPostsLoading] = useState<boolean>(true)
+export default function NotesPage() {
+    // For fetching notes
+    const [notes, setNotes] = useState<Note[]>([])
+    const [notesFetchError, setNotesFetchError] = useState<ApiError | null>(null)
+    const [notesLoading, setNotesLoading] = useState<boolean>(true)
 
-    // For deleting a post
-    const [postToDeleteId, setPostToDeleteId] = useState<string | null>(null)
-    const [postDeletingError, setPostDeletingError] = useState<ApiError | null>(null)
-    // For deleting post's cover image
-    const [coverToDelete, setCoverToDelete] = useState<string | undefined>(undefined)
+    // For deleting a note
+    const [noteToDeleteId, setNoteToDeleteId] = useState<string | null>(null)
+    const [noteDeletingError, setNoteDeletingError] = useState<ApiError | null>(null)
 
     // For UI operations (delete etc.)
     const [confirmationDialogOpen, setConfirmationDialogOpen] = useState<boolean>(false)
     const [uiOperation, setUiOperation] = useState<UIOperations | undefined>(undefined)
 
-    // For post table pagination
+    // For note table pagination
     const [page, setPage] = useState<number>(0);
     const [rowsPerPage, setRowsPerPage] = useState<number>(10);
 
     useEffect(() => {
-        getPosts()
-            .then(p => setPosts(p))
-            .catch(e => setPostsFetchError(e))
-            .finally(() => setPostsLoading(false))
+        getNotes()
+            .then(n => setNotes(n))
+            .catch(e => setNotesFetchError(e))
+            .finally(() => setNotesLoading(false))
     }, [])
 
     function handleConfirmationDecision(decision: boolean) {
         // If decision is yes
         if (decision) {
-            if (uiOperation === UIOperations.DELETE_POST) {
-                // If post has a cover image to delete
-                if (coverToDelete) {
-                    deleteCover(coverToDelete)
-                        .catch(e => setPostDeletingError(e))
-                }
-
-                deletePost(postToDeleteId!)
-                    .then(() => setPosts(prev => prev.filter(p => p.id !== postToDeleteId)))
-                    .catch(e => setPostDeletingError(e))
-                    .finally(() => setPostToDeleteId(null))
+            if (uiOperation === UIOperations.DELETE_NOTE) {
+                deleteNote(noteToDeleteId!)
+                    .then(() => setNotes(prev => prev.filter(n => n.id !== noteToDeleteId)))
+                    .catch(e => setNoteDeletingError(e))
+                    .finally(() => setNoteToDeleteId(null))
             }
         }
 
         setConfirmationDialogOpen(false)
 
-        if (uiOperation === UIOperations.DELETE_POST) {
-            setPostToDeleteId(null)
-            setCoverToDelete(undefined)
+        if (uiOperation === UIOperations.DELETE_NOTE) {
+            setNoteToDeleteId(null)
         }
     }
 
     function handleConfirmationClose() {
         setConfirmationDialogOpen(false)
 
-        if (uiOperation === UIOperations.DELETE_POST) {
-            setPostToDeleteId(null)
-            setCoverToDelete(undefined)
+        if (uiOperation === UIOperations.DELETE_NOTE) {
+            setNoteToDeleteId(null)
         }
     }
 
-    function handlePostDeleteBtn(id: string, cover?: string) {
-        setUiOperation(UIOperations.DELETE_POST)
+    function handleNoteDeleteBtn(id: string) {
+        setUiOperation(UIOperations.DELETE_NOTE)
         setConfirmationDialogOpen(true)
-        setPostToDeleteId(id)
-        setCoverToDelete(cover)
+        setNoteToDeleteId(id)
     }
 
     function handleChangePage(e: any, newPage: number) {
@@ -125,100 +109,63 @@ export default function PostsPage() {
         setPage(0)
     }
 
-    function PostsTable() {
+    function NotesTable() {
         return (
             <TableContainer component={Paper}>
                 <Table stickyHeader>
                     <TableHead>
                         <TableRow>
                             <StyledTableCell>#</StyledTableCell>
-                            <StyledTableCell>Yayın Tarihi & Kapak</StyledTableCell>
-                            <StyledTableCell>Makale Başlığı</StyledTableCell>
+                            <StyledTableCell>Yayın Tarihi</StyledTableCell>
                             <StyledTableCell><ShareIcon /></StyledTableCell>
-                            <StyledTableCell><CommentIcon /></StyledTableCell>
                             <StyledTableCell><VisibilityIcon /></StyledTableCell>
                             <StyledTableCell><FavoriteIcon /></StyledTableCell>
-                            <StyledTableCell></StyledTableCell>
                             <StyledTableCell></StyledTableCell>
                             <StyledTableCell></StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {posts
-                            .slice(...paginationDataSliceIndexes(page, rowsPerPage, posts.length))
-                            .map((p, i) => (
-                            <StyledTableRow key={p.id}>
+                        {notes
+                            .slice(...paginationDataSliceIndexes(page, rowsPerPage, notes.length))
+                            .map((n, i) => (
+                            <StyledTableRow key={n.id}>
                                 <StyledTableCell>
                                     <Typography variant="body1" sx={{fontSize: '1.3rem'}}>
                                         {i + 1 + (page * rowsPerPage)}
                                     </Typography>
                                 </StyledTableCell>
-                                <StyledTableCell width={230}>
-                                    <Image
-                                        src={
-                                            p.cover
-                                                ? `http://localhost:8000/api/static/${p.cover}`
-                                                : '/images/no_cover.png'
-                                        }
-                                        width={200}
-                                        height={105}
-                                        style={{width: '200px', height: '105px'}}
-                                        alt="Makale Kapağı"
-                                    />
-                                </StyledTableCell>
                                 <StyledTableCell>
-                                    <Typography variant="h5">{p.title}</Typography>
-                                    <Typography variant="body2" color="textDisabled">
-                                        {`${p.updatedAt}`}
-                                    </Typography>
-                                    {p.tags.map(t => (
-                                        <Chip
-                                            key={t.id}
-                                            className="ml-0 m-2"
-                                            avatar={<Avatar>#</Avatar>}
-                                            label={t.name}
-                                        />
-                                    ))}
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    <Typography variant="body1" sx={{fontSize: '1.3rem'}}>
-                                        {p.shareCount}
+                                    <Typography variant="body1" color="textDisabled">
+                                        {`${n.createdAt}`}
                                     </Typography>
                                 </StyledTableCell>
                                 <StyledTableCell>
                                     <Typography variant="body1" sx={{fontSize: '1.3rem'}}>
-                                        3
+                                        {n.shareCount}
                                     </Typography>
                                 </StyledTableCell>
                                 <StyledTableCell>
                                     <Typography variant="body1" sx={{fontSize: '1.3rem'}}>
-                                        {p.viewCount}
+                                        {n.viewCount}
                                     </Typography>
                                 </StyledTableCell>
                                 <StyledTableCell>
                                     <Typography variant="body1" sx={{fontSize: '1.3rem'}}>
-                                        {p.likeCount}
+                                        {n.likeCount}
                                     </Typography>
                                 </StyledTableCell>
                                 <StyledTableCell>
                                     <IconButton
                                         color="error"
-                                        onClick={() => handlePostDeleteBtn(p.id, p.cover)}
-                                        disabled={postToDeleteId === p.id}
+                                        onClick={() => handleNoteDeleteBtn(n.id)}
+                                        disabled={noteToDeleteId === n.id}
                                     >
                                         <DeleteIcon />
                                     </IconButton>
                                 </StyledTableCell>
                                 <StyledTableCell>
-                                    <Link href={`${routeMap.admin.posts.upsertPost(p.id)}`}>
-                                        <IconButton color="info">
-                                            <EditIcon />
-                                        </IconButton>
-                                    </Link>
-                                </StyledTableCell>
-                                <StyledTableCell>
                                     <Link
-                                        href={routeMap.blog.posts.postById(p.id)}
+                                        href={routeMap.blog.notes.noteById(n.id)}
                                         target="_blank"
                                     >
                                         <IconButton color="secondary">
@@ -234,7 +181,7 @@ export default function PostsPage() {
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 25, { label: 'Hepsi', value: -1 }]}
                                 colSpan={0}
-                                count={posts.length}
+                                count={notes.length}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
                                 slotProps={{
@@ -259,43 +206,43 @@ export default function PostsPage() {
 
     return (
         <Box>
-            {/* Dialog for post operations like delete */}
+            {/* Dialog for note operations like delete */}
             <ConfirmationDialog
                 open={confirmationDialogOpen}
                 title="Uyarı"
                 contentText={
-                    uiOperation === UIOperations.DELETE_POST
-                        ? "Makaleyi silmek istediğinizden emin misiniz?"
+                    uiOperation === UIOperations.DELETE_NOTE
+                        ? "Notu silmek istediğinizden emin misiniz?"
                         : ""
                 }
                 onDecision={(decision) => handleConfirmationDecision(decision)}
                 onClose={handleConfirmationClose}
             />
-            {/* Alert modal for post deleting error */}
+            {/* Alert modal for note deleting error */}
             <AlertModal
-                open={postDeletingError !== null}
+                open={noteDeletingError !== null}
                 title="Uyarı"
-                contentText={postDeletingError?.data.message ?? ""}
-                onClose={() => setPostDeletingError(null)}
+                contentText={noteDeletingError?.data.message ?? ""}
+                onClose={() => setNoteDeletingError(null)}
             />
             <Header />
-            <UIBreadcrumbs pageName="Makaleler" />
+            <UIBreadcrumbs pageName="Notlar" />
             <Container maxWidth="xl">
                 <Box sx={{ marginTop: '1rem', marginBottom: '1rem' }}>
                     {/* Display skeleton, error element, no data element, table */}
                     <StaggeredContent
                         loading={{
-                            status: postsLoading,
+                            status: notesLoading,
                             content: (<UISkeleton format={1} />)
                         }}
                         error={{
-                            status: postsFetchError !== null,
+                            status: notesFetchError !== null,
                             content: (<ErrorElement />)
                         }}
                         content={{
-                            empty: posts.length === 0,
+                            empty: notes.length === 0,
                             emptyContent: (<NoData />),
-                            content: PostsTable()
+                            content: NotesTable()
                         }}
                     />
                 </Box>

@@ -14,7 +14,17 @@ const nextConfig = {
                 port: '8000',
                 hostname: 'localhost',
                 pathname: '/api/static/**'
-            }
+            },
+            {
+                protocol: 'https',
+                hostname: 'lh3.googleusercontent.com',
+                pathname: '/**'
+            },
+            {
+                protocol: 'https',
+                hostname: '"avatars.githubusercontent.com"',
+                pathname: '/**'
+            },
         ]
     }
 };

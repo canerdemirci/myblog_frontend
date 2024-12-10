@@ -1,4 +1,4 @@
-import { League_Spartan, Fira_Code, Caveat, Roboto_Mono } from 'next/font/google'
+import { League_Spartan, Fira_Code, Caveat, Roboto_Mono, Montserrat } from 'next/font/google'
 
 export const leagueSpartan = League_Spartan({
     weight: '700',
@@ -16,6 +16,11 @@ export const caveat = Caveat({
 })
 
 export const robotoMono = Roboto_Mono({
+    style: 'normal',
+    subsets: ['latin'],
+})
+
+export const montserrat = Montserrat({
     style: 'normal',
     subsets: ['latin'],
 })
