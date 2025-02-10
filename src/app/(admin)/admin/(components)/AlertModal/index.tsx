@@ -12,16 +12,15 @@ interface Props {
     onClose: () => void
 }
 
+/** A Mui Dialog based component */
 export default function AlertModal({ open, title, contentText, onClose } : Props) {
     return (
         <Dialog
             open={open}
         >
-            <DialogTitle id="alert-dialog-title">
-                {title}
-            </DialogTitle>
+            <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
             <DialogContent>
-                <DialogContentText id="alert-dialog-description">
+                <DialogContentText id="alert-dialog-description" sx={{whiteSpace: 'pre-line'}}>
                     {contentText}
                 </DialogContentText>
             </DialogContent>

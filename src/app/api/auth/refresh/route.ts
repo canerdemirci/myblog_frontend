@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
         try {
             const newAccessToken = await signJWT(
                 { role: (refreshToken as any).role },
-                process.env.NEXT_PUBLIC_SECRET! as string,
+                process.env.SECRET! as string,
                 ADMIN_ACCESS_TOKEN_EXPIRE
             )
 

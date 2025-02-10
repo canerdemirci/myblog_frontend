@@ -1,6 +1,8 @@
+import useTheme from "@mui/material/styles/useTheme"
+
 import Box from "@mui/material/Box"
 import IconButton from "@mui/material/IconButton"
-import useTheme from "@mui/material/styles/useTheme"
+
 import FirstPageIcon from '@mui/icons-material/FirstPage'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
@@ -16,6 +18,9 @@ interface Props {
     ) => void;
 }
 
+/**
+ * Table pagination elements
+ */
 export default function TablePaginationActions({ count, page, rowsPerPage, onPageChange }: Props) {
     const theme = useTheme()
 

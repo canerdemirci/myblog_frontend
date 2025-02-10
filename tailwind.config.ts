@@ -9,6 +9,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        'ss': '320px',
+        'xs': '425px'
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",

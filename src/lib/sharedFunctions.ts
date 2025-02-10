@@ -1,6 +1,5 @@
-import { GUEST_ID_KEY, USER_KEY } from "@/constants"
-import { shortKey } from "@/utils"
-import { User } from "next-auth"
+import { GUEST_ID_KEY } from "@/constants"
+import { shortKey, signJWT } from "@/utils"
 
 export function guestId() {
     let id = localStorage.getItem(GUEST_ID_KEY)
@@ -15,19 +14,10 @@ export function guestId() {
     return id
 }
 
-// TODO: Bu üçü silinebilir
-export function getUserLocalStorage() : User | null {
-    const _user = localStorage.getItem(USER_KEY)
-
-    if (!_user) return null
-
-    return JSON.parse(_user) as User
+export function getAdminToken() {
+    return document.cookie.split('; ').find(c => c.startsWith('refreshToken='))?.split('=')[1]
 }
 
-export function setUserLocalStorage(user: User) {
-    localStorage.setItem(USER_KEY, JSON.stringify(user))
-}
-
-export function removeUserLocalStorage() {
-    localStorage.removeItem(USER_KEY)
+export async function createUserToken(userId: string, email: string) {
+    return await signJWT({ userId, email }, process.env.SECRET!, '1 week')
 }

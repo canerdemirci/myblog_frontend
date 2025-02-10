@@ -16,6 +16,12 @@ const nextConfig = {
                 pathname: '/api/static/**'
             },
             {
+                protocol: 'http',
+                port: '8000',
+                hostname: '192.168.1.101',
+                pathname: '/api/static/**'
+            },
+            {
                 protocol: 'https',
                 hostname: 'lh3.googleusercontent.com',
                 pathname: '/**'

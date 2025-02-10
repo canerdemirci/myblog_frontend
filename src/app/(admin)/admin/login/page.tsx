@@ -2,11 +2,10 @@
 
 import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { routeMap } from '../../../../utils/routeMap'
+import { clsx } from 'clsx'
 
-import { routeMap } from '../../routeMap'
-
-// Axios for next js internal api
-import { nextApi } from '@/lib/axios'
+import { fetchNextAPI } from '@/lib/custom_fetch'
 
 // Material UI Components
 import Container from "@mui/material/Container"
@@ -27,10 +26,15 @@ export default function LoginPage() {
     function handleLogin(pin: string) {
         setPending(true)
         
-        nextApi.post(routeMap.api.login.root, { pin: pin })
-            .then(_ => {
-                router.push(routeMap.admin.root)
-            })
+        fetchNextAPI(
+            routeMap.api.login.root,
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ pin })
+            }
+        )
+            .then(_ => router.push(routeMap.admin.root))
             .catch(_ => {
                 setError(true)
                 setPending(false)
@@ -61,7 +65,7 @@ export default function LoginPage() {
                             ref={pinRef}
                             autoFocus={true}
                             type="password"
-                            className="pin-field pin-code"
+                            className={clsx(["pin-field", "pin-code"])}
                             length={6}
                             validate="0123456789"
                             inputMode='numeric'

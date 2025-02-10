@@ -1,10 +1,19 @@
-import Header from "./(components)/Header"
+import { Suspense } from "react"
+import AdminPanelPage from "./(components)/AdminPanelPage"
+import type { Metadata } from 'next'
+import UISkeleton from "./(components)/UISkeleton"
+import Statistics from "./(components)/DashboardComponents/Statistics"
 
-export default function AdminHomePage() {
+export const metadata: Metadata = {
+    title: 'Yönetici Paneli - Anasayfa'
+}
+
+export default async function AdminHomePage() {
     return (
-        <div>
-            <Header />
-            <div>Buraya dashboard gelecek</div>
-        </div>
+        <AdminPanelPage pageName="Ana Panel">
+            <Suspense fallback={<UISkeleton format={3} />}>
+                <Statistics />
+            </Suspense>
+        </AdminPanelPage>
     )
 }

@@ -1,40 +1,27 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { verifyJWT } from '@/utils'
-import { routeMap } from './app/(admin)/routeMap'
-import { nextApi } from '@/lib/axios'
-import { ACCESS_TOKEN_NAME, REFRESH_TOKEN_NAME } from './app/api/auth/constants'
+import { NextRequest, NextResponse } from 'next/server';
+import { middleware2 } from './middleware2';
+import { middleware1 } from './middleware1';
 
 export async function middleware(req: NextRequest) {
-    const accessToken = await verifyJWT(
-        req.cookies.get(ACCESS_TOKEN_NAME)?.value ?? '',
-        process.env.NEXT_PUBLIC_SECRET! as string
-    )
+    if (req.nextUrl.pathname.includes('/blog')) {
+        const response1 = await middleware1(req)
 
-    if (accessToken) { return NextResponse.next() }
-
-    const refreshToken = await verifyJWT(
-        req.cookies.get(REFRESH_TOKEN_NAME)?.value ?? '',
-        process.env.NEXT_PUBLIC_SECRET! as string
-    )
-
-    if (refreshToken)
-    {
-        const res = await nextApi.post(
-            process.env.NEXT_PUBLIC_ENV === 'dev'
-                ? process.env.NEXT_PUBLIC_BASE_URL_DEV + '/api' + routeMap.api.refreshLogin.root
-                : process.env.NEXT_PUBLIC_BASE_URL_PRODUCTION + '/api' + routeMap.api.refreshLogin.root,
-            { refreshToken }
-        )
-
-        const decoded = res.headers['set-cookie']!.toString().split(';')[0].split('=')[1]
-
-        if (await verifyJWT(decoded, process.env.NEXT_PUBLIC_SECRET! as string)) {
-            return NextResponse.next()
+        if (response1) {
+            return response1
         }
     }
 
-    return NextResponse.redirect(new URL(routeMap.admin.login.root, req.url))
+    if (req.nextUrl.pathname.includes('/admin') && !req.nextUrl.pathname.includes('/admin/login')) {
+        const response2 = await middleware2(req)
+
+        if (response2) {
+            return response2
+        }
+    }
+
+    return NextResponse.next()
 }
 
-// admin routes except login route
-export const config = { matcher: ['/admin((?!/login).*)'] }
+export const config = {
+    matcher: ['/blog/:path*', '/admin/:path*']
+}

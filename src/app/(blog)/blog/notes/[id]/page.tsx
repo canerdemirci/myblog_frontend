@@ -1,19 +1,21 @@
 'use client'
 
-import NoteModal from "../../(components)/NoteModal";
+import NoteModal from "../../(components)/NoteModal"
 import {
     addGuestNoteInteraction,
     addUserNoteInteraction,
     isGuestLikedNote,
     isUserLikedNote,
-} from "@/blog_api/note_interaction_repo";
-import { getNote } from "@/blog_api/note_repo";
-import { ApiError } from "@/blog_api/index"
-import { useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
-import { routeMap } from "@/app/(admin)/routeMap";
-import { guestId } from "@/lib/sharedFunctions";
-import { useSession } from "next-auth/react";
+} from "@/blog_api_actions/note_interaction_repo"
+import { getNote } from "@/blog_api_actions/note_repo"
+import { useEffect, useState } from "react"
+import { useRouter, useParams } from "next/navigation"
+import { routeMap } from "@/utils/routeMap"
+import { guestId } from "@/lib/sharedFunctions"
+import { useSession } from "next-auth/react"
+import { ApiError } from "@/lib/custom_fetch"
+import Pending from "../../(components)/Pending"
+import ErrorElement from "../../(components)/ErrorElement"
 
 export default function NotePage() {
     const { data: session } = useSession()
@@ -53,7 +55,7 @@ export default function NotePage() {
                 type: 'VIEW',
                 noteId: note.id,
                 userId: session.user.id
-            })
+            }, { userId: session.user.id, email: session.user.email })
                 .then((_) => {
                     isUserLikedNote(note.id, session?.user?.id!)
                         .then(r => setIsLiked(r))
@@ -63,16 +65,19 @@ export default function NotePage() {
     }, [session, note])
     
     return (
-        <div>
+        <main>
             {
-                noteError !== null ? <h1>Sunucu Hatası! Lütfen daha sonra tekrar deneyiniz.</h1>
-                : complete && <NoteModal
-                    user={session?.user}
-                    note={note!}
-                    isLiked={isLiked}
-                    onClose={() => router.push(routeMap.blog.root)}
-                />
+                (!complete && noteError === null)
+                    ? <Pending />
+                    : noteError !== null
+                        ? <ErrorElement text="Bir hata oluştu!" iconSize={52} />
+                        : complete && <NoteModal
+                            user={session?.user}
+                            note={note!}
+                            isLiked={isLiked}
+                            onClose={() => router.push(routeMap.blog.root)}
+                        />
             }
-        </div>
+        </main>
     )
 }

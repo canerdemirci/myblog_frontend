@@ -2,23 +2,23 @@
 
 import { useEffect, useState } from "react"
 
-import { ApiError } from "@/blog_api"
-import { deleteNote, getNotes } from "@/blog_api/note_repo"
+import { deleteNote, getNotes } from "@/blog_api_actions/note_repo"
 import { UIOperations } from "@/types/enums"
-import { routeMap } from "../../routeMap"
+import { routeMap } from "../../../../utils/routeMap"
 import { paginationDataSliceIndexes } from "@/utils"
+import { ApiError } from "@/lib/custom_fetch"
+import { getAdminToken } from "@/lib/sharedFunctions"
 
 // My components
 import StaggeredContent from "@/app/(components)/StaggeredContent"
-import Header from "../(components)/Header"
 import { StyledTableCell, StyledTableRow } from "../(components)/StyledTableComponents"
 import ConfirmationDialog from "../(components)/ConfirmationDialog"
-import UIBreadcrumbs from "../(components)/UIBreadcrumbs"
 import UISkeleton from "../(components)/UISkeleton"
 import ErrorElement from "../(components)/ErrorElement"
 import NoData from "../(components)/NoData"
 import TablePaginationActions from "../(components)/TablePaginationActions"
 import AlertModal from "../(components)/AlertModal"
+import AdminPanelPage from "../(components)/AdminPanelPage"
 
 // Material components
 import TableContainer from "@mui/material/TableContainer"
@@ -28,8 +28,6 @@ import TableHead from "@mui/material/TableHead"
 import TableBody from "@mui/material/TableBody"
 import Paper from "@mui/material/Paper"
 import Link from "@mui/material/Link"
-import Box from "@mui/material/Box"
-import Container from "@mui/material/Container"
 import IconButton from "@mui/material/IconButton"
 import Typography from "@mui/material/Typography"
 import TableFooter from "@mui/material/TableFooter"
@@ -39,7 +37,6 @@ import TablePagination from "@mui/material/TablePagination"
 import DeleteIcon from "@mui/icons-material/Delete"
 import OpenIcon from "@mui/icons-material/OpenInNew"
 import ShareIcon from "@mui/icons-material/Share"
-import CommentIcon from "@mui/icons-material/Comment"
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 
@@ -50,7 +47,7 @@ export default function NotesPage() {
     const [notesLoading, setNotesLoading] = useState<boolean>(true)
 
     // For deleting a note
-    const [noteToDeleteId, setNoteToDeleteId] = useState<string | null>(null)
+    const [delNoteId, setDelNoteId] = useState<string>('')
     const [noteDeletingError, setNoteDeletingError] = useState<ApiError | null>(null)
 
     // For UI operations (delete etc.)
@@ -72,17 +69,17 @@ export default function NotesPage() {
         // If decision is yes
         if (decision) {
             if (uiOperation === UIOperations.DELETE_NOTE) {
-                deleteNote(noteToDeleteId!)
-                    .then(() => setNotes(prev => prev.filter(n => n.id !== noteToDeleteId)))
+                deleteNote(delNoteId!, getAdminToken())
+                    .then(() => setNotes(prev => prev.filter(n => n.id !== delNoteId)))
                     .catch(e => setNoteDeletingError(e))
-                    .finally(() => setNoteToDeleteId(null))
+                    .finally(() => setDelNoteId(''))
             }
         }
 
         setConfirmationDialogOpen(false)
 
         if (uiOperation === UIOperations.DELETE_NOTE) {
-            setNoteToDeleteId(null)
+            setDelNoteId('')
         }
     }
 
@@ -90,14 +87,14 @@ export default function NotesPage() {
         setConfirmationDialogOpen(false)
 
         if (uiOperation === UIOperations.DELETE_NOTE) {
-            setNoteToDeleteId(null)
+            setDelNoteId('')
         }
     }
 
     function handleNoteDeleteBtn(id: string) {
         setUiOperation(UIOperations.DELETE_NOTE)
         setConfirmationDialogOpen(true)
-        setNoteToDeleteId(id)
+        setDelNoteId(id)
     }
 
     function handleChangePage(e: any, newPage: number) {
@@ -107,6 +104,62 @@ export default function NotesPage() {
     function handleChangeRowsPerPage(e: any) {
         setRowsPerPage(parseInt(e.target.value, 10))
         setPage(0)
+    }
+
+    function NotesTableBody() {
+        return (
+            notes
+                .slice(...paginationDataSliceIndexes(page, rowsPerPage, notes.length))
+                .map((n, i) => (
+                    <StyledTableRow key={n.id}>
+                        <StyledTableCell>
+                            <Typography variant="body1" sx={{fontSize: '1.3rem'}}>
+                                {i + 1 + (page * rowsPerPage)}
+                            </Typography>
+                        </StyledTableCell>
+                        <StyledTableCell>
+                            <Typography variant="body1" color="textDisabled">
+                                {`${n.createdAt}`}
+                            </Typography>
+                        </StyledTableCell>
+                        <StyledTableCell>
+                            <Typography variant="body1" sx={{fontSize: '1.3rem'}}>
+                                {n.shareCount}
+                            </Typography>
+                        </StyledTableCell>
+                        <StyledTableCell>
+                            <Typography variant="body1" sx={{fontSize: '1.3rem'}}>
+                                {n.viewCount}
+                            </Typography>
+                        </StyledTableCell>
+                        <StyledTableCell>
+                            <Typography variant="body1" sx={{fontSize: '1.3rem'}}>
+                                {n.likeCount}
+                            </Typography>
+                        </StyledTableCell>
+                        <StyledTableCell>
+                            <IconButton
+                                color="error"
+                                onClick={() => handleNoteDeleteBtn(n.id)}
+                                disabled={delNoteId === n.id}
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                        </StyledTableCell>
+                        <StyledTableCell>
+                            <Link
+                                href={routeMap.blog.notes.noteById(n.id)}
+                                target="_blank"
+                            >
+                                <IconButton color="secondary">
+                                    <OpenIcon />
+                                </IconButton>
+                            </Link>
+                        </StyledTableCell>
+                    </StyledTableRow>
+                )
+            )
+        )
     }
 
     function NotesTable() {
@@ -124,58 +177,7 @@ export default function NotesPage() {
                             <StyledTableCell></StyledTableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody>
-                        {notes
-                            .slice(...paginationDataSliceIndexes(page, rowsPerPage, notes.length))
-                            .map((n, i) => (
-                            <StyledTableRow key={n.id}>
-                                <StyledTableCell>
-                                    <Typography variant="body1" sx={{fontSize: '1.3rem'}}>
-                                        {i + 1 + (page * rowsPerPage)}
-                                    </Typography>
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    <Typography variant="body1" color="textDisabled">
-                                        {`${n.createdAt}`}
-                                    </Typography>
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    <Typography variant="body1" sx={{fontSize: '1.3rem'}}>
-                                        {n.shareCount}
-                                    </Typography>
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    <Typography variant="body1" sx={{fontSize: '1.3rem'}}>
-                                        {n.viewCount}
-                                    </Typography>
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    <Typography variant="body1" sx={{fontSize: '1.3rem'}}>
-                                        {n.likeCount}
-                                    </Typography>
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    <IconButton
-                                        color="error"
-                                        onClick={() => handleNoteDeleteBtn(n.id)}
-                                        disabled={noteToDeleteId === n.id}
-                                    >
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    <Link
-                                        href={routeMap.blog.notes.noteById(n.id)}
-                                        target="_blank"
-                                    >
-                                        <IconButton color="secondary">
-                                            <OpenIcon />
-                                        </IconButton>
-                                    </Link>
-                                </StyledTableCell>
-                            </StyledTableRow>
-                        ))}
-                    </TableBody>
+                    <TableBody>{NotesTableBody()}</TableBody>
                     <TableFooter>
                         <TableRow>
                             <TablePagination
@@ -205,7 +207,7 @@ export default function NotesPage() {
     }
 
     return (
-        <Box>
+        <AdminPanelPage pageName="Notlar">
             {/* Dialog for note operations like delete */}
             <ConfirmationDialog
                 open={confirmationDialogOpen}
@@ -222,31 +224,25 @@ export default function NotesPage() {
             <AlertModal
                 open={noteDeletingError !== null}
                 title="Uyarı"
-                contentText={noteDeletingError?.data.message ?? ""}
+                contentText={"Bir hata oluştu. Not silinemedi."}
                 onClose={() => setNoteDeletingError(null)}
             />
-            <Header />
-            <UIBreadcrumbs pageName="Notlar" />
-            <Container maxWidth="xl">
-                <Box sx={{ marginTop: '1rem', marginBottom: '1rem' }}>
-                    {/* Display skeleton, error element, no data element, table */}
-                    <StaggeredContent
-                        loading={{
-                            status: notesLoading,
-                            content: (<UISkeleton format={1} />)
-                        }}
-                        error={{
-                            status: notesFetchError !== null,
-                            content: (<ErrorElement />)
-                        }}
-                        content={{
-                            empty: notes.length === 0,
-                            emptyContent: (<NoData />),
-                            content: NotesTable()
-                        }}
-                    />
-                </Box>
-            </Container>
-        </Box>
+            {/* Display skeleton, error element, no data element, table */}
+            <StaggeredContent
+                loading={{
+                    status: notesLoading,
+                    content: (<UISkeleton format={1} />)
+                }}
+                error={{
+                    status: notesFetchError !== null,
+                    content: (<ErrorElement />)
+                }}
+                content={{
+                    empty: notes.length === 0,
+                    emptyContent: (<NoData />),
+                    content: NotesTable()
+                }}
+            />
+        </AdminPanelPage>
     )
 }

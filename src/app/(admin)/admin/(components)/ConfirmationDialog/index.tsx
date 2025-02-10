@@ -13,29 +13,24 @@ interface Props {
     onClose: () => void
 }
 
+/**
+ * Mui Dialog based component. There are yes and no buttons.
+ */
 export default function ConfirmationDialog({
     open, title, contentText, onDecision, onClose } : Props) {
-        
-    function handleDecision(decision: boolean) {
-        onDecision(decision)
-    }
         
     return (
         <Dialog
             open={open}
             onClose={onClose}
         >
-            <DialogTitle id="alert-dialog-title">
-                {title}
-            </DialogTitle>
+            <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
             <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                    {contentText}
-                </DialogContentText>
+                <DialogContentText id="alert-dialog-description">{contentText}</DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => handleDecision(true)}>Evet</Button>
-                <Button onClick={() => handleDecision(false)} autoFocus>Hayır</Button>
+                <Button onClick={() => onDecision(true)}>Evet</Button>
+                <Button onClick={() => onDecision(false)} autoFocus>Hayır</Button>
             </DialogActions>
         </Dialog>
     )

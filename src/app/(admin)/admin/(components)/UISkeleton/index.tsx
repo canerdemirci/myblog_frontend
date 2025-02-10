@@ -2,36 +2,43 @@ import Box from "@mui/material/Box"
 import Container from "@mui/material/Container"
 import Skeleton from "@mui/material/Skeleton"
 
+/**
+ * A component for showing user that process is continue
+ */
 export default function UISkeleton({ format } : { format: number }) {
     switch(format) {
         case 2:
-            (
-                <Box sx={{display: 'flex', flexDirection: 'column', gap: '.5rem'}}>
-                    <Skeleton variant="rounded" height={25} sx={{width: '100%'}} />
-                    <Skeleton variant="rounded" height={50} sx={{width: '100%'}} />
-                    <Skeleton variant="rounded" height={50} sx={{width: '100%'}} />
-                    <Skeleton variant="rounded" height={50} sx={{width: '100%'}} />
-                    <Skeleton variant="rounded" height={50} sx={{width: '100%'}} />
-                    <Skeleton variant="rounded" height={50} sx={{width: '100%'}} />
-                </Box>
+            return (
+                <Container maxWidth="xl"
+                    sx={{display: 'flex', flexDirection: 'column', gap: '.8rem'}}>
+                    <Box sx={{display: 'flex', flexDirection: 'column', gap: '.5rem'}}>
+                        <Skeleton variant="rounded" height={25} sx={{width: '100%'}} />
+                        <Skeleton variant="rounded" height={50} sx={{width: '100%'}} />
+                        <Skeleton variant="rounded" height={50} sx={{width: '100%'}} />
+                        <Skeleton variant="rounded" height={50} sx={{width: '100%'}} />
+                        <Skeleton variant="rounded" height={50} sx={{width: '100%'}} />
+                        <Skeleton variant="rounded" height={50} sx={{width: '100%'}} />
+                    </Box>
+                </Container>
             )
-        break
         case 3:
-            (
-                <Box sx={{display: 'flex', flexDirection: 'column', gap: '.5rem'}}>
-                    <Skeleton variant="text" />
-                    <Skeleton variant="rounded" height={50} sx={{width: '100%'}} />
-                    <Skeleton variant="text" />
-                    <Skeleton variant="rounded" height={50} sx={{width: '100%'}} />
-                    <Skeleton variant="text" />
-                    <Skeleton variant="rounded" height={50} sx={{width: '100%'}} />
-                    <Skeleton variant="text" />
-                    <Skeleton variant="rounded" height={50} sx={{width: '100%'}} />
-                    <Skeleton variant="text" />
-                    <Skeleton variant="rounded" height={50} sx={{width: '100%'}} />
-                </Box>
+            return (
+                <Container maxWidth="xl"
+                    sx={{display: 'flex', flexDirection: 'column', gap: '.8rem'}}>
+                    <Box sx={{display: 'flex', flexDirection: 'column', gap: '.5rem'}}>
+                        <Skeleton variant="text" />
+                        <Skeleton variant="rounded" height={50} sx={{width: '100%'}} />
+                        <Skeleton variant="text" />
+                        <Skeleton variant="rounded" height={50} sx={{width: '100%'}} />
+                        <Skeleton variant="text" />
+                        <Skeleton variant="rounded" height={50} sx={{width: '100%'}} />
+                        <Skeleton variant="text" />
+                        <Skeleton variant="rounded" height={50} sx={{width: '100%'}} />
+                        <Skeleton variant="text" />
+                        <Skeleton variant="rounded" height={50} sx={{width: '100%'}} />
+                    </Box>
+                </Container>
             )
-        break
         default: return (
             <Container maxWidth="xl" sx={{display: 'flex', flexDirection: 'column', gap: '.8rem'}}>
                 <Box sx={{display: "flex", justifyContent: 'space-between', gap: "1rem"}}>

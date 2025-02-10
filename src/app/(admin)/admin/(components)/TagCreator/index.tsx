@@ -5,19 +5,25 @@ import { ChangeEvent } from "react"
 
 interface Props {
     value: string
-    error: 'validation' | 'server' | null
+    serverError: boolean
+    validationError: string
     disabled: boolean
     onSubmit: () => void
     onChange?: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
 }
 
-export default function TagCreator({ value, error, disabled, onSubmit, onChange }: Props) {
+/**
+ * Component for creating new tags
+ */
+export default function TagCreator({
+    value, serverError, validationError, disabled, onSubmit, onChange }: Props)
+{
     let errorDescription = ''
 
-    if (error === 'server') {
+    if (serverError) {
         errorDescription = 'Etiket oluşturulamadı. Sistem Hatası!'
-    } else if (error === 'validation') {
-        errorDescription = 'Etiket adı boş bırakılamaz'
+    } else if (validationError) {
+        errorDescription = validationError
     }
     
     return (
@@ -46,7 +52,7 @@ export default function TagCreator({ value, error, disabled, onSubmit, onChange 
                 }
             }}
             onChange={onChange}
-            error={error !== null}
+            error={validationError !== '' || serverError}
             disabled={disabled}
             required
         />

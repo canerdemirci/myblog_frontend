@@ -63,17 +63,42 @@ export async function verifyJWT(token: string, secret: string): Promise<JWTPaylo
     }
 }
 
+/**
+ * Retrieves a cookie value by name.
+ * @param name The name of the cookie.
+ * @returns The value of the cookie, or null if not found.
+ */
+export function getCookie(name: string): string | null {
+    const nameEQ = name + "="
+    const ca = document.cookie.split(';')
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i]
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length)
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length)
+    }
+    return null
+}
+
 // Joi schemas
 export const createPostJoiSchema = Joi.object({
-    title: Joi.string().required().max(255).messages({
+    title: Joi.string().trim().required().max(255).messages({
         'string.required': 'Makale başlığı gereklidir.',
         'string.empty': 'Makale başlığı gereklidir.',
         'string.max': 'Makale başlığı en fazla 255 karakter olabilir.'
+    }),
+    images: Joi.array().items(Joi.string().optional()).required().messages({
+        'array.required': 'Makale içerik resim dizisi boşta olsa gereklidir.',
+    }),
+    content: Joi.string().optional(),
+    description: Joi.string().max(160).optional(),
+    cover: Joi.string().optional(),
+    tags: Joi.array().items(Joi.string().optional()).required().messages({
+        'array.required': 'Makale etiket dizisi boşta olsa gereklidir.'
     })
 })
 
 export const createTagJoiSchema = Joi.object({
-    name: Joi.string().required().max(100).messages({
+    name: Joi.string().trim().required().max(100).messages({
         'string.required': 'Etiket adı boş bırakılamaz.',
         'string.empty': 'Etiket adı boş bırakılamaz.',
         'string.max': 'Etiket adı en fazla 100 karakter olabilir.'
@@ -81,9 +106,12 @@ export const createTagJoiSchema = Joi.object({
 })
 
 export const createNoteJoiSchema = Joi.object({
-    content: Joi.string().required().messages({
+    content: Joi.string().trim().required().messages({
         'string.required': 'Not içeriği boş bırakılamaz.',
         'string.empty': 'Not içeriği boş bırakılamaz.',
+    }),
+    images: Joi.array().items(Joi.string().optional()).required().messages({
+        'array.required': 'Not içerik resim dizisi boşta olsa gereklidir.',
     })
 })
 
@@ -94,16 +122,27 @@ export const createUserJoiSchema = Joi.object({
         'string.max': 'Email en fazla 320 karakter uzunluğunda olabilir.',
         'string.email': 'Email formatı yanlış.'
     }),
-    password: Joi.string().required().min(10).max(50).messages({
+    password: Joi.string().trim().required().min(10).max(50).messages({
         'string.required': 'Parola boş bırakılamaz.',
         'string.empty': 'Parola boş bırakılamaz.',
         'string.max': 'Parola en az 10, en fazla 50 karakter olmalıdır.',
         'string.min': 'Parola en az 10, en fazla 50 karakter olmalıdır.'
     }),
-    password2: Joi.string().required().min(10).max(50).messages({
+    password2: Joi.string().trim().required().min(10).max(50).messages({
         'string.required': 'Parola boş bırakılamaz.',
         'string.empty': 'Parola boş bırakılamaz.',
         'string.max': 'Parola en az 10, en fazla 50 karakter olmalıdır.',
         'string.min': 'Parola en az 10, en fazla 50 karakter olmalıdır.'
+    }),
+})
+
+export const updateUserJoiSchema = Joi.object({
+    id: Joi.string().required().messages({
+        'string.required': 'Id gereklidir',
+        'string.empty': 'Id gereklidir',
+    }),
+    name: Joi.string().optional().max(100).min(3).messages({
+        'string.max': 'Kullanıcı adı en fazla 100 karakter olabilir.',
+        'string.min': 'Kullanıcı adı en az 3 karakter olmalıdır.'
     }),
 })

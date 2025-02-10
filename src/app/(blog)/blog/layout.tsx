@@ -4,11 +4,14 @@ import Header from "./(components)/Header"
 import Footer from "./(components)/Footer"
 import { getServerSession } from 'next-auth'
 import SessionProvider from '@/app/(blog)/blog/(components)/SessionProvider'
+import { clsx } from 'clsx'
 
 export const metadata: Metadata = {
   title: "Caner Demirci - Kişisel Blog",
-  description: "Caner Demirci - Kişisel Blog",
-};
+  description: "Caner Demirci - Kişisel Blog. Yazılım, teknoloji, programlama ve daha fazlası hakkında yazılar.",
+  keywords: "Yazılım, kodlama, web, javascript, node js, typescript, next js, react js, html, css, blog",
+  authors: [{name: "Caner Demirci"}],
+}
 
 export default async function RootLayout({
   children
@@ -19,7 +22,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className="dark:bg-black bg-gray-50">
+      <body className={clsx(["dark:bg-black", "bg-gray-50"])}>
         <SessionProvider session={session}>
           <Header />
           {children}

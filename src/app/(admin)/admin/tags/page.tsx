@@ -2,15 +2,14 @@
 
 import { useEffect, useState } from "react"
 
-import { ApiError } from "@/blog_api"
-import { createTag, deleteTag, getTags } from "@/blog_api/tag_repo"
+import { createTag, deleteTag, getTags } from "@/blog_api_actions/tag_repo"
 import { UIOperations } from "@/types/enums"
 import { createTagJoiSchema, paginationDataSliceIndexes, sortTags } from "@/utils"
+import { ApiError } from "@/lib/custom_fetch"
+import { getAdminToken } from "@/lib/sharedFunctions"
 
 // My components
 import StaggeredContent from "@/app/(components)/StaggeredContent"
-import Header from "../(components)/Header"
-import UIBreadcrumbs from "../(components)/UIBreadcrumbs"
 import ConfirmationDialog from "../(components)/ConfirmationDialog"
 import ErrorElement from "../(components)/ErrorElement"
 import UISkeleton from "../(components)/UISkeleton"
@@ -19,10 +18,10 @@ import TagCreator from "../(components)/TagCreator"
 import AlertModal from "../(components)/AlertModal"
 import TablePaginationActions from "../(components)/TablePaginationActions"
 import { StyledTableCell, StyledTableRow } from "../(components)/StyledTableComponents"
+import AdminPanelPage from "../(components)/AdminPanelPage"
 
 // Material components
 import Typography from "@mui/material/Typography"
-import Container from "@mui/material/Container"
 import Box from "@mui/material/Box"
 import Paper from "@mui/material/Paper"
 import IconButton from "@mui/material/IconButton"
@@ -48,13 +47,14 @@ export default function TagsPage() {
     const [uiOperation, setUiOperation] = useState<UIOperations | undefined>(undefined)
 
     // For deleting a tag
-    const [tagToDeleteId, setTagToDeleteId] = useState<string | null>(null)
-    const [tagDeletingError, setTagDeletingError] = useState<ApiError | null>(null)
+    const [delTagId, setDelTagId] = useState<string>('')
+    const [tagDelError, setTagDelError] = useState<ApiError | null>(null)
 
     // For creating a tag
-    const [tagInputText, setTagInputText] = useState<string>('')
+    const [newTagName, setNewTagName] = useState<string>('')
     const [tagCreationEnd, setTagCreationEnd] = useState<boolean>(true)
     const [tagCreationError, setTagCreationError] = useState<ApiError | null>(null)
+    const [tagValidationError, setTagValidationError] = useState<string>('')
 
     // For tag table pagination
     const [page, setPage] = useState<number>(0);
@@ -71,17 +71,17 @@ export default function TagsPage() {
         // If decision is yes
         if (decision) {
             if (uiOperation === UIOperations.DELETE_TAG) {
-                deleteTag(tagToDeleteId!)
-                    .then(() => setTags(prev => prev.filter(t => t.id !== tagToDeleteId)))
-                    .catch(e => setTagDeletingError(e))
-                    .finally(() => setTagToDeleteId(null))
+                deleteTag(delTagId!, getAdminToken())
+                    .then(() => setTags(prev => prev.filter(t => t.id !== delTagId)))
+                    .catch(e => setTagDelError(e))
+                    .finally(() => setDelTagId(''))
             }
         }
 
         setConfirmationDialogOpen(false)
 
         if (uiOperation === UIOperations.DELETE_TAG) {
-            setTagToDeleteId(null)
+            setDelTagId('')
         }
     }
 
@@ -89,30 +89,33 @@ export default function TagsPage() {
         setConfirmationDialogOpen(false)
 
         if (uiOperation === UIOperations.DELETE_TAG) {
-            setTagToDeleteId(null)
+            setDelTagId('')
         }
     }
 
-    function handleCreateTagEvent() {
+    function handleCreateTag() {
         setTagCreationEnd(false)
 
-        const validation = createTagJoiSchema.validate({ name: tagInputText.trim() })
+        const validation = createTagJoiSchema.validate({ name: newTagName.trim() })
 
         if (!validation.error) {
-            createTag({ name: validation.value.name })
+            createTag({ name: validation.value.name }, getAdminToken())
                 .then(t => {
                     setTags(prev => [...prev, t as Tag].sort(sortTags))
-                    setTagInputText('')
+                    setNewTagName('')
                 })
                 .catch(e => setTagCreationError(e))
                 .finally(() => setTagCreationEnd(true))
+        } else {
+            setTagValidationError(validation.error.message)
+            setTagCreationEnd(true)
         }
     }
 
     function handleTagDeleteBtn(id: string) {
         setUiOperation(UIOperations.DELETE_TAG)
         setConfirmationDialogOpen(true)
-        setTagToDeleteId(id)
+        setDelTagId(id)
     }
 
     function handleChangePage(e: any, newPage: number) {
@@ -159,7 +162,7 @@ export default function TagsPage() {
                                         <IconButton
                                             color="error"
                                             onClick={() => handleTagDeleteBtn(t.id)}
-                                            disabled={tagToDeleteId === t.id}
+                                            disabled={delTagId === t.id}
                                         >
                                             <DeleteIcon />
                                         </IconButton>
@@ -196,64 +199,64 @@ export default function TagsPage() {
     }
 
     return (
-        <Box>
+        <AdminPanelPage pageName="Etiketler">
             {/* Dialog for tag operations like delete */}
             <ConfirmationDialog
                 open={confirmationDialogOpen}
                 title="Uyarı"
-                contentText={uiOperation === UIOperations.DELETE_TAG ? "Etiketi silmek istediğinizden emin misiniz?" : ""}
+                contentText={
+                    uiOperation === UIOperations.DELETE_TAG
+                        ? "Etiketi silmek istediğinizden emin misiniz?"
+                        : ""
+                    }
                 onDecision={(decision) => handleConfirmationDecision(decision)}
                 onClose={handleConfirmationClose}
             />
             {/* Alert modal for tag deleting error */}
             <AlertModal
-                open={tagDeletingError !== null}
+                open={tagDelError !== null}
                 title="Uyarı"
-                contentText={tagDeletingError?.data.message ?? ""}
-                onClose={() => setTagDeletingError(null)}
+                contentText={"Bir hata oluştu!"}
+                onClose={() => setTagDelError(null)}
             />
             {/* Alert modal for tag creation error */}
             <AlertModal
                 open={tagCreationError !== null}
                 title="Uyarı"
-                contentText={tagCreationError?.data.message ?? ""}
+                contentText={"Bir hata oluştu!"}
                 onClose={() => setTagCreationError(null)}
             />
-            <Header />
-            <UIBreadcrumbs pageName="Etiketler" />
-            <Container maxWidth="xl">
-                <Box sx={{
-                    marginTop: '1rem', marginBottom: '1rem', display: 'flex',
-                    flexDirection: 'column', gap: '1.5rem'
-                }}>
-                    <TagCreator
-                        error={
-                            tagCreationError !== null ? 'server'
-                            : tagInputText === '' ? 'validation' : null
-                        }
-                        disabled={!tagCreationEnd}
-                        value={tagInputText}
-                        onChange={(e) => setTagInputText(e.target.value)}
-                        onSubmit={() => handleCreateTagEvent()}
-                    />
-                    {/* Display skeleton, error element, no data element, table */}
-                    <StaggeredContent
-                        loading={{
-                            status: tagsLoading,
-                            content: (<UISkeleton format={2} />)
-                        }}
-                        error={{
-                            status: tagsFetchError !== null,
-                            content: (<ErrorElement />)
-                        }}
-                        content={{
-                            empty: tags.length === 0,
-                            emptyContent: (<NoData />),
-                            content: TagsTable()
-                        }}
-                    />
-                </Box>
-            </Container>
-        </Box>
+            {/* Display skeleton, error element, no data element, table */}
+            <StaggeredContent
+                loading={{
+                    status: tagsLoading,
+                    content: (<UISkeleton format={2} />)
+                }}
+                error={{
+                    status: tagsFetchError !== null,
+                    content: (<ErrorElement />)
+                }}
+                content={{
+                    empty: tags.length === 0,
+                    emptyContent: (<NoData />),
+                    content: (
+                        <Box sx={{
+                            marginBottom: '1rem', display: 'flex',
+                            flexDirection: 'column', gap: '1.5rem'
+                        }}>
+                            <TagCreator
+                                validationError={tagValidationError}
+                                serverError={tagCreationError !== null}
+                                disabled={!tagCreationEnd}
+                                value={newTagName}
+                                onChange={(e) => setNewTagName(e.target.value)}
+                                onSubmit={() => handleCreateTag()}
+                            />
+                            {TagsTable()}
+                        </Box>
+                    )
+                }}
+            />
+        </AdminPanelPage>
     )
 }

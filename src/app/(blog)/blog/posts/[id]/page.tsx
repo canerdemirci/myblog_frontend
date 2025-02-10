@@ -1,195 +1,205 @@
-'use client'
-
-import MDEditor from '@uiw/react-md-editor'
-import { useParams } from 'next/navigation'
-import { addUserPostInteraction, addGuestPostInteraction, isGuestLikedPost, isUserLikedPost } from '@/blog_api/post_interaction_repo'
-import { getPost } from '@/blog_api/post_repo'
-import { ApiError } from '@/blog_api/index'
-import { useEffect, useState } from 'react'
-import Image from 'next/image'
+import { getPost, getRelatedPosts } from '@/blog_api_actions/post_repo'
 import { montserrat } from '@/app/fonts'
-import StaggeredContent from '@/app/(components)/StaggeredContent'
-
-import { MdBookmark, MdShare, MdComment, MdFavorite, MdViewAgenda }  from 'react-icons/md'
+import Image from 'next/image'
+import { clsx } from 'clsx'
 import { IoMdEye } from 'react-icons/io'
-import ShareButtons from '../../(components)/ShareButtons'
-import { routeMap } from '@/app/(admin)/routeMap'
-import { useSession } from 'next-auth/react'
-import { guestId } from '@/lib/sharedFunctions'
+import { routeMap } from '@/utils/routeMap'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/utils/auth'
+import CommentsSection from './(components)/CommentsSection'
+import ArticleContent from './(components)/ArticleContent'
+import Interactions from './(components)/Interactions'
+import NotFound from '../../(components)/NotFound'
+import ErrorElement from '../../(components)/ErrorElement'
+import Tags from './(components)/Tags'
+import Link from 'next/link'
+import type { Metadata, ResolvingMetadata } from 'next'
+import { cache } from 'react'
 
-export default function PostPage() {
-    const { data: session } = useSession()
-    
-    const params = useParams()
+type Props = {
+    params: { id: string }
+}
+
+const fetchPost = cache(async (id: string) => await getPost(id))
+
+export async function generateMetadata({ params }: Props, parent: ResolvingMetadata)
+: Promise<Metadata>
+{
     const postId = params.id as string
+    const post = await fetchPost(postId)
 
-    const [post, setPost] = useState<Post | null>(null)
-    const [error, setError] = useState<ApiError | null>(null)
-    const [notFound, setNotFound] = useState<boolean>(false)
-    const [loading, setLoading] = useState<boolean>(true)
-    const [isLiked, setIsLiked] = useState<boolean>(false)
-    const [complete, setComplete] = useState<boolean>(false)
-    
-    useEffect(() => {
-        getPost(postId)
-        .then(p => {
-            setPost(p)
-        })
-        .catch((e: ApiError) => {
-            if (e.data.status === 404) {
-                setNotFound(true)
-            } else {
-                setError(e)
-            }
-        })
-        .finally(() => setLoading(false))
-    }, [])
-
-    useEffect(() => {
-        if (!session && post) {
-            addGuestPostInteraction({
-                type: 'VIEW',
-                postId: post.id,
-                guestId: guestId()
-            })
-                .then((_) => {
-                    isGuestLikedPost(post.id, guestId())
-                        .then(r => setIsLiked(r))
-                        .finally(() => setComplete(true))
-                })
-        }
-
-        if (session && session.user?.id && post) {
-            addUserPostInteraction({
-                type: 'VIEW',
-                postId: post.id,
-                userId: session.user.id
-            })
-                .then((_) => {
-                    isUserLikedPost(post.id, session?.user?.id!)
-                        .then(r => setIsLiked(r))
-                        .finally(() => setComplete(true))
-                })
-        }
-    }, [session, post])
-
-    function handleShare() {
-        if (session && session.user?.id) {
-            addUserPostInteraction({
-                postId: postId,
-                type: 'SHARE',
-                userId: session.user.id
-            })
-        } else {
-            addGuestPostInteraction({
-                postId: postId,
-                type: 'SHARE',
-                guestId: guestId()
+    return {
+        title: post.title,
+        keywords: post.tags.map(t => t.name),
+        description: post.description,
+        openGraph: {
+            title: post.title,
+            description: post.description,
+            url: process.env.NEXT_PUBLIC_BASE_URL! + routeMap.blog.posts.postById(post.id),
+            type: "article",
+            publishedTime: `${post.createdAt}`,
+            authors: ['Caner DEMİRCİ'],
+            ...(post.cover && {
+                images: [
+                    {
+                        url: routeMap.static.root + '/' + post.cover,
+                        alt: post.title,
+                        width: 1200,
+                        height: 630
+                    }
+                ]
             })
         }
     }
+}
 
-    function interactions() {
+export default async function PostPage({ params } : Props) {
+    const session = await getServerSession(authOptions)
+    const postId = params.id as string
+    
+    function PostCover(post: Post) {
         return (
-            <div className='w-60 m-auto rounded-xl bg-white p-2 flex justify-center items-center gap-4 shadow-sm border border-gray-200 dark:bg-gray-900 dark:border-gray-950'>
-                <div className='cursor-pointer p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700'>
-                        <MdFavorite size={24} className={'cursor-pointer ' + (isLiked ? 'text-red-500' : 'text-gray-400')}
-                        onClick={() => {
-                            setIsLiked(prev => !prev)
-
-                            if (session && session.user?.id) {
-                                addUserPostInteraction({
-                                    type: isLiked ? 'UNLIKE' : 'LIKE',
-                                    postId: post?.id!,
-                                    userId: session.user.id
-                                })
-                            } else {
-                                addGuestPostInteraction({
-                                    type: isLiked ? 'UNLIKE' : 'LIKE',
-                                    postId: post?.id!,
-                                    guestId: guestId()
-                                })
-                            }
-                        }}
-                    />
-                </div>
-                <div className='cursor-pointer p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700'>
-                    <MdComment size={24} className='cursor-pointer text-green-700  dark:text-green-500' />
-                </div>
-                <div className='group relative cursor-pointer p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700'>
-                    <MdShare size={24} className='cursor-pointer text-blue-700 dark:text-blue-500' />
-                    <ShareButtons
-                        url={process.env.NEXT_PUBLIC_ENV === 'dev' ? process.env.NEXT_PUBLIC_BASE_URL_DEV! : process.env.NEXT_PUBLIC_BASE_URL_PRODUCTION! + routeMap.blog.posts.postById(postId)}
-                        onShare={handleShare}
-                    />
-                </div>
-                <div className='cursor-pointer p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700'>
-                    <MdBookmark size={24} className='cursor-pointer text-yellow-700  dark:text-yellow-500' />
-                </div>
-            </div>
+            <Image
+                src={
+                    post.cover
+                        ? `${routeMap.static.root}/${post.cover}`
+                        : '/images/no_cover.png'
+                }
+                width={800}
+                height={420}
+                priority={true}
+                alt='Makale Kapağı'
+                className={clsx([
+                    'aspect-[40/21]', 'w-full', 'md:rounded-tl-lg', 'md:rounded-tr-lg', 'mb-4'
+                ])}
+            />
         )
     }
 
-    return (
-        <div>
-            <StaggeredContent
-                loading={{
-                    status: loading && complete,
-                    content: (<h2>Makale yükleniyor...</h2>)
-                }}
-                error={{
-                    status: error !== null,
-                    content: (<h2>Sunucu Hatası! Lütfen daha sonra tekrar deneyiniz.</h2>)
-                }}
-                content={{
-                    notFound: notFound,
-                    notFoundContent: (<h2>Makale bulunamadı.</h2>),
-                    content: (
-                        <div className='relative w-full md:w-[800px] md:m-auto md:my-8 bg-white dark:bg-[#0d1116] md:rounded-lg md:drop-shadow-md'>
-                            <Image
-                                src={
-                                    post?.cover
-                                        ? `http://localhost:8000/api/static/${post?.cover}`
-                                        : '/images/no_cover.png'
-                                }
-                                width={800}
-                                height={420}
-                                priority={true}
-                                alt='Makale Kapağı'
-                                className='aspect-[40/21] w-full md:rounded-tl-lg md:rounded-tr-lg'
-                            />
-                            <div>
-                                <h1 className={`${montserrat.className} p-4 text-xl md:text-4xl font-bold dark:text-gray-100 text-gray-900`}>
-                                    {post?.title}
-                                </h1>
-                                <div className='p-4'>
-                                    <div className={`${montserrat.className} text-xl dark:text-white`}>
-                                        <div className='flex items-center gap-2'>
-                                            {`${post?.createdAt}`} 
-                                            <IoMdEye /> {post?.viewCount}
-                                        </div>
-                                    </div>
-                                    <br />
-                                    <MDEditor.Markdown
-                                        source={post?.content}
-                                        style={{ whiteSpace: 'normal' }}
+    function RelatedPosts(relatedPosts: RelatedPost[]) {
+        return (
+            <section>
+                <h2
+                    className={clsx([
+                        'text-center', 'font-bold', 'text-2xl', 'text-gray-800',
+                        'my-16', 'dark:text-gray-100',
+                    ])}
+                >
+                    İLGİNİZİ ÇEKEBİLECEK DİĞER MAKALELER
+                </h2>
+                <div className={clsx(['grid', 'sm:grid-cols-2', 'gap-8'])}>
+                    {relatedPosts.map(rp => (
+                        <Link
+                            key={rp.id}
+                            href={routeMap.blog.posts.postById(rp.id)}
+                            className={clsx([
+                                'break-inside-avoid', 'break-after-avoid-page',
+                                'inline-block', 'w-full'
+                            ])}
+                        >
+                            
+                                <div className={clsx(['flex', 'flex-col', 'gap-4'])}>
+                                    <Image
+                                        src={
+                                            rp.cover
+                                                ? `${routeMap.static.root}/${rp.cover}`
+                                                : '/images/no_cover.png'
+                                        }
+                                        width={400}
+                                        height={210}
+                                        priority={true}
+                                        className={clsx([
+                                            'w-full', 'aspect-[40/21]', 'rounded-tl-md',
+                                            'rounded-tr-md'
+                                        ])}
+                                        alt="Makale Kapağı"
                                     />
-                                    <br />
-                                    {interactions()}
-                                    <br />
-                                    <div className="flex items-center justify-start flex-wrap">
-                                        {post?.tags.map((t, i) => (
-                                            <span key={i} className={`${montserrat.className} text-xs block p-2 mr-3 mb-3 rounded-lg bg-gray-200 border-gray-100 dark:bg-gray-800 dark:text-white`}>
-                                                # {t.name}
-                                            </span>))}
+                                    <div
+                                        className={clsx([
+                                            'flex', 'justify-between', 'gap-8'
+                                        ])}
+                                    >
+                                        <h3
+                                            className={clsx(['font-bold', 'dark:text-gray-100'])}
+                                        >
+                                            {rp.title}
+                                        </h3>
+                                        <p
+                                            className={clsx([
+                                                'font-bold', 'text-gray-500',
+                                                'dark:text-gray-300',
+                                            ])}
+                                        >
+                                            {`${rp.createdAt}`}
+                                        </p>
                                     </div>
                                 </div>
+                        </Link>
+                    ))}
+                </div>
+            </section>
+        )
+    }
+    
+    try {
+        const post = await fetchPost(postId)
+        const relatedPosts = await getRelatedPosts(post.tags.map(t => t.name))
+
+        return (
+            <main
+                className={clsx([
+                    'relative', 'w-full', 'md:w-[800px]', 'md:m-auto', 'md:my-8', 'bg-white', 'dark:bg-[#0d1116]', 'md:rounded-lg', 'md:drop-shadow-md'
+                ])}
+            >
+                {PostCover(post)}
+                <div>
+                    {/* Post Title */}
+                    <h1
+                        className={`${montserrat.className} p-4 text-xl md:text-4xl font-bold dark:text-gray-100 text-gray-900`}
+                    >
+                        {post.title}
+                    </h1>
+                    <div className={clsx('p-4')}>
+                        <div
+                            className={clsx([
+                                montserrat.className, 'text-xl', 'dark:text-white'
+                            ])}
+                        >
+                            {/* Some info about post */}
+                            <div className={clsx([
+                                'flex', 'mb-4', 'items-center', 'gap-2'
+                            ])}>
+                                {`${post.createdAt}`} <IoMdEye /> {post.viewCount}
                             </div>
-                            <br />
                         </div>
-                    )
-                }}
-            />
-        </div>
-    )
+                        <ArticleContent content={post.content} />
+                        <Interactions post={post} user={session?.user} />
+                        <Tags post={post} />
+                        <CommentsSection
+                            user={session?.user}
+                            postId={post.id}
+                        />
+                        {relatedPosts.length > 0 && RelatedPosts(relatedPosts)}
+                    </div>
+                </div>
+            </main>
+        )
+    } catch (error: any) {
+        if (error?.data?.status === 404) {
+            return (
+                <NotFound text="Makale bulunamadı." />
+            )
+        } else {
+            return (
+                <div className={clsx('my-36')}>
+                    <ErrorElement
+                        iconSize={180}
+                        text={(
+                            <p className={clsx(['xs:text-4xl', 'text-2xl'])}>Bir hata oluştu!</p>
+                        )}
+                    />
+                </div>
+            )
+        }
+    }
 }

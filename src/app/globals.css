@@ -26,7 +26,7 @@
     var(--angle),
     #6ec9f0, #f500b4, #c1e62e
   );
-  animation: spin 3s linear infinite;
+  animation: _spin 3s linear infinite;
 }
 
 .note-anim-cover:hover {
@@ -37,7 +37,7 @@
   transition-timing-function: ease-out;
 }
 
-@keyframes spin {
+@keyframes _spin {
   to {
     --angle: 360deg;
   }

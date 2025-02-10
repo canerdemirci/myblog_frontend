@@ -14,19 +14,19 @@ import {
 export async function POST(req: NextRequest) {
     const { pin } = await req.json()
 
-    const adminPin = process.env.NEXT_PUBLIC_ADMIN_PIN
+    const adminPin = process.env.ADMIN_PIN
     const hashedPin = await sha256(pin)
 
     if (hashedPin === adminPin) {
         try {
             const accessToken = await signJWT(
                 ADMIN_ACCESS_TOKEN_PAYLOAD,
-                process.env.NEXT_PUBLIC_SECRET! as string,
+                process.env.SECRET! as string,
                 ADMIN_ACCESS_TOKEN_EXPIRE
             )
             const refreshToken = await signJWT(
                 ADMIN_ACCESS_TOKEN_PAYLOAD,
-                process.env.NEXT_PUBLIC_SECRET! as string,
+                process.env.SECRET! as string,
                 ADMIN_REFRESH_TOKEN_EXPIRE
             )
 

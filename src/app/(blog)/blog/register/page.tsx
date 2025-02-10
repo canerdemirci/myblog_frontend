@@ -1,9 +1,10 @@
 'use client'
 
-import { createUser } from "@/blog_api/user_repo"
+import { createUser } from "@/blog_api_actions/user_repo"
 import { createUserJoiSchema } from "@/utils"
 import { signIn } from "next-auth/react"
 import { FormEvent, useState } from "react"
+import { clsx } from "clsx"
 
 export default function RegisterPage() {
     const [email, setEmail] = useState<string>('')
@@ -54,16 +55,39 @@ export default function RegisterPage() {
     }
     
     return (
-        <div className="w-[95%] md:w-[30rem] my-12 m-auto flex flex-col">
-            <h1 className="font-bold text-2xl text-gray-700 dark:text-gray-100">Yeni Üyelik</h1>
+        <div
+            className={clsx([
+                "w-[95%]", "md:w-[30rem]", "my-12", "m-auto", "flex", "flex-col"
+            ])}
+        >
+            <h1
+                className={clsx([
+                    "font-bold", "text-2xl", "text-gray-700", "dark:text-gray-100"
+                ])}
+            >
+                Yeni Üyelik
+            </h1>
             <form
-                className="w-full my-4 mx-auto p-4 rounded-md bg-gray-200 border border-gray-500 flex flex-col items-center gap-4 dark:bg-gray-700 dark:border-gray-800"
+                className={clsx([
+                    "w-full", "my-4", "mx-auto", "p-4", "rounded-md", "bg-gray-200",
+                    "border", "border-gray-500", "flex", "flex-col", "items-center",
+                    "gap-4", "dark:bg-gray-700", "dark:border-gray-800"
+                ])}
                 onSubmit={handleSubmit}
             >
-                <div className="w-full flex flex-col gap-2">
-                    <label htmlFor="email" className="font-bold text-gray-600 dark:text-gray-100">E-Posta</label>
+                <div className={clsx(["w-full", "flex", "flex-col", "gap-2"])}>
+                    <label
+                        htmlFor="email"
+                        className={clsx([
+                            "font-bold", "text-gray-600", "dark:text-gray-100"
+                        ])}
+                    >
+                        E-Posta
+                    </label>
                     <input
-                        className="bg-gray-50 outline-none p-2 border border-gray-400 rounded-md hover:border-gray-700 focus:border-gray-700 focus:border-2 dark:bg-gray-900 dark:text-white dark:focus:border-green-600 dark:focus:border-2 dark:hover:border-green-400"
+                        className={clsx([
+                            "bg-gray-50", "outline-none", "p-2", "border", "border-gray-400", "rounded-md", "hover:border-gray-700", "focus:border-gray-700", "focus:border-2", "dark:bg-gray-900", "dark:text-white", "dark:focus:border-green-600", "dark:focus:border-2", "dark:hover:border-green-400"
+                        ])}
                         value={email}
                         id="email"
                         type="email"
@@ -72,20 +96,34 @@ export default function RegisterPage() {
                         autoFocus
                     />
                 </div>
-                <div className="w-full flex flex-col gap-2">
-                    <label htmlFor="password" className="font-bold text-gray-600 dark:text-gray-100">Parola</label>
+                <div className={clsx(["w-full", "flex", "flex-col", "gap-2"])}>
+                    <label
+                        htmlFor="password"
+                        className={clsx(["font-bold", "text-gray-600", "dark:text-gray-100"])}
+                    >
+                        Parola
+                    </label>
                     <input
-                        className="bg-gray-50 outline-none p-2 border border-gray-400 rounded-md hover:border-gray-700 focus:border-gray-700 focus:border-2 dark:bg-gray-900 dark:text-white dark:focus:border-green-600 dark:focus:border-2 dark:hover:border-green-400"
+                        className={clsx([
+                            "bg-gray-50", "outline-none", "p-2", "border", "border-gray-400", "rounded-md", "hover:border-gray-700", "focus:border-gray-700", "focus:border-2", "dark:bg-gray-900", "dark:text-white", "dark:focus:border-green-600", "dark:focus:border-2", "dark:hover:border-green-400"
+                        ])}
                         value={password}
                         id="password"
                         type="password"
                         onChange={(e) => setPassword(e.target.value.trim())}
                     />
                 </div>
-                <div className="w-full flex flex-col gap-2">
-                    <label htmlFor="password2" className="font-bold text-gray-600 dark:text-gray-100">Parola Tekrarı</label>
+                <div className={clsx(["w-full", "flex", "flex-col", "gap-2"])}>
+                    <label
+                        htmlFor="password2"
+                        className={clsx(["font-bold", "text-gray-600", "dark:text-gray-100"])}
+                    >
+                        Parola Tekrarı
+                    </label>
                     <input
-                        className="bg-gray-50 outline-none p-2 border border-gray-400 rounded-md hover:border-gray-700 focus:border-gray-700 focus:border-2 dark:bg-gray-900 dark:text-white dark:focus:border-green-600 dark:focus:border-2 dark:hover:border-green-400"
+                        className={clsx([
+                            "bg-gray-50", "outline-none", "p-2", "border", "border-gray-400", "rounded-md", "hover:border-gray-700", "focus:border-gray-700", "focus:border-2", "dark:bg-gray-900", "dark:text-white", "dark:focus:border-green-600", "dark:focus:border-2", "dark:hover:border-green-400"
+                        ])}
                         value={password2}
                         id="password2"
                         type="password"
@@ -93,12 +131,21 @@ export default function RegisterPage() {
                     />
                 </div>
                 <button
-                    className="bg-gray-600 p-2 w-full rounded-md font-bold text-gray-100 hover:bg-gray-700 dark:bg-green-400 dark:text-gray-700 dark:hover:bg-green-600 dark:hover:text-white" type="submit"
+                    className={clsx([
+                        "bg-gray-600", "p-2", "w-full", "rounded-md", "font-bold",
+                        "text-gray-100", "hover:bg-gray-700", "dark:bg-green-400",
+                        "dark:text-gray-700", "dark:hover:bg-green-600",
+                        "dark:hover:text-white"
+                    ])}
+                    type="submit"
                     disabled={process}
                 >
                     KAYDOL
                 </button>
-                {generalError && <p className="text-red-600">{generalError}</p>}
+                {
+                    generalError &&
+                    <p className={clsx("text-red-600")}>{generalError}</p>
+                }
             </form>
         </div>
     )
