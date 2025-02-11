@@ -43,7 +43,7 @@ const nextConfig = {
             {
                 protocol: 'https',
                 port: '8000',
-                hostname: 'https://square-danyette-canerdemirci-63378b97.koyeb.app',
+                hostname: 'square-danyette-canerdemirci-63378b97.koyeb.app',
                 pathname: '/api/static/**'
             },
             {
