@@ -3,6 +3,14 @@ import { middleware2 } from './middleware2';
 import { middleware1 } from './middleware1';
 
 export async function middleware(req: NextRequest) {
+    if (req.nextUrl.pathname.includes('/api')) {
+        const response3 = await middleware1(req)
+
+        if (response3) {
+            return response3
+        }
+    }
+    
     if (req.nextUrl.pathname.includes('/blog')) {
         const response1 = await middleware1(req)
 
