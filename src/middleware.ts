@@ -4,10 +4,12 @@ import { middleware1 } from './middleware1';
 import { middleware3 } from '../middleware3';
 
 export async function middleware(req: NextRequest) {
-    const response3 = middleware3(req)
+    if (req.nextUrl.pathname.includes('/api')) {
+        const response3 = middleware3(req)
 
-    if (response3) {
-        return response3
+        if (response3) {
+            return response3
+        }
     }
     
     if (req.nextUrl.pathname.includes('/blog')) {
@@ -30,5 +32,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/blog/:path*', '/admin/:path*']
+    matcher: ['/blog/:path*', '/admin/:path*', '/api/:path*']
 }
