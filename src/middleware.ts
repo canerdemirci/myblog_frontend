@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { middleware2 } from './middleware2';
 import { middleware1 } from './middleware1';
+import { middleware3 } from '../middleware3';
 
 export async function middleware(req: NextRequest) {
     if (req.nextUrl.pathname.includes('/api')) {
-        const response3 = await middleware1(req)
+        const response3 = await middleware3(req)
 
         if (response3) {
             return response3
