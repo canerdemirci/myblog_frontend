@@ -2,6 +2,7 @@ import { montserrat } from '@/app/fonts'
 import { FaShareNodes, FaComment, FaEye, FaHeart } from 'react-icons/fa6'
 import Image from 'next/image'
 import { clsx } from 'clsx'
+import { routeMap } from '@/utils/routeMap'
 
 interface Props {
     date: string
@@ -49,7 +50,7 @@ export default function PostCard({
             <Image
                 src={
                     cover
-                        ? `http://localhost:8000/api/static/${cover}`
+                        ? `${routeMap.static.root + '/' + cover}`
                         : '/images/no_cover.png'
                 }
                 width={400}
