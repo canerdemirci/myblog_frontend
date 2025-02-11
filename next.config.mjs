@@ -10,7 +10,7 @@ const nextConfig = {
     headers: async () => [
         {
             // matching all API routes
-            source: "/api/:path*",
+            source: "/api**",
             headers: [
               { key: "Access-Control-Allow-Credentials", value: "true" },
               { key: "Access-Control-Allow-Origin", value: "https://canerdemirci.vercel.app" },
