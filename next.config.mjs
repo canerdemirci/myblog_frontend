@@ -42,8 +42,8 @@ const nextConfig = {
             },
             {
                 protocol: 'https',
-                port: '3000',
-                hostname: 'https://canerdemirci.vercel.app',
+                port: '8000',
+                hostname: 'https://square-danyette-canerdemirci-63378b97.koyeb.app',
                 pathname: '/api/static/**'
             },
             {
