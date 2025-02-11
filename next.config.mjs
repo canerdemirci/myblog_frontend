@@ -14,7 +14,7 @@ const nextConfig = {
                 headers: [
                     {
                         key: "Access-Control-Allow-Origin",
-                        value: "https://canerdemirci.vercel.app",
+                        value: "https://myblog-frontend-livid.vercel.app",
                     },
                     {
                         key: "Access-Control-Allow-Methods",
