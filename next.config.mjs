@@ -14,7 +14,7 @@ const nextConfig = {
                 headers: [
                     {
                         key: "Access-Control-Allow-Origin",
-                        value: "*",
+                        value: "https://canerdemirci.vercel.app",
                     },
                     {
                         key: "Access-Control-Allow-Methods",
@@ -38,6 +38,12 @@ const nextConfig = {
                 protocol: 'http',
                 port: '8000',
                 hostname: 'localhost',
+                pathname: '/api/static/**'
+            },
+            {
+                protocol: 'https',
+                port: '3000',
+                hostname: 'https://canerdemirci.vercel.app',
                 pathname: '/api/static/**'
             },
             {
