@@ -3,7 +3,7 @@
 import sanitizeHtml from 'sanitize-html'
 import { fetchBlogAPI } from '@/lib/custom_fetch'
 import { revalidateTag } from 'next/cache'
-import { postsCacheTag } from '../constants'
+import { postsCacheTag, tagCacheTag } from '../constants'
 
 /**
  * Creates a post in the backend.
@@ -35,6 +35,7 @@ export async function createPost(data: CreatePost, adminToken?: string) : Promis
     )
 
     revalidateTag(postsCacheTag)
+    revalidateTag(tagCacheTag)
 
     return await response.json() as Post
 }
@@ -68,6 +69,7 @@ export async function updatePost(data: UpdatePost, adminToken?: string) : Promis
     )
 
     revalidateTag(postsCacheTag)
+    revalidateTag(tagCacheTag)
 }
 
 /**
