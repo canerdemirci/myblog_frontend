@@ -81,8 +81,12 @@ export default function CommentsPage() {
                                     <StyledTableCell width={100}>
                                         <Typography variant="body1" sx={{fontSize: '1rem'}}>
                                             {
-                                                u.image ? 
-                                                    <Image
+                                                !u.image ? 
+                                                    <IoPersonCircle
+                                                        size={72}
+                                                        className={clsx(['dark:text-white'])}
+                                                    />
+                                                    : <Image
                                                         width={72}
                                                         height={72}
                                                         src={u.image}
@@ -90,10 +94,6 @@ export default function CommentsPage() {
                                                         className={clsx([
                                                             'rounded-full', 'border-gray-400', 'border'
                                                         ])}
-                                                    />
-                                                    : <IoPersonCircle
-                                                        size={72}
-                                                        className={clsx(['dark:text-white'])}
                                                     />
                                             }
                                         </Typography>
