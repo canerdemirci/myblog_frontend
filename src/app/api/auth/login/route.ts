@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
             )
 
             const response = NextResponse.json({ message: 'Authenticated' }, { status: 200 })
-
+            response.headers.set('Cache-Control', 'no-store')
             response.cookies.set(
                 ACCESS_TOKEN_NAME,
                 accessToken,
