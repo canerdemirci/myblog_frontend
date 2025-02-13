@@ -23,7 +23,7 @@ function Skeleton() {
 
 async function Notes() {
   try {
-    const notes = await getNotes()
+    const notes = await getNotes(50)
 
     return (
       <section

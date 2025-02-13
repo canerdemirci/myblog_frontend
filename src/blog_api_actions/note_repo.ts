@@ -33,11 +33,12 @@ export async function createNote(data: CreateNote, adminToken?: string) : Promis
 
 /**
  * Fetches all notes from backend.
+ * @param take number
  * @returns Promise<Note[] | never>
  */
-export async function getNotes() : Promise<Note[] | never> {
+export async function getNotes(take?: number) : Promise<Note[] | never> {
     const response = await fetchBlogAPI(
-        '/notes',
+        take ? `/notes?take=${take}` : '/notes',
         { cache: 'force-cache', next: { tags: [noteCacheTag] } }
     )
     
