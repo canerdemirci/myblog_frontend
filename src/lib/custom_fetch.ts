@@ -96,7 +96,7 @@ export async function fetchBlogAPI(
     adminToken?: string,
     userTokenInfo?: UserTokenInfo
 ): Promise<Response> {
-    const _headers = new Headers()
+    const headers = new Headers()
 
     // Generate user token if userTokenInfo is provided
     const userToken = userTokenInfo
@@ -104,17 +104,17 @@ export async function fetchBlogAPI(
         : undefined
 
     // Set headers
-    _headers.append("x-api-key", process.env.NEXT_PUBLIC_API_KEY!)
-    if (adminToken) _headers.append("x-admin", adminToken)
-    if (userToken) _headers.append("Authorization", `Bearer ${userToken}`)
+    headers.append("x-api-key", process.env.NEXT_PUBLIC_API_KEY!)
+    if (adminToken) headers.append("x-admin", adminToken)
+    if (userToken) headers.append("Authorization", `Bearer ${userToken}`)
 
     // Use the shared fetch utility function
     return fetchWithErrorHandling(
         input,
         init,
         process.env.NEXT_PUBLIC_BLOG_API_BASE_URL!,
-        _headers
-    );
+        headers
+    )
 }
 
 /**

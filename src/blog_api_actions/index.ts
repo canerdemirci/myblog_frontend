@@ -4,10 +4,12 @@ import sanitizeHtml from 'sanitize-html'
 import { fetchBlogAPI } from '@/lib/custom_fetch'
 import { BlogStatistics } from '@/types/statistics'
 
+/**
+ * Fetches blog statistics from backend.
+ * @returns Promise <BlogStatistics | never>
+ */
 export async function getStatistics() : Promise<BlogStatistics | never> {
-    const response = await fetchBlogAPI('/statistics', {
-        cache: 'no-store'
-    })
+    const response = await fetchBlogAPI('/statistics', { cache: 'no-store' })
 
     return await response.json() as BlogStatistics
 }
