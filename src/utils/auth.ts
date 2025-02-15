@@ -57,6 +57,7 @@ export const authOptions: AuthOptions = {
         strategy: 'jwt',
         maxAge: 7 * 24 * 60 * 60
     },
+    useSecureCookies: process.env.NODE_ENV === 'production' ? true : false,
     debug: false,
     callbacks: {
         // Add user provider id and provider to the token
