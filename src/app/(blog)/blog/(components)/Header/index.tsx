@@ -102,20 +102,6 @@ export default function Header() {
                     />
                 </Link>
             </div>
-            <div>
-                <Link
-                    href="#"
-                    className={clsx(['dark:text-white'])}
-                >
-                    Anasayfa
-                </Link>
-                <Link
-                    href="#"
-                    className={clsx(['dark:text-white'])}
-                >
-                    Hakkımda
-                </Link>
-            </div>
             <div
                 className={clsx([
                     "mt-9", "p-4"
