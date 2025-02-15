@@ -17,11 +17,11 @@ interface Props {
 }
 
 export default function StaggeredContent({loading, error, content} : Props) {
-    if (loading.status === true) {
+    if (loading.status === true && error.status === false) {
         return loading.content
     }
 
-    if (error.status === true) {
+    if (error.status === true && loading.status === false) {
         return error.content
     }
 

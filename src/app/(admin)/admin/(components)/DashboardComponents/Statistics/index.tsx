@@ -14,6 +14,7 @@ import { BlogStatistics } from "@/types/statistics"
 import { ApiError } from "@/lib/custom_fetch"
 import UISkeleton from "../../UISkeleton"
 import ErrorElement from "../../ErrorElement"
+import StaggeredContent from "@/app/(components)/StaggeredContent"
 
 
 export default function Statistics() {
@@ -31,12 +32,18 @@ export default function Statistics() {
 
     return (
         <section>
-            {
-                loading
-                    ? <UISkeleton format={3} />
-                    : error !== null
-                        ? <ErrorElement />
-                        : statistics !== null && <>
+            <StaggeredContent
+                error={{
+                    status: error !== null,
+                    content: (<ErrorElement />)
+                }}
+                loading={{
+                    status: loading,
+                    content: (<UISkeleton format={3} />)
+                }}
+                content={{
+                    content: (
+                        statistics && <>
                             <h2 className={clsx([
                                 'font-bold', 'text-2xl', 'text-gray-600', 'mb-4',
                                 'border-l-8', 'border-gray-600', 'p-2', 'bg-gray-100'
@@ -47,26 +54,26 @@ export default function Statistics() {
                                 <NumberCard
                                     caption="Makale"
                                     icon={<MdArticle size={30} className="text-gray-600" />}
-                                    num={statistics!.postCount}
+                                    num={statistics.postCount}
                                 />
                                 <NumberCard
                                     caption='Not'
-                                    num={statistics!.noteCount}
+                                    num={statistics.noteCount}
                                     icon={<MdNote size={30} className="text-gray-600" />}
                                 />
                                 <NumberCard
                                     caption='Üye'
-                                    num={statistics!.userCount}
+                                    num={statistics.userCount}
                                     icon={<MdPerson size={30} className="text-gray-600" />}
                                 />
                                 <NumberCard
                                     caption='Ziyaretçi'
-                                    num={statistics!.guestCount}
+                                    num={statistics.guestCount}
                                     icon={<MdPerson2 size={30} className="text-gray-600" />}
                                 />
                                 <NumberCard
                                     caption='Etiket'
-                                    num={statistics!.tagCount}
+                                    num={statistics.tagCount}
                                     icon={<MdTag size={30} className="text-gray-600" />}
                                 />
                             </div>
@@ -79,22 +86,22 @@ export default function Statistics() {
                             ])}>
                                 <NumberCard
                                     caption='Yorum'
-                                    num={statistics!.postCommentCount}
+                                    num={statistics.postCommentCount}
                                     icon={<MdComment size={30} className="text-gray-600" />}
                                 />
                                 <NumberCard
                                     caption='Beğeni'
-                                    num={statistics!.postLikeCount}
+                                    num={statistics.postLikeCount}
                                     icon={<MdFavorite size={30} className="text-gray-600" />}
                                 />
                                 <NumberCard
                                     caption='Paylaşım'
-                                    num={statistics!.postShareCount}
+                                    num={statistics.postShareCount}
                                     icon={<MdShare size={30} className="text-gray-600" />}
                                 />
                                 <NumberCard
                                     caption='Görüntülenme'
-                                    num={statistics!.postViewCount}
+                                    num={statistics.postViewCount}
                                     icon={<IoMdEye size={30} className="text-gray-600" />}
                                 />
                             </div>
@@ -107,17 +114,17 @@ export default function Statistics() {
                             ])}>
                                 <NumberCard
                                     caption='Beğeni'
-                                    num={statistics!.noteLikeCount}
+                                    num={statistics.noteLikeCount}
                                     icon={<MdFavorite size={30} className="text-gray-600" />}
                                 />
                                 <NumberCard
                                     caption='Paylaşım'
-                                    num={statistics!.noteShareCount}
+                                    num={statistics.noteShareCount}
                                     icon={<MdShare size={30} className="text-gray-600" />}
                                 />
                                 <NumberCard
                                     caption='Görüntülenme'
-                                    num={statistics!.noteViewCount}
+                                    num={statistics.noteViewCount}
                                     icon={<IoMdEye size={30} className="text-gray-600" />}
                                 />
                             </div>
@@ -126,7 +133,7 @@ export default function Statistics() {
                                 'border-l-8', 'border-gray-600', 'p-2', 'bg-gray-100'
                             ])}>MAKALELERİN ETİKETLERE GÖRE DAĞILIMI (İLK 15)</h2>
                             {
-                                statistics!.distributionOfPostsByTags !== undefined
+                                statistics.distributionOfPostsByTags !== undefined
                                 && statistics!.distributionOfPostsByTags.length > 0
                                 && <DistributionOfPostsByTags statistics={statistics!} />
                             }
@@ -149,7 +156,9 @@ export default function Statistics() {
                                 && <DistributionOfGuestsByMonths statistics={statistics!} />
                             }
                         </>
-            }
+                    )
+                }}
+            />
         </section>
     )
 }
