@@ -1,4 +1,4 @@
-import { AuthOptions } from "next-auth"
+import { Account, AuthOptions, User } from "next-auth"
 
 // Providers
 import GoogleProvider from "next-auth/providers/google"
@@ -9,6 +9,7 @@ import { createUser, getUser, getUserByEmailAndPassword, getUserByProviderId }
     from "@/blog_api_actions/user_repo"
 import { sha256 } from "@/utils"
 import { JWT } from "next-auth/jwt"
+import { AdapterUser } from "next-auth/adapters"
 
 export const authOptions: AuthOptions = {
     providers: [
@@ -61,10 +62,18 @@ export const authOptions: AuthOptions = {
         maxAge: 7 * 24 * 60 * 60
     },
     useSecureCookies: process.env.NODE_ENV === 'production' ? true : false,
-    debug: true,
+    debug: false,
     callbacks: {
         // Add user provider id and provider to the token
-        async jwt({ token, user, account }: { token: JWT, user?: any, account?: any }) {
+        async jwt({
+            token,
+            user,
+            account
+        } : {
+            token: JWT,
+            user?: User | AdapterUser,
+            account?: Account | null
+        }) {
             if (user) {
                 if (account && account.provider) {
                     token.id = account.providerAccountId
@@ -93,7 +102,6 @@ export const authOptions: AuthOptions = {
                     session.user.providerId = dbUser.providerId
                 }
 
-                console.log(session)
                 return session
             } catch (_) {
                 throw new Error('Giriş başarısız bir hata oluştu!')
@@ -110,7 +118,8 @@ export const authOptions: AuthOptions = {
             const providerId = account?.providerAccountId as string
 
             try {
-                await getUserByProviderId(providerId)
+                const dbUser = await getUserByProviderId(providerId)
+                user.id = dbUser.id
             } catch (_) {
                 const newUser = await createUser({
                     email: email,
