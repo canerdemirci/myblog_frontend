@@ -93,6 +93,7 @@ export const authOptions: AuthOptions = {
                     session.user.providerId = dbUser.providerId
                 }
 
+                console.log(session)
                 return session
             } catch (_) {
                 throw new Error('Giriş başarısız bir hata oluştu!')
