@@ -14,6 +14,7 @@ import { routeMap } from "@/utils/routeMap"
 import { uploadCover, deleteCover, uploadPostImages, deletePostImage } from "@/blog_api_actions"
 import { createPost, getPost, updatePost } from "@/blog_api_actions/post_repo"
 import { getTags } from "@/blog_api_actions/tag_repo"
+import { suggest } from "@/blog_api_actions/gemini_repo"
 import { createPostJoiSchema } from "@/utils"
 import { ApiError } from "@/lib/custom_fetch"
 
@@ -26,6 +27,7 @@ import UISkeleton from "../../(components)/UISkeleton"
 import TagSelector from "../../(components)/TagSelector"
 import AdminPanelPage from "../../(components)/AdminPanelPage"
 import ImageUploader from "../../(components)/ImageUploader"
+import SuggestionModal from "./SuggestionModal"
 
 // 3 party components
 import MDEditor from "@uiw/react-md-editor"
@@ -34,14 +36,20 @@ import MDEditor from "@uiw/react-md-editor"
 import Typography from "@mui/material/Typography"
 import Paper from "@mui/material/Paper"
 import Box from "@mui/material/Box"
-import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
 import CircularProgress from "@mui/material/CircularProgress"
 import Backdrop from "@mui/material/Backdrop"
+import FormControl from "@mui/material/FormControl"
+import InputLabel from "@mui/material/InputLabel"
+import OutlinedInput from "@mui/material/OutlinedInput"
+import InputAdornment from "@mui/material/InputAdornment"
+import IconButton from "@mui/material/IconButton"
 
 // Material icons
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import ImageIcon from "@mui/icons-material/Image"
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome"
+import PendingIcon from '@mui/icons-material/Pending'
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -66,6 +74,7 @@ function UpsertPostPage() {
     // For upserting post
     const [title, setTitle] = useState<string>('')
     const [postImages, setPostImages] = useState<string[]>([])
+    const [postContentImageUplading, setPostContentImageUplading] = useState<boolean>(false)
     const [content, setContent] = useState<string | undefined>('# Makale İçeriği')
     const [description, setDescription] = useState<string | undefined>(undefined)
     const [selectedTags, setSelectedTags] = useState<string[]>([])
@@ -88,6 +97,12 @@ function UpsertPostPage() {
     
     // When updating
     const [originalCover, setOriginalCover] = useState<string | undefined>(undefined)
+
+    // For ai suggestions
+    const [aiDescPending, setAiDescPending] = useState<boolean>(false)
+    const [aiTitlePending, setAiTitlePending] = useState<boolean>(false)
+    const [aiSuggestions, setAiSuggestions] = useState<string[]>([])
+    const [showAiSuggestionsModal, setShowAiSuggestionsModal] = useState<boolean>(false)
 
     // If mode is update, fetch post and all tags
     useEffect(() => {
@@ -212,15 +227,44 @@ function UpsertPostPage() {
         const formData = new FormData()
         formData.append('postImages', file)
 
+        setPostContentImageUplading(true)
+
         uploadPostImages(formData)
             .then(res => setPostImages([...postImages, res]))
             .catch(e => alert('Bir hata oluştu.'))
+            .finally(() => setPostContentImageUplading(false))
     }
 
     function handleRemovePostImage(fileName: string) {
+        setPostContentImageUplading(true)
+
         deletePostImage(fileName)
             .then(() => setPostImages(postImages.filter(pi => pi !== fileName)))
             .catch(e => alert('Bir hata oluştu.'))
+            .finally(() => setPostContentImageUplading(false))
+    }
+
+    function handleAIDescription() {
+        setAiDescPending(true)
+        if (content?.trim()) {
+            suggest(content, false)
+                .then(r => setDescription(r as string))
+                .catch(e => alert('Yapay zeka hatası'))
+                .finally(() => setAiDescPending(false))
+        }
+    }
+
+    function handleAITitle() {
+        setAiTitlePending(true)
+        if (title?.trim()) {
+            suggest(title, true)
+                .then(r => {
+                    setAiSuggestions(r as string[])
+                    setShowAiSuggestionsModal(true)
+                })
+                .catch(e => alert('Yapay zeka hatası'))
+                .finally(() => setAiTitlePending(false))
+        }
     }
 
     function CoverSelect() {
@@ -310,13 +354,31 @@ function UpsertPostPage() {
                     {/* Cover images select section */}
                     {CoverSelect()}
                     {/* Post title input */}
-                    <TextField
-                        value={title}
-                        label="Makale Başlığı"
-                        onChange={(e) => setTitle(e.target.value)}
-                        error={title?.trim() === ''}
-                        fullWidth
-                    />
+                    <FormControl variant="outlined">
+                        <InputLabel htmlFor="outlined-adornment-title">
+                            Makale Başlığı
+                        </InputLabel>
+                        <OutlinedInput
+                            id="outlined-adornment-title"
+                            type="text"
+                            label="Makale Başlığı"
+                            onChange={(e) => setTitle(e.target.value)}
+                            error={title?.trim() === ''}
+                            fullWidth
+                            value={title}
+                            endAdornment={
+                            <InputAdornment position="end" sx={{marginRight: '.5rem'}}>
+                                <IconButton
+                                    onClick={handleAITitle}
+                                    edge="end"
+                                    disabled={aiTitlePending}
+                                >
+                                    {aiTitlePending ? <PendingIcon /> : <AutoAwesomeIcon />}
+                                </IconButton>
+                            </InputAdornment>
+                            }
+                        />
+                    </FormControl>
                     {/* Post content input */}
                     <MDEditor
                         value={content}
@@ -343,15 +405,31 @@ function UpsertPostPage() {
                         disabled={tagLoading}
                     />
                     {/* Description */}
-                    <TextField
-                        value={description}
-                        label="SEO - Açıklama"
-                        onChange={(e) => setDescription(e.target.value)}
-                        rows={5}
-                        slotProps={{ htmlInput: { maxLength: 160 }}}
-                        fullWidth
-                        multiline
-                    />
+                    <FormControl variant="outlined">
+                        <InputLabel htmlFor="outlined-adornment-desc">SEO - Açıklama</InputLabel>
+                        <OutlinedInput
+                            id="outlined-adornment-desc"
+                            type="text"
+                            label="SEO - Açıklama"
+                            value={description}
+                            rows={5}
+                            slotProps={{ input: { maxLength: 160 } }}
+                            fullWidth
+                            multiline
+                            onChange={(e) => setDescription(e.target.value)}
+                            endAdornment={
+                            <InputAdornment position="end" sx={{marginRight: '.5rem'}}>
+                                <IconButton
+                                    onClick={handleAIDescription}
+                                    edge="end"
+                                    disabled={aiDescPending}
+                                >
+                                    {aiDescPending ? <PendingIcon /> : <AutoAwesomeIcon />}
+                                </IconButton>
+                            </InputAdornment>
+                            }
+                        />
+                    </FormControl>
                     <Button
                         type="submit"
                         color="success"
@@ -389,10 +467,28 @@ function UpsertPostPage() {
                 contentText={`${postValidationErrors}`}
                 onClose={() => setPostValidationErrors(null)}
             />
+            {/* Suggestion select modal */}
+            <SuggestionModal
+                title="Öneriler"
+                open={showAiSuggestionsModal}
+                suggestions={aiSuggestions}
+                onClose={() => {}}
+                onSelect={(suggestion) => {
+                    setTitle(suggestion)
+                    setShowAiSuggestionsModal(false)
+                }}
+            />
             {/* Backdrop for post creation process */}
             <Backdrop
                 sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
                 open={!postSavingEnd}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+            {/* Backdrop for post images uploading process */}
+            <Backdrop
+                sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+                open={postContentImageUplading}
             >
                 <CircularProgress color="inherit" />
             </Backdrop>
