@@ -10,7 +10,7 @@ import { clsx } from 'clsx'
 
 export default function UserButton() {
     const { data: session } = useSession()
-
+console.log(session)
     return (
         <div className={clsx(['relative', 'group'])}>
             {/* User profile photo or Avatar icon */}
