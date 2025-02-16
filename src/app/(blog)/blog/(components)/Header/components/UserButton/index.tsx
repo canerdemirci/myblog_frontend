@@ -7,10 +7,12 @@ import { MdAccountCircle, MdAppRegistration, MdLogin, MdLogout } from "react-ico
 import { IoPersonCircle } from "react-icons/io5"
 import { routeMap } from '@/utils/routeMap'
 import { clsx } from 'clsx'
+import { useEffect } from 'react'
 
 export default function UserButton() {
-    const { data: session } = useSession()
-console.log(session)
+    const { data: session, update } = useSession()
+    useEffect(() => {update()}, [])
+
     return (
         <div className={clsx(['relative', 'group'])}>
             {/* User profile photo or Avatar icon */}

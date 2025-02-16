@@ -69,12 +69,10 @@ export const authOptions: AuthOptions = {
             token,
             user,
             account,
-            trigger
         } : {
             token: JWT,
             user?: User | AdapterUser,
             account?: Account | null,
-            trigger?: "signIn" | "signUp" | "update"
         }) {
             if (user) {
                 if (account && account.provider) {
@@ -84,10 +82,6 @@ export const authOptions: AuthOptions = {
                     token.id = user.id
                     token.provider = 'credentials'
                 }
-            }
-
-            if (trigger === 'update') {
-                token.id = user?.id || account?.providerAccountId
             }
 
             return token
