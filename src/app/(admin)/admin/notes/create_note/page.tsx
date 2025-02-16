@@ -35,6 +35,7 @@ export default function CreateNotePage() {
     // For creating note
     const [content, setContent] = useState<string>('# Note İçeriği')
     const [noteImages, setNoteImages] = useState<string[]>([])
+    const [noteContentImageUplading, setNoteContentImageUplading] = useState<boolean>(false)
     const [noteSavingEnd, setNoteSavingEnd] = useState<boolean>(true)
     const [noteSavingError, setNoteSavingError] = useState<ApiError | null>(null)
     const [noteValidationErrors, setNoteValidationErrors] = useState<string[] | null>(null)
@@ -80,15 +81,20 @@ export default function CreateNotePage() {
         const formData = new FormData()
         formData.append('noteImages', file)
 
+        setNoteContentImageUplading(true)
+
         uploadNoteImages(formData)
             .then(res => setNoteImages([...noteImages, res]))
             .catch(e => alert('Bir hata oluştu.'))
+            .finally(() => setNoteContentImageUplading(false))
     }
 
     function handleRemoveImage(fileName: string) {
+        setNoteContentImageUplading(true)
         deleteNoteImage(fileName)
             .then(() => setNoteImages(noteImages.filter(pi => pi !== fileName)))
             .catch(e => alert('Bir hata oluştu.'))
+            .finally(() => setNoteContentImageUplading(false))
     }
 
     function NoteForm() {
@@ -155,6 +161,13 @@ export default function CreateNotePage() {
             <Backdrop
                 sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
                 open={!noteSavingEnd}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+            {/* Backdrop for note content images uploading process */}
+            <Backdrop
+                sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+                open={noteContentImageUplading}
             >
                 <CircularProgress color="inherit" />
             </Backdrop>

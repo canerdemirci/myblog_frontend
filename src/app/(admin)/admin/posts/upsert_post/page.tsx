@@ -246,8 +246,8 @@ function UpsertPostPage() {
 
     function handleAIDescription() {
         setAiDescPending(true)
-        if (content?.trim()) {
-            suggest(content, false)
+        if (content?.trim() !== '') {
+            suggest(content!, false)
                 .then(r => setDescription(r as string))
                 .catch(e => alert('Yapay zeka hatası'))
                 .finally(() => setAiDescPending(false))
@@ -256,7 +256,7 @@ function UpsertPostPage() {
 
     function handleAITitle() {
         setAiTitlePending(true)
-        if (title?.trim()) {
+        if (title.trim() !== '') {
             suggest(title, true)
                 .then(r => {
                     setAiSuggestions(r as string[])
