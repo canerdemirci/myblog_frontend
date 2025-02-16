@@ -76,7 +76,7 @@ export const authOptions: AuthOptions = {
             account?: Account | null,
             trigger?: "signIn" | "signUp" | "update"
         }) {
-            if (user || (trigger === 'update' && user)) {
+            if (user) {
                 if (account && account.provider) {
                     token.id = account.providerAccountId
                     token.provider = account.provider
@@ -84,6 +84,10 @@ export const authOptions: AuthOptions = {
                     token.id = user.id
                     token.provider = 'credentials'
                 }
+            }
+
+            if (trigger === 'update') {
+                token.id = user?.id || account?.providerAccountId
             }
 
             return token
