@@ -41,7 +41,10 @@ export const authOptions: AuthOptions = {
                 if (credentials?.email && credentials?.password) {
                     try {
                         const hashedPassword = await sha256(credentials.password)
-                        const user = await getUserByEmailAndPassword(credentials.email, hashedPassword)
+                        const user = await getUserByEmailAndPassword(
+                            credentials.email, hashedPassword
+                        )
+
                         return user
                     } catch (_) {
                         return null
@@ -66,6 +69,9 @@ export const authOptions: AuthOptions = {
                 if (account && account.provider) {
                     token.id = account.providerAccountId
                     token.provider = account.provider
+                } else if (user.id) {
+                    token.id = user.id
+                    token.provider = 'credentials'
                 }
             }
 
@@ -78,7 +84,7 @@ export const authOptions: AuthOptions = {
                     ? await getUser(token.id!)
                     : await getUserByProviderId(token.id!)
 
-                if (session.user) {
+                if (dbUser && session.user) {
                     session.user.id = dbUser.id
                     session.user.email = dbUser.email
                     session.user.name = dbUser.name
@@ -105,13 +111,14 @@ export const authOptions: AuthOptions = {
             try {
                 await getUserByProviderId(providerId)
             } catch (_) {
-                await createUser({
+                const newUser = await createUser({
                     email: email,
                     name: user.name,
                     image: user.image!,
                     provider: provider,
                     providerId: providerId
                 })
+                user.id = newUser.id
             }
 
             return true
