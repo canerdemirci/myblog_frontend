@@ -68,13 +68,15 @@ export const authOptions: AuthOptions = {
         async jwt({
             token,
             user,
-            account
+            account,
+            trigger
         } : {
             token: JWT,
             user?: User | AdapterUser,
-            account?: Account | null
+            account?: Account | null,
+            trigger?: "signIn" | "signUp" | "update"
         }) {
-            if (user) {
+            if (user || (trigger === 'update' && user)) {
                 if (account && account.provider) {
                     token.id = account.providerAccountId
                     token.provider = account.provider
