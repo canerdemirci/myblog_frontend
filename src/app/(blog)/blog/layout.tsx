@@ -5,6 +5,7 @@ import Footer from "./(components)/Footer"
 import { getServerSession } from 'next-auth'
 import SessionProvider from '@/app/(blog)/blog/(components)/SessionProvider'
 import { clsx } from 'clsx'
+import PageTransition from "@/app/(components)/PageTransition"
 
 export const metadata: Metadata = {
   title: "Caner Demirci - Kişisel Blog",
@@ -29,7 +30,7 @@ export default async function RootLayout({
       ])}>
         <SessionProvider session={session}>
           <Header />
-            {children}
+            <PageTransition>{children}</PageTransition>
           <Footer />
         </SessionProvider>
       </body>

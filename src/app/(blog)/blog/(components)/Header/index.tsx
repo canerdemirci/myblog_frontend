@@ -38,7 +38,7 @@ export default function Header() {
             <Link href={routeMap.blog.root}>
                 <h1
                     className={clsx([
-                        leagueSpartan.className, "text-center", "text-4xl",
+                        leagueSpartan.className, "text-center", "text-4xl", "md:text-6xl",
                         "p-8", "dark:text-white"
                     ])}
                 >

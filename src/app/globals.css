@@ -33,6 +33,10 @@
   box-sizing: border-box;
 }
 
+html, body {
+  overflow-x: hidden;
+}
+
 .note-anim {
   background-image: linear-gradient(
     var(--angle),
