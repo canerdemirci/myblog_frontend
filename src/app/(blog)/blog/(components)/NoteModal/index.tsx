@@ -100,7 +100,8 @@ export default function NoteModal({ user, note, isLiked, onClose } : Props) {
                 className={clsx([
                     'w-screen', 'h-screen', 'md:w-3/5', 'md:h-3/4', 'flex', 'flex-col',
                     'rounded-md', 'bg-white', 'm-auto', 'md:mt-10', 'drop-shadow-2xl',
-                    'border-gray-300', 'border', 'dark:bg-[#0d1116]', 'dark:border-gray-800'
+                    'border-gray-300', 'border', 'dark:bg-[#0d1116]', 'dark:border-gray-800',
+                    'no-scrollbar'
                 ])}
                 onClick={(e) => e.stopPropagation()}
             >

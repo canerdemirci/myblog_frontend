@@ -105,7 +105,7 @@ export default function NoteCard({ note }: Props) {
             >
                 <div
                     className={clsx([
-                        "note-anim", "shadow-2xl", "md:w-36", "md:h-36", "rounded-full", "dark:group-hover:bg-orange-400", "group-hover:bg-none",
+                        "note-anim", "shadow-2xl", "md:w-28", "md:h-28", "rounded-full", "dark:group-hover:bg-orange-400", "group-hover:bg-none",
                         "group-hover:bg-gray-700", "flex", "justify-center", "items-center",
                         "min-[320px]:w-24", "max-[768px]:w-24", "min-[320px]:h-24",
                         "max-[768px]:h-24"
@@ -113,14 +113,14 @@ export default function NoteCard({ note }: Props) {
                 >
                     <div
                         className={clsx([
-                            "md:w-[8.25rem]", "md:h-[8.25rem]", "bg-gray-100", "dark:bg-gray-700",
+                            "md:w-[6.25rem]", "md:h-[6.25rem]", "bg-gray-100", "dark:bg-gray-700",
                             "rounded-full", "flex", "flex-col", "items-center", "justify-center",
                             "min-[320px]:w-[5.25rem]", "max-[768px]:w-[5.25rem]",
                             "min-[320px]:h-[5.25rem]", "max-[768px]:h-[5.25rem]"
                         ])}
                     >
                         <MdEventNote
-                            size={52}
+                            size={42}
                             className={clsx([
                                 'text-gray-700', 'dark:text-gray-100'
                             ])}
@@ -129,7 +129,7 @@ export default function NoteCard({ note }: Props) {
                 </div>
                 <span
                     className={clsx([
-                        leagueSpartan.className, 'text-2xl', 'md:text-4xl', 'text-gray-700',
+                        leagueSpartan.className, 'text-2xl', 'text-gray-700',
                         'dark:text-gray-700', 'dark:group-hover:text-orange-400'
                     ])}
                 >

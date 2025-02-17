@@ -148,14 +148,15 @@ export default async function PostPage({ params } : Props) {
         return (
             <main
                 className={clsx([
-                    'relative', 'w-full', 'md:w-[800px]', 'md:m-auto', 'md:my-8', 'bg-white', 'dark:bg-[#0d1116]', 'md:rounded-lg', 'md:drop-shadow-xl'
+                    'relative', 'w-full', 'md:w-[800px]', 'md:m-auto', 'md:my-8', 'bg-white', 'dark:bg-[#0d1116]', 'md:rounded-lg', 'md:drop-shadow-xl', 'border',
+                    'dark:border-gray-800', 'border-gray-300'
                 ])}
             >
                 {PostCover(post)}
                 <div>
                     {/* Post Title */}
                     <h1
-                        className={`${montserrat.className} p-4 text-xl md:text-4xl font-bold dark:text-gray-100 text-gray-900`}
+                        className={`${montserrat.className} p-4 text-3xl md:text-4xl font-bold dark:text-gray-100 text-gray-900`}
                     >
                         {post.title}
                     </h1>

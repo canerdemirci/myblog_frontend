@@ -81,7 +81,7 @@ export default function UserForm({ user } : { user: User }) {
                                 width={250}
                                 height={250}
                                 alt="Profil foto"
-                                className={clsx(['shadow-md'])}
+                                className={clsx(['shadow-md', 'rounded-md'])}
                             />
                             : <IoPersonCircle
                                 size={72}

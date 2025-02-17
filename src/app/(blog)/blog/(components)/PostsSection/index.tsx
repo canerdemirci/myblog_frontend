@@ -110,7 +110,7 @@ export default function PostsSection() {
         if (tags.length > 0) return (
             <div
                 className={clsx([
-                    'flex', 'sticky', 'top-0', 'items-center', 'gap-4', 'w-full', 'overflow-x-auto', 'p-4', 'dark:bg-black', 'bg-gray-50'
+                    'flex', 'sticky', 'top-0', 'items-center', 'gap-4', 'w-full', 'overflow-x-auto', 'p-4', 'dark:bg-black', 'bg-gray-50', 'no-scrollbar'
                 ])}
                 onScroll={(e) => {
                     const scrollLeft = e.currentTarget.scrollLeft
@@ -191,7 +191,7 @@ export default function PostsSection() {
               >
                 {TagButtonsSection()}
                 <div
-                    className={clsx(['md:columns-2', 'md:mx-4', 'mb-8', 'lg:columns-3', 'gap-8'])}
+                    className={clsx(['md:columns-2', 'md:mx-4', 'mb-8', 'lg:columns-3',])}
                 >
                     {posts.map(p => (
                         <Link
@@ -220,7 +220,7 @@ export default function PostsSection() {
                         'w-52', 'mx-auto',
                         'px-4', 'py-2', 'mb-32', 'rounded-xl', 'cursor-pointer',
                         'bg-gray-100', 'border', 'border-gray-200', 'drop-shadow-md',
-                        'hover:bg-gray-800', 'hover:border-gray-300', 'hover:text-green-400',
+                        'hover:bg-gray-800', 'hover:border-gray-800', 'hover:text-green-400',
                         'flex', 'justify-center', 'items-center', 'gap-2', 'font-bold',
                         getMoreloading && ['animate-pulse']
                     ])}

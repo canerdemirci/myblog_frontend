@@ -37,9 +37,9 @@ export default function PostCard({
                 'bg-white', 'rounded-md', 'shadow-md', 'transition-all', 'border',
                 'border-gray-300', 'dark:border-gray-800',
                 // Dark
-                'dark:bg-gray-900 dark:hover:shadow-red-700 dark:hover:shadow-xl',
+                'dark:bg-gray-900 dark:hover:shadow-gray-700 dark:hover:shadow-lg',
                 // Hover
-                'hover:shadow-lg hover:shadow-gray-400', 'dark:hover:border-red-200',
+                'hover:shadow-lg hover:shadow-gray-400', 'dark:hover:border-gray-600',
                 'hover:border-gray-500',
                 // 320 - 768
                 'min-[320px]:w-full max-[768px]:w-full',
@@ -57,11 +57,12 @@ export default function PostCard({
                 height={210}
                 priority={true}
                 className={clsx([
-                    'w-full', 'aspect-[40/21]', 'rounded-tl-md', 'rounded-tr-md'
+                    'w-[95%]', 'aspect-[40/21]', 'rounded-md', 'rounded-tr-md', 'mx-auto',
+                    'mt-2'
                 ])}
                 alt="Makale Kapağı"
             />
-            <div className={clsx('p-2')}>
+            <div className={clsx('p-4')}>
                 <p
                     className={clsx([
                         `${montserrat.className}`, 'font-bold', 'text-xl', 'my-2',

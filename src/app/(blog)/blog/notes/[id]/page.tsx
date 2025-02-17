@@ -16,6 +16,7 @@ import { useSession } from "next-auth/react"
 import { ApiError } from "@/lib/custom_fetch"
 import Pending from "../../(components)/Pending"
 import ErrorElement from "../../(components)/ErrorElement"
+import Head from 'next/head'
 
 export default function NotePage() {
     const { data: session } = useSession()
@@ -66,6 +67,23 @@ export default function NotePage() {
     
     return (
         <main>
+            <Head>
+                <title>Not</title>
+                <meta name="description" content="Not - Blog - Caner Demirci" />
+                {note && (
+                    <>
+                        <meta property="og:title" content="Not" />
+                        <meta property="og:description" content="Not - Blog - Caner Demirci" />
+                        <meta
+                            property="og:url"
+                            content={`${process.env.NEXT_PUBLIC_BASE_URL}${routeMap.blog.notes.noteById(note.id)}`}
+                        />
+                        <meta property="og:type" content="article" />
+                        <meta property="og:published_time" content={`${note.createdAt}`} />
+                        <meta property="og:author" content="Caner DEMİRCİ" />
+                    </>
+                )}
+            </Head>
             {
                 (!complete && noteError === null)
                     ? <Pending />
