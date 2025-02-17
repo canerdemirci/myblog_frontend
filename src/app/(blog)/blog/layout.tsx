@@ -29,9 +29,11 @@ export default async function RootLayout({
         "bg-[length:100%_200px]", "bg-no-repeat", 'from-gray-50', 'to-white'
       ])}>
         <SessionProvider session={session}>
-          <Header />
-            <PageTransition>{children}</PageTransition>
-          <Footer />
+          <PageTransition>
+            <Header />
+              {children}
+            <Footer />
+          </PageTransition>
         </SessionProvider>
       </body>
     </html>
