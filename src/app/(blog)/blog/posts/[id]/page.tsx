@@ -148,7 +148,7 @@ export default async function PostPage({ params } : Props) {
         return (
             <main
                 className={clsx([
-                    'relative', 'w-full', 'md:w-[800px]', 'md:m-auto', 'md:my-8', 'bg-white', 'dark:bg-[#0d1116]', 'md:rounded-lg', 'md:drop-shadow-md'
+                    'relative', 'w-full', 'md:w-[800px]', 'md:m-auto', 'md:my-8', 'bg-white', 'dark:bg-[#0d1116]', 'md:rounded-lg', 'md:drop-shadow-xl'
                 ])}
             >
                 {PostCover(post)}

@@ -11,7 +11,9 @@ import { useEffect } from 'react'
 
 export default function UserButton() {
     const { data: session, update } = useSession()
-    useEffect(() => {update()}, [])
+
+    // For forcing next-auth update session by run jwt callback
+    useEffect(() => { update() }, [])
 
     return (
         <div className={clsx(['relative', 'group'])}>

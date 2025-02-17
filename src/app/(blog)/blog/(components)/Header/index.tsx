@@ -109,7 +109,7 @@ export default function Header() {
             >
                 <p
                     className={clsx([
-                        `${caveat.className}`, "text-3xl", "text-center", "dark:text-white"
+                        `${caveat.className}`, "text-5xl", "text-center", "dark:text-white"
                     ])}
                 >
                     A Developer Diary

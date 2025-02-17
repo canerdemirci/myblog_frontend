@@ -16,9 +16,9 @@ export default function NoData({ iconSize, text } : Props) {
         >
             <BsDatabaseFillSlash
                 size={iconSize ?? 36}
-                className={clsx(['dark:text-gray-100', 'animate-pulse'])}
+                className={clsx(['dark:text-gray-100', 'animate-pulse', 'mb-4'])}
             />
-            <p>{text}</p>
+            <p className="text-center">{text}</p>
         </div>
     )
 }

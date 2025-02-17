@@ -24,12 +24,12 @@ export default async function RootLayout({
     <html lang="en">
       <body className={clsx([
         "dark:bg-black", "bg-gray-50", 
-        "bg-gradient-to-t", "dark:from-transparent", "dark:to-[#c905054d]",
+        "bg-gradient-to-t", "dark:from-transparent", "dark:to-[#c9050530]",
         "bg-[length:100%_200px]", "bg-no-repeat", 'from-gray-50', 'to-white'
       ])}>
         <SessionProvider session={session}>
           <Header />
-          {children}
+            {children}
           <Footer />
         </SessionProvider>
       </body>

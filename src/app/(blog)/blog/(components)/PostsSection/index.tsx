@@ -187,19 +187,18 @@ export default function PostsSection() {
             ),
             content: (
               <section
-                className={clsx(['flex', 'relative', 'flex-col', 'gap-8', 'items-center'])}
+                className={clsx(['flex', 'relative', 'flex-col', 'gap-8'])}
               >
                 {TagButtonsSection()}
                 <div
-                    className={clsx(['md:columns-2', 'md:m-4', 'lg:columns-3', 'gap-8'])}
+                    className={clsx(['md:columns-2', 'md:mx-4', 'mb-8', 'lg:columns-3', 'gap-8'])}
                 >
                     {posts.map(p => (
                         <Link
                             key={p.id}
                             href={routeMap.blog.posts.postById(p.id)}
                             className={clsx([
-                                'break-inside-avoid', 'break-after-avoid-page',
-                                'inline-block', 'w-full'
+                                'break-inside-avoid', 'break-after-avoid-page', 'block'
                             ])}
                         >
                             <PostCard
@@ -218,6 +217,7 @@ export default function PostsSection() {
                 {/* Add More Button */}
                 {(!atEnd && !loading && posts.length >= POST_LIMIT) && <button
                     className={clsx([
+                        'w-52', 'mx-auto',
                         'px-4', 'py-2', 'mb-32', 'rounded-xl', 'cursor-pointer',
                         'bg-gray-100', 'border', 'border-gray-200', 'drop-shadow-md',
                         'hover:bg-gray-800', 'hover:border-gray-300', 'hover:text-green-400',
