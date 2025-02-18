@@ -81,6 +81,7 @@ export default async function PostPage({ params } : Props) {
             <section>
                 <h2
                     className={clsx([
+                        montserrat.className,
                         'text-center', 'font-bold', 'text-3xl', 'text-gray-800',
                         'mt-16', 'mb-8', 'dark:text-gray-100'
                     ])}
@@ -119,13 +120,15 @@ export default async function PostPage({ params } : Props) {
                                     ])}
                                 >
                                     <h3
-                                        className={clsx(['font-bold', 'dark:text-gray-100'])}
+                                        className={clsx([
+                                            'font-bold', 'dark:text-gray-100', 'text-xl'
+                                        ])}
                                     >
                                         {rp.title}
                                     </h3>
                                     <p
                                         className={clsx([
-                                            'font-bold', 'text-gray-500',
+                                            'font-bold', 'text-gray-500', 'text-xl',
                                             'dark:text-gray-300',
                                         ])}
                                     >
@@ -147,8 +150,9 @@ export default async function PostPage({ params } : Props) {
         return (
             <main
                 className={clsx([
-                    'relative', 'w-full', 'md:w-[800px]', 'md:m-auto', 'md:my-8', 'bg-white', 'dark:bg-[#0d1116]', 'md:rounded-lg', 'md:drop-shadow-xl', 'border',
-                    'dark:border-gray-800', 'border-gray-300'
+                    'relative', 'w-full', 'md:w-[800px]', 'md:m-auto', 'my-8', 'bg-white',
+                    'md:my-8', 'dark:bg-[#0d1116]', 'md:rounded-lg', 'md:drop-shadow-xl',
+                    'border', 'dark:border-gray-800', 'border-gray-300'
                 ])}
             >
                 {PostCover(post)}

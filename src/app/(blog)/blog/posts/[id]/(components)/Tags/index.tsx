@@ -33,6 +33,7 @@ export default function Tags({ post } : Props) {
                 <div className={clsx(['max-h-[750px]', 'overflow-y-auto', 'mb-16'])}>
                     <h2
                         className={clsx([
+                            montserrat.className,
                             'text-center', 'font-bold', 'text-3xl', 'text-gray-800',
                             'mb-8', 'mt-4', 'dark:text-gray-100',
                         ])}
@@ -71,14 +72,16 @@ export default function Tags({ post } : Props) {
                                         ])}
                                     >
                                         <h3
-                                            className={clsx(['font-bold', 'dark:text-gray-100'])}
+                                            className={clsx([
+                                                'font-bold', 'dark:text-gray-100', 'text-xl'
+                                            ])}
                                         >
                                             {rp.title}
                                         </h3>
                                         <p
                                             className={clsx([
                                                 'font-bold', 'text-gray-500',
-                                                'dark:text-gray-300',
+                                                'dark:text-gray-300', 'text-xl'
                                             ])}
                                         >
                                             {`${rp.createdAt}`}

@@ -266,7 +266,9 @@ export default function CommentsSection({ user, postId }: Props) {
                                 height={36}
                                 src={c.user.image}
                                 alt="Profil foto"
-                                className={clsx(['rounded-full', 'border-gray-400 border'])}
+                                className={clsx([
+                                    'rounded-full', 'border-gray-400', 'border', 'aspect-square'
+                                ])}
                             />}
                         </div>
                         {/* Name or Email, Date, Menu Button */}
