@@ -5,6 +5,7 @@ import { Roboto } from 'next/font/google'
 import theme from '../theme'
 import { clsx } from 'clsx'
 import "../../globals.css"
+import PageTransition from '@/app/(components)/PageTransition'
 
 const roboto = Roboto({
     weight: ['300', '400', '500', '700'],
@@ -28,7 +29,9 @@ export default function RootLayout({
             <body className={clsx(`${roboto.variable}`)}>
                 <AppRouterCacheProvider>
                     <ThemeProvider theme={theme}>
-                        {children}
+                        <PageTransition>
+                            {children}
+                        </PageTransition>
                     </ThemeProvider>
                 </AppRouterCacheProvider>
             </body>

@@ -35,7 +35,7 @@ export default function PostCard({
             className={clsx([
                 // Always
                 'bg-white', 'rounded-md', 'shadow-md', 'transition-all', 'border',
-                'border-gray-300', 'dark:border-gray-800',
+                'border-gray-300', 'dark:border-gray-700',
                 // Dark
                 'dark:bg-gray-900 dark:hover:shadow-gray-700 dark:hover:shadow-lg',
                 // Hover

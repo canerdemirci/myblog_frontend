@@ -191,7 +191,9 @@ export default function PostsSection() {
               >
                 {TagButtonsSection()}
                 <div
-                    className={clsx(['md:columns-2', 'md:mx-4', 'mb-8', 'lg:columns-3',])}
+                    className={clsx([
+                        'md:columns-2', 'md:mx-4', 'mb-8', 'lg:columns-3', '2xl:columns-4'
+                    ])}
                 >
                     {posts.map(p => (
                         <Link

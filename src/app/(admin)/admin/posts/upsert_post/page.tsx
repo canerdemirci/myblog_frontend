@@ -339,7 +339,11 @@ function UpsertPostPage() {
         }
 
         if (postLoading) {
-            return (<UISkeleton format={3} />)
+            return (
+                <Box sx={{ padding: '1rem' }}>
+                    <UISkeleton format={3} />
+                </Box>
+            )
         }
 
         return (
