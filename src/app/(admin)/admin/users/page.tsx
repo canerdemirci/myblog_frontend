@@ -92,7 +92,7 @@ export default function CommentsPage() {
                                                         src={u.image}
                                                         alt="Profil foto"
                                                         className={clsx([
-                                                            'rounded-full', 'border-gray-400', 'border'
+                                                            'rounded-full', 'border-gray-400', 'border', 'aspect-square'
                                                         ])}
                                                     />
                                             }

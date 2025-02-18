@@ -30,11 +30,11 @@ export default function Tags({ post } : Props) {
             return (<Loading iconSize={52} text='Yükleniyor' />)
         } else if (posts.length > 0) {
             return (
-                <div className={clsx(['max-h-[750px]', 'overflow-y-auto'])}>
+                <div className={clsx(['max-h-[750px]', 'overflow-y-auto', 'mb-16'])}>
                     <h2
                         className={clsx([
-                            'text-center', 'font-bold', 'text-2xl', 'text-gray-800',
-                            'mb-16', 'mt-4', 'dark:text-gray-100',
+                            'text-center', 'font-bold', 'text-3xl', 'text-gray-800',
+                            'mb-8', 'mt-4', 'dark:text-gray-100',
                         ])}
                     >
                         ETİKETE AİT MAKALELER

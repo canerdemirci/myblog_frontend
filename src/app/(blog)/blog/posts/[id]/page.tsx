@@ -81,8 +81,8 @@ export default async function PostPage({ params } : Props) {
             <section>
                 <h2
                     className={clsx([
-                        'text-center', 'font-bold', 'text-2xl', 'text-gray-800',
-                        'my-16', 'dark:text-gray-100',
+                        'text-center', 'font-bold', 'text-3xl', 'text-gray-800',
+                        'mt-16', 'mb-8', 'dark:text-gray-100'
                     ])}
                 >
                     İLGİNİZİ ÇEKEBİLECEK DİĞER MAKALELER
@@ -97,43 +97,42 @@ export default async function PostPage({ params } : Props) {
                                 'inline-block', 'w-full'
                             ])}
                         >
-                            
-                                <div className={clsx(['flex', 'flex-col', 'gap-4'])}>
-                                    <Image
-                                        src={
-                                            rp.cover
-                                                ? `${routeMap.static.root}/${rp.cover}`
-                                                : '/images/no_cover.png'
-                                        }
-                                        width={400}
-                                        height={210}
-                                        priority={true}
+                            <div className={clsx(['flex', 'flex-col', 'gap-4'])}>
+                                <Image
+                                    src={
+                                        rp.cover
+                                            ? `${routeMap.static.root}/${rp.cover}`
+                                            : '/images/no_cover.png'
+                                    }
+                                    width={400}
+                                    height={210}
+                                    priority={true}
+                                    className={clsx([
+                                        'w-full', 'aspect-[40/21]', 'rounded-tl-md',
+                                        'rounded-tr-md'
+                                    ])}
+                                    alt="Makale Kapağı"
+                                />
+                                <div
+                                    className={clsx([
+                                        'flex', 'justify-between', 'gap-8'
+                                    ])}
+                                >
+                                    <h3
+                                        className={clsx(['font-bold', 'dark:text-gray-100'])}
+                                    >
+                                        {rp.title}
+                                    </h3>
+                                    <p
                                         className={clsx([
-                                            'w-full', 'aspect-[40/21]', 'rounded-tl-md',
-                                            'rounded-tr-md'
-                                        ])}
-                                        alt="Makale Kapağı"
-                                    />
-                                    <div
-                                        className={clsx([
-                                            'flex', 'justify-between', 'gap-8'
+                                            'font-bold', 'text-gray-500',
+                                            'dark:text-gray-300',
                                         ])}
                                     >
-                                        <h3
-                                            className={clsx(['font-bold', 'dark:text-gray-100'])}
-                                        >
-                                            {rp.title}
-                                        </h3>
-                                        <p
-                                            className={clsx([
-                                                'font-bold', 'text-gray-500',
-                                                'dark:text-gray-300',
-                                            ])}
-                                        >
-                                            {`${rp.createdAt}`}
-                                        </p>
-                                    </div>
+                                        {`${rp.createdAt}`}
+                                    </p>
                                 </div>
+                            </div>
                         </Link>
                     ))}
                 </div>
@@ -156,7 +155,10 @@ export default async function PostPage({ params } : Props) {
                 <div>
                     {/* Post Title */}
                     <h1
-                        className={`${montserrat.className} p-4 text-3xl md:text-4xl font-bold dark:text-gray-100 text-gray-900`}
+                        className={clsx([
+                            montserrat.className, 'p-4', 'text-4xl', 'md:text-5xl',
+                            'font-bold', 'dark:text-gray-100', 'text-gray-700'
+                        ])}
                     >
                         {post.title}
                     </h1>

@@ -123,7 +123,8 @@ export default function CommentsSection({ user, postId }: Props) {
                         src={user.image}
                         alt="Profil foto"
                         className={clsx([
-                            'rounded-full', 'border-gray-400', 'border', 'cursor-pointer'
+                            'rounded-full', 'border-gray-400', 'border', 'cursor-pointer',
+                            'aspect-square'
                         ])}
                     />
             }

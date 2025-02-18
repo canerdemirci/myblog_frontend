@@ -71,7 +71,7 @@ export default function UserForm({ user } : { user: User }) {
             </h3>
             {
                 <div className={clsx([
-                    'w-[250px]', 'h-[250px]', 'border', 'border-gray-300', 'rounded-md',
+                    'w-[250px]', 'h-[250px]', 'border', 'border-gray-300', 'rounded-full',
                     'flex', 'items-center', 'justify-center'
                 ])}>
                     {
@@ -81,7 +81,9 @@ export default function UserForm({ user } : { user: User }) {
                                 width={250}
                                 height={250}
                                 alt="Profil foto"
-                                className={clsx(['shadow-md', 'rounded-md'])}
+                                className={clsx([
+                                    'shadow-md', 'aspect-square', 'rounded-full'
+                                ])}
                             />
                             : <IoPersonCircle
                                 size={72}
@@ -90,6 +92,7 @@ export default function UserForm({ user } : { user: User }) {
                     }
                 </div>
             }
+            <p className="text-red-700">Dosya boyutu 5 Mb tan fazla olamaz.</p>
             <input
                 type="file"
                 id="avatar"

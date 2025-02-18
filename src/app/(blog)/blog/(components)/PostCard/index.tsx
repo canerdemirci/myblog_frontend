@@ -57,16 +57,15 @@ export default function PostCard({
                 height={210}
                 priority={true}
                 className={clsx([
-                    'w-[95%]', 'aspect-[40/21]', 'rounded-md', 'rounded-tr-md', 'mx-auto',
-                    'mt-2'
+                    'w-[95%]', 'aspect-[40/21]', 'rounded-md', 'rounded-tr-md', 'mx-auto', 'mt-2'
                 ])}
                 alt="Makale Kapağı"
             />
             <div className={clsx('p-4')}>
                 <p
                     className={clsx([
-                        `${montserrat.className}`, 'font-bold', 'text-xl', 'my-2',
-                        'dark:text-white'
+                        `${montserrat.className}`, 'font-bold', 'text-3xl', 'dark:text-white',
+                        'text-gray-700'
                     ])}
                 >
                     {title}
