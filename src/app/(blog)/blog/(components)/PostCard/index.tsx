@@ -34,7 +34,7 @@ export default function PostCard({
         <div
             className={clsx([
                 // Always
-                'bg-white', 'rounded-md', 'shadow-md', 'transition-all', 'border',
+                'bg-white', 'rounded-md', 'shadow-md', 'transition-all', 'border-2',
                 'border-gray-300', 'dark:border-gray-700',
                 // Dark
                 'dark:bg-gray-900 dark:hover:shadow-gray-700 dark:hover:shadow-lg',
