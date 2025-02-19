@@ -192,7 +192,7 @@ export default function PostsSection() {
                 {TagButtonsSection()}
                 <div
                     className={clsx([
-                        'md:columns-2', 'md:mx-4', 'mb-8', 'lg:columns-3', '2xl:columns-4'
+                        'md:columns-2', 'md:mx-4', 'mb-8', 'lg:columns-3', '2xl:columns-4', 'gap-8'
                     ])}
                 >
                     {posts.map(p => (

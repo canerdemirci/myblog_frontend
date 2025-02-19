@@ -39,12 +39,12 @@ export default function PostCard({
                 // Dark
                 'dark:bg-gray-900 dark:hover:shadow-gray-700 dark:hover:shadow-lg',
                 // Hover
-                'hover:shadow-lg hover:shadow-gray-400', 'dark:hover:border-gray-600',
-                'hover:border-gray-500',
+                'hover:shadow-lg hover:shadow-gray-400', 'dark:hover:border-gray-400',
+                'hover:border-gray-500', 'dark:hover:brightness-110',
                 // 320 - 768
                 'min-[320px]:w-full max-[768px]:w-full',
                 'min-[320px]:m-0 max-[768px]:m-0',
-                'min-[320px]:mb-8 max-[768px]:mb-8',
+                'min-[320px]:mb-8 max-[768px]:mb-8'
             ])}
         >
             <Image
