@@ -476,7 +476,7 @@ function UpsertPostPage() {
                 title="Öneriler"
                 open={showAiSuggestionsModal}
                 suggestions={aiSuggestions}
-                onClose={() => {}}
+                onClose={() => { setShowAiSuggestionsModal(false) }}
                 onSelect={(suggestion) => {
                     setTitle(suggestion)
                     setShowAiSuggestionsModal(false)

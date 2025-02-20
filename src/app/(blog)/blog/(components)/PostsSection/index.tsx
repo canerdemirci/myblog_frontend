@@ -192,27 +192,27 @@ export default function PostsSection() {
                 {TagButtonsSection()}
                 <div
                     className={clsx([
-                        'md:columns-2', 'md:mx-4', 'mb-8', 'lg:columns-3', '2xl:columns-4', 'gap-8',
-                        'mx-3'
+                        'sm:grid', 'sm:grid-cols-2', 'lg:grid-cols-3', '2xl:grid-cols-4',
+                        'gap-6', 'mx-4'
                     ])}
                 >
-                    {posts.map(p => (
+                    {posts.map((post, index) => (
                         <Link
-                            key={p.id}
-                            href={routeMap.blog.posts.postById(p.id)}
+                            key={post.id}
+                            href={routeMap.blog.posts.postById(post.id)}
                             className={clsx([
-                                'break-inside-avoid', 'break-after-avoid-page', 'block'
+                                'block', [index === 0 ? 'col-span-2' : '']
                             ])}
                         >
                             <PostCard
-                                title={p.title}
-                                cover={p.cover}
-                                date={`${p.createdAt}`}
-                                commentCount={p.commentCount}
-                                likeCount={p.likeCount}
-                                readCount={p.viewCount}
-                                shareCount={p.shareCount}
-                                tags={p.tags?.map(t => t.name)}
+                                title={post.title}
+                                cover={post.cover}
+                                date={`${post.createdAt}`}
+                                commentCount={post.commentCount}
+                                likeCount={post.likeCount}
+                                readCount={post.viewCount}
+                                shareCount={post.shareCount}
+                                tags={post.tags?.map(tag => tag.name)}
                             />
                         </Link>
                     ))}

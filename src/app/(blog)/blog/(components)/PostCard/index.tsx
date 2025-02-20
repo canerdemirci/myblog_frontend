@@ -28,8 +28,16 @@ function countsSectionButton(icon: React.ReactNode, count: number) {
 }
 
 export default function PostCard({
-    date, title, cover, shareCount, commentCount, readCount, likeCount, tags }: Props)
-{
+    date,
+    title,
+    cover,
+    shareCount,
+    commentCount,
+    readCount,
+    likeCount,
+    tags
+} : Props
+) {
     return (
         <div
             className={clsx([
@@ -44,7 +52,7 @@ export default function PostCard({
                 // 320 - 768
                 'min-[320px]:w-full max-[768px]:w-full',
                 'min-[320px]:m-0 max-[768px]:m-0',
-                'min-[320px]:mb-8 max-[768px]:mb-8'
+                'min-[320px]:mb-8 max-[768px]:mb-8', 'p-2'
             ])}
         >
             <Image
@@ -57,11 +65,11 @@ export default function PostCard({
                 height={210}
                 priority={true}
                 className={clsx([
-                    'w-[95%]', 'aspect-[40/21]', 'rounded-md', 'rounded-tr-md', 'mx-auto', 'mt-2'
+                    'w-[100%]', 'aspect-[40/21]', 'rounded-md', 'mb-4'
                 ])}
                 alt="Makale Kapağı"
             />
-            <div className={clsx('p-4')}>
+            <div className={clsx('p-2')}>
                 <p
                     className={clsx([
                         `${montserrat.className}`, 'font-bold', 'text-3xl', 'dark:text-white',
