@@ -109,8 +109,8 @@ export default async function PostPage({ params } : Props) {
                                     height={210}
                                     priority={true}
                                     className={clsx([
-                                        'w-full', 'aspect-[40/21]', 'rounded-tl-md',
-                                        'rounded-tr-md'
+                                        'w-full', 'aspect-[40/21]', 'sm:rounded-tl-md',
+                                        'sm:rounded-tr-md'
                                     ])}
                                     alt="Makale Kapağı"
                                 />
@@ -150,9 +150,10 @@ export default async function PostPage({ params } : Props) {
         return (
             <main
                 className={clsx([
-                    'relative', 'w-full', 'md:w-[800px]', 'md:m-auto', 'my-8', 'bg-white',
-                    'md:my-8', 'dark:bg-[#0d1116]', 'md:rounded-lg', 'md:drop-shadow-xl',
-                    'border', 'dark:border-gray-800', 'border-gray-300'
+                    'relative', 'w-full', 'sm:w-[70%]', 'md:w-[65%]', 'mt-8',
+                    'sm:m-auto', 'sm:my-8', 'bg-white',
+                    'dark:bg-[#0d1116]', 'sm:rounded-lg', 'sm:drop-shadow-xl',
+                    'sm:border', 'dark:border-gray-800', 'border-gray-300'
                 ])}
             >
                 {PostCover(post)}
