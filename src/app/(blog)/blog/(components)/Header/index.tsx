@@ -39,7 +39,7 @@ export default function Header() {
                 <h1
                     className={clsx([
                         leagueSpartan.className, "text-center", "text-4xl", "md:text-6xl",
-                        "p-8", "dark:text-white"
+                        "p-8", "text-gray-800", "dark:text-white"
                     ])}
                 >
                     Caner Demirci
@@ -118,8 +118,8 @@ export default function Header() {
             >
                 <p
                     className={clsx([
-                        `${caveat.className}`, "text-5xl", "text-center", "dark:text-white",
-                        "mb-8"
+                        `${caveat.className}`, "text-5xl", "text-center",
+                        "text-gray-800", "dark:text-white", "mb-4"
                     ])}
                 >
                     A Developer Diary

@@ -41,11 +41,13 @@ export default function PostCard({
     return (
         <div
             className={clsx([
+                'bg-gradient-to-br', 'from-white', 'to-gray-50',
                 // Always
                 'bg-white', 'rounded-md', 'shadow-md', 'transition-all', 'border-2',
                 'border-gray-300', 'dark:border-gray-700',
                 // Dark
-                'dark:bg-gray-900 dark:hover:shadow-gray-700 dark:hover:shadow-lg',
+                'dark:from-gray-800', 'dark:to-gray-950',
+                'dark:hover:shadow-gray-700 dark:hover:shadow-lg',
                 // Hover
                 'hover:shadow-lg hover:shadow-gray-400', 'dark:hover:border-gray-400',
                 'hover:border-gray-500', 'dark:hover:brightness-110',

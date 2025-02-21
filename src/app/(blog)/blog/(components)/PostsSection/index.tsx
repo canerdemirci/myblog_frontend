@@ -72,7 +72,7 @@ export default function PostsSection() {
     function PostsSkeleton() {
         return (
             <section className={clsx([
-                'md:grid', 'md:grid-cols-2', 'lg:grid-cols-3', 'md:gap-8'
+                'md:grid', 'md:grid-cols-2', 'lg:grid-cols-3', '2xl:grid-cols-4', 'md:gap-8'
             ])}>
                 {new Array(10).fill('x', 0, 9).map((_, i) => (
                     <div key={i}>
@@ -109,37 +109,40 @@ export default function PostsSection() {
             <div
                 id="tag-button-section"
                 className={clsx([
-                    'flex', 'sticky', 'top-0', 'items-center', 'gap-4', 'w-full', 'select-none',
-                    'overflow-x-auto', 'p-4', 'px-[50px]', 'dark:bg-black', 'bg-gray-50', 'no-scrollbar', 'my-8'
+                    'flex', 'sticky', 'top-0', 'items-center', 'gap-4', 'select-none',
+                    'overflow-x-auto', 'p-4', 'sm:px-[50px]', 'dark:bg-black', 'bg-gray-50', 'no-scrollbar', 'my-8', 'mx-4'
                 ])}
                 onScroll={(e) => {
                     const scrollLeft = e.currentTarget.scrollLeft
-                    document.getElementById('right-fade')!.style.right = `${-scrollLeft+25}px`
-                    document.getElementById('left-fade')!.style.left = `${scrollLeft+25}px`
-                    document.getElementById('tag-prevbtn')!.style.left = `${scrollLeft+8}px`
-                    document.getElementById('tag-nextbtn')!.style.right = `${-scrollLeft+8}px`
+                    const vw = document.body.clientWidth
+                    document.getElementById('right-fade')!.style.right = 
+                        `${-scrollLeft + (vw >= 640 ? 25 : 0)}px`
+                    document.getElementById('left-fade')!.style.left = 
+                        `${scrollLeft + (vw >= 640 ? 25 : 0)}px`
+                    document.getElementById('tag-prevbtn')!.style.left = `${scrollLeft}px`
+                    document.getElementById('tag-nextbtn')!.style.right = `${-scrollLeft}px`
                 }}
             >
                 {/* Left and right fade effects */}
                 <div
                     id="left-fade"
                     className={clsx([
-                        'absolute', 'top-[20%]', 'left-[50px]', 'w-14', 'h-[60%]', 'bg-gradient-to-r',
-                        'from-gray-100', 'cursor-pointer', 'dark:from-black'
+                        'absolute', 'top-[20%]', 'left-0', 'sm:left-[50px]', 'w-14', 'h-[60%]', 'bg-gradient-to-r',
+                        'from-white', 'cursor-pointer', 'dark:from-black'
                     ])}
                     onClick={() => handleTagButton('0')}></div>
                 <div
                     id="right-fade"
                     className={clsx([
                         'absolute', 'top-[20%]', 'right-0', 'w-14', 'h-[60%]', 'bg-gradient-to-l',
-                        'from-gray-100', 'cursor-pointer', 'dark:from-black'
+                        'from-white', 'cursor-pointer', 'dark:from-black'
                     ])}
                     onClick={() => handleTagButton(tags[tags.length-1].id)}></div>
                 {/* Left scroll button */}
                 <div
                     id="tag-prevbtn"
                     className={clsx([
-                        'absolute', 'top-[28%]', 'left-[8px]',
+                        'hidden', 'sm:block', 'absolute', 'top-[28%]', 'left-0',
                         'bg-gray-300', 'rounded-full', 'cursor-pointer', 'p-2',
                         'hover:bg-gray-400'
                     ])}
@@ -152,7 +155,7 @@ export default function PostsSection() {
                 <div
                     id="tag-nextbtn"
                     className={clsx([
-                        'absolute', 'top-[28%]', 'right-[8px]',
+                        'hidden', 'sm:block', 'absolute', 'top-[28%]', 'right-0',
                         'bg-gray-300', 'rounded-full', 'cursor-pointer', 'p-2',
                         'hover:bg-gray-400'
                     ])}
@@ -228,6 +231,7 @@ export default function PostsSection() {
                         <Link
                             key={post.id}
                             href={routeMap.blog.posts.postById(post.id)}
+                            scroll={false}
                             className={clsx([
                                 'block',
                                 [(index === 0 && selectedTagId === '0') ? 'col-span-2' : '']

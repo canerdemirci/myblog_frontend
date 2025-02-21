@@ -99,7 +99,9 @@ export default function NoteCard({ note }: Props) {
                     "group", "flex", "flex-col", "justify-center", "items-center", "gap-4",
                     "border-4", "border-gray-200", "rounded-lg", "p-4", "dark:border-gray-700",
                     "dark:hover:border-orange-400", "hover:border-gray-700", "cursor-pointer",
-                    "note-anim-cover"
+                    "note-anim-cover", "bg-gradient-to-b",
+                    "dark:from-gray-900", "dark:to-black",
+                    "from-gray-50", "to-white"
                 ])}
                 onClick={handleClick}
             >

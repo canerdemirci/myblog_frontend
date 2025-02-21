@@ -28,7 +28,7 @@ async function Notes() {
     return (
       <section
         className={clsx([
-          "w-full", "p-4", "m-4", "overflow-x-auto", "flex", "items-center", "gap-8",
+          "m-4", "py-4", "overflow-x-auto", "flex", "items-center", "gap-8",
           "notes-scrollbar", "dark:notes-scrollbar-dark", "select-none"
         ])}
       >
