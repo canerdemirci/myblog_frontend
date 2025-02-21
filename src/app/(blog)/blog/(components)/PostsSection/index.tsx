@@ -231,7 +231,6 @@ export default function PostsSection() {
                         <Link
                             key={post.id}
                             href={routeMap.blog.posts.postById(post.id)}
-                            scroll={false}
                             className={clsx([
                                 'block',
                                 [(index === 0 && selectedTagId === '0') ? 'col-span-2' : '']
