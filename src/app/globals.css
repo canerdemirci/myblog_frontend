@@ -12,6 +12,25 @@
       -ms-overflow-style: none;  /* IE and Edge */
       scrollbar-width: none;  /* Firefox */
   }
+
+  .notes-scrollbar-dark::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  
+  .notes-scrollbar-dark::-webkit-scrollbar-thumb {
+    background-color: #383737;
+    border-radius: 10px;
+  }
+  
+  .notes-scrollbar-dark::-webkit-scrollbar-thumb:hover {
+    background-color: #4f4e4e
+  }
+  
+  .notes-scrollbar-dark::-webkit-scrollbar-track {
+    background: #232323;
+    border-radius: 10px;
+  }
 }
 
 :root {
@@ -35,6 +54,25 @@
 
 html, body {
   overflow-x: hidden;
+}
+
+.notes-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.notes-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1;
+  border-radius: 10px;
+}
+
+.notes-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.notes-scrollbar::-webkit-scrollbar-track {
+  background: #ebebeb;
+  border-radius: 10px;
 }
 
 .note-anim {

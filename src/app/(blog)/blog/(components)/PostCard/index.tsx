@@ -115,14 +115,14 @@ export default function PostCard({
                     tags &&
                     <div
                         className={clsx([
-                            "flex", "items-center", "justify-start", "flex-wrap"
+                            "flex", "items-center", "justify-start", "flex-wrap", "gap-2"
                         ])}
                     >
                         {tags.map((t, i) => (
                             <span
                                 key={i}
                                 className={clsx([
-                                    `${montserrat.className}`, 'text-xs', 'p-2', 'mr-3', 'mb-3',
+                                    `${montserrat.className}`, 'text-xs', 'p-2',
                                     'rounded-lg', 'bg-gray-200', 'border-gray-100',
                                     'dark:bg-gray-800', 'dark:text-white'
                                 ])}
