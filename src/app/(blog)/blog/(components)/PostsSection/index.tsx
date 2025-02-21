@@ -72,13 +72,10 @@ export default function PostsSection() {
     function PostsSkeleton() {
         return (
             <section className={clsx([
-                'md:columns-2', 'md:m-4', 'lg:columns-3', 'gap-8'
+                'md:grid', 'md:grid-cols-2', 'lg:grid-cols-3', 'md:gap-8'
             ])}>
                 {new Array(10).fill('x', 0, 9).map((_, i) => (
-                    <div key={i} className={clsx([
-                        'break-inside-avoid', 'break-after-avoid-page', 'inline-block',
-                        'w-full'
-                    ])}>
+                    <div key={i}>
                         <div className={clsx([
                             'bg-gray-300', 'h-80', 'rounded-xl',
                             'flex', 'shrink-0', 'flex-col', 'justify-center', 'items-center', 
