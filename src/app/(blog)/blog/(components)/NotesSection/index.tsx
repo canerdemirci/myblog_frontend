@@ -2,6 +2,7 @@ import { getNotes } from "@/blog_api_actions/note_repo"
 import clsx from "clsx"
 import { Suspense } from "react"
 import NoteCard from "../NoteCard"
+import Slider from "./Slider"
 
 function Skeleton() {
   return (
@@ -26,17 +27,12 @@ async function Notes() {
     const notes = await getNotes(50)
 
     return (
-      <section
-        className={clsx([
-          "m-4", "py-4", "overflow-x-auto", "flex", "items-center", "gap-8",
-          "notes-scrollbar", "dark:notes-scrollbar-dark", "select-none"
-        ])}
-      >
+      <Slider>
         {/* Note Cards */}
         {notes.map(n => (
           <NoteCard key={n.id} note={n} />
         ))}
-      </section>
+      </Slider>
     )
   } catch (error: any) {
     return (
