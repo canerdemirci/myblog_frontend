@@ -101,7 +101,7 @@ export default function CommentsSection({ user, postId }: Props) {
     function CommentBar() {
         return <div
             className={clsx([
-                "p-2", "my-6", "border", "border-gray-300",
+                "p-2", "mb-6", "border", "border-gray-300",
                 "rounded-xl", "flex", "items-center", "gap-2", "cursor-pointer"
             ])}
             onClick={() => setCommentBarOpen(true)}
@@ -344,7 +344,7 @@ export default function CommentsSection({ user, postId }: Props) {
     }
 
     return (
-        <section id="comments-section">
+        <section id="comments-section" className="my-16">
             {/* Comment bar when there is a user */}
             {(!commentBarOpen && user) && CommentBar()}
             {/* Comment bar when there is no user */}

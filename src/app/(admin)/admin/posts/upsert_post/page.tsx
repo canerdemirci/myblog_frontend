@@ -158,7 +158,8 @@ function UpsertPostPage() {
             const validation = createPostJoiSchema.validate({
                 title: title,
                 images: postImages,
-                content, description,
+                content: content,
+                description: description,
                 cover: uploadRes,
                 tags: selectedTags
             })

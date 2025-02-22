@@ -89,8 +89,8 @@ export const createPostJoiSchema = Joi.object({
     images: Joi.array().items(Joi.string().optional()).required().messages({
         'array.required': 'Makale içerik resim dizisi boşta olsa gereklidir.',
     }),
-    content: Joi.string().optional(),
-    description: Joi.string().max(160).optional(),
+    content: Joi.string().optional().allow(null, ''),
+    description: Joi.string().optional().allow(null, '').max(160),
     cover: Joi.string().optional(),
     tags: Joi.array().items(Joi.string().optional()).required().messages({
         'array.required': 'Makale etiket dizisi boşta olsa gereklidir.'
@@ -141,7 +141,7 @@ export const updateUserJoiSchema = Joi.object({
         'string.required': 'Id gereklidir',
         'string.empty': 'Id gereklidir',
     }),
-    name: Joi.string().optional().max(100).min(3).messages({
+    name: Joi.string().optional().allow(null, '').max(100).min(3).messages({
         'string.max': 'Kullanıcı adı en fazla 100 karakter olabilir.',
         'string.min': 'Kullanıcı adı en az 3 karakter olmalıdır.'
     }),

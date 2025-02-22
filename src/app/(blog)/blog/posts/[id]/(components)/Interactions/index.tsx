@@ -2,10 +2,10 @@
 
 import clsx from "clsx"
 import { useEffect, useState } from "react"
-import { MdBookmark, MdShare, MdComment, MdFavorite }  from 'react-icons/md'
+import { MdBookmark, MdShare, MdComment, MdFavorite } from 'react-icons/md'
 import ShareButtons from "@/app/(blog)/blog/(components)/ShareButtons"
 import { routeMap } from "@/utils/routeMap"
-import { createUserToken, guestId } from "@/lib/sharedFunctions"
+import { guestId } from "@/lib/sharedFunctions"
 import { addGuestPostInteraction, addUserPostInteraction, isGuestLikedPost, isUserLikedPost }
     from "@/blog_api_actions/post_interaction_repo"
 import {
@@ -14,13 +14,14 @@ import {
 } from "@/blog_api_actions/bookmark_repo"
 import type { User } from "next-auth"
 import Link from "next/link"
+import Sticky from "./Sticky"
 
 interface Props {
     post: Post
     user?: User
 }
 
-export default function Interactions({ post, user } : Props) {
+export default function Interactions({ post, user }: Props) {
     const [isLiked, setIsLiked] = useState<boolean>(false)
     const [bookmark, setBookmark] = useState<GuestBookmark | UserBookmark | null>(null)
     const [bookmarkProcess, setBookmarkProcess] = useState<boolean>(false)
@@ -40,7 +41,7 @@ export default function Interactions({ post, user } : Props) {
             ]).then(([_, liked, bookmark]) => {
                 setIsLiked(liked)
                 setBookmark(bookmark)
-            }).catch(_ => {}).finally(() => {
+            }).catch(_ => { }).finally(() => {
                 setReadyToDisplay(true)
             })
         } else {
@@ -55,7 +56,7 @@ export default function Interactions({ post, user } : Props) {
             ]).then(([_, liked, bookmark]) => {
                 setIsLiked(liked)
                 setBookmark(bookmark)
-            }).catch(_ => {}).finally(() => {
+            }).catch(_ => { }).finally(() => {
                 setReadyToDisplay(true)
             })
         }
@@ -134,78 +135,80 @@ export default function Interactions({ post, user } : Props) {
     }
 
     return (
-        readyToDisplay && <div
-            className={clsx([
-                "w-60", "m-auto", "rounded-xl", "bg-white", "p-2", "flex", "justify-center","items-center", "gap-4", "shadow-sm", "border", "border-gray-200","dark:bg-gray-900", "dark:border-gray-950", "my-16"
-            ])}
-        >
+        readyToDisplay && <Sticky>
             <div
                 className={clsx([
-                    "cursor-pointer", "p-2", "rounded-full", "hover:bg-gray-100",
-                    "dark:hover:bg-gray-700"
+                    "w-60", "m-auto", "rounded-xl", "bg-white", "p-2", "flex", "justify-center", "items-center", "gap-4", "shadow-sm", "border", "border-gray-200", "dark:bg-gray-900", "dark:border-gray-950"
                 ])}
             >
-                <MdFavorite
-                    size={24}
+                <div
                     className={clsx([
-                        'cursor-pointer ',
-                        likeProcess && ['animate-pulse', 'text-yellow-600'],
-                        isLiked ? 'text-red-500' : 'text-gray-400'
+                        "cursor-pointer", "p-2", "rounded-full", "hover:bg-gray-100",
+                        "dark:hover:bg-gray-700"
                     ])}
-                    onClick={handleLike}
-                />
-            </div>
-            {
-                user &&
-                <Link href="#comments-section">
-                    <div
+                >
+                    <MdFavorite
+                        size={24}
                         className={clsx([
-                            'cursor-pointer', 'p-2', 'rounded-full', 'hover:bg-gray-100', 'dark:hover:bg-gray-700'
+                            'cursor-pointer ',
+                            likeProcess && ['animate-pulse', 'text-yellow-600'],
+                            isLiked ? 'text-red-500' : 'text-gray-400'
                         ])}
-                    >
-                        <MdComment
-                            size={24}
+                        onClick={handleLike}
+                    />
+                </div>
+                {
+                    user &&
+                    <Link href="#comments-section">
+                        <div
                             className={clsx([
-                                'cursor-pointer', 'text-green-700', 'dark:text-green-500'
+                                'cursor-pointer', 'p-2', 'rounded-full', 'hover:bg-gray-100', 'dark:hover:bg-gray-700'
                             ])}
-                        />
-                    </div>
-                </Link>
-            }
-            <div
-                className={clsx([
-                    'group', 'relative', 'cursor-pointer', 'p-2', 'rounded-full', 'hover:bg-gray-100', 'dark:hover:bg-gray-700'
-                ])}
-            >
-                <MdShare
-                    size={24}
+                        >
+                            <MdComment
+                                size={24}
+                                className={clsx([
+                                    'cursor-pointer', 'text-green-700', 'dark:text-green-500'
+                                ])}
+                            />
+                        </div>
+                    </Link>
+                }
+                <div
                     className={clsx([
-                        'cursor-pointer', 'text-blue-700', 'dark:text-blue-500'
+                        'group', 'relative', 'cursor-pointer', 'p-2', 'rounded-full', 'hover:bg-gray-100', 'dark:hover:bg-gray-700'
                     ])}
-                />
-                <ShareButtons
-                    title={post.title}
-                    url={
-                        process.env.NEXT_PUBLIC_BASE_URL! + routeMap.blog.posts.postById(post.id)
-                    }
-                    onShare={handleShare}
-                />
-            </div>
-            <div
-                className={clsx([
-                    'cursor-pointer', 'p-2', 'rounded-full', 'hover:bg-gray-100', 'dark:hover:bg-gray-700'
-                ])}
-            >
-                <MdBookmark
-                    size={24}
+                >
+                    <MdShare
+                        size={24}
+                        className={clsx([
+                            'cursor-pointer', 'text-blue-700', 'dark:text-blue-500'
+                        ])}
+                    />
+                    <ShareButtons
+                        title={post.title}
+                        url={
+                            process.env.NEXT_PUBLIC_BASE_URL! + routeMap.blog.posts.postById(post.id)
+                        }
+                        onShare={handleShare}
+                    />
+                </div>
+                <div
                     className={clsx([
-                        'cursor-pointer',
-                        bookmarkProcess && ['animate-pulse', 'text-yellow-600'],
-                        bookmark ? 'text-red-500' : 'text-gray-400'
+                        'cursor-pointer', 'p-2', 'rounded-full', 'hover:bg-gray-100', 'dark:hover:bg-gray-700'
                     ])}
-                    onClick={handleBookmark}
-                />
+                >
+                    <MdBookmark
+                        size={24}
+                        className={clsx([
+                            'cursor-pointer',
+                            bookmarkProcess && ['animate-pulse', 'text-yellow-600'],
+                            bookmark ? 'text-red-500' : 'text-gray-400'
+                        ])}
+                        onClick={handleBookmark}
+                    />
+                </div>
             </div>
-        </div>
+        </Sticky>
     )
 }

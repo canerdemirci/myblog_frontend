@@ -10,7 +10,7 @@ export default function ArticleContent({ content } : { content: string | undefin
                 whiteSpace: 'normal',
                 overflowX: 'auto',
                 marginTop: '1rem',
-                marginBottom: '1rem'
+                marginBottom: '4rem'
             }}
         />
     )
