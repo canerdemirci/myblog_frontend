@@ -1,11 +1,15 @@
 import NotesSection from './(components)/NotesSection'
 import PostsSection from './(components)/PostsSection'
+import UpButton from './(components)/UpButton'
 
 export default async function Home() {
   return (
-    <main>
-      <NotesSection />
-      <PostsSection />
-    </main>
+    <>
+      <UpButton />
+      <main>
+        <NotesSection />
+        <PostsSection />
+      </main>
+    </>
   )
 }

@@ -145,6 +145,7 @@ function UpsertPostPage() {
 
     async function handleSaveButton(e: any) {
         e.preventDefault()
+        setPostSavingEnd(false)
 
         // This will be used for post's cover field
         let uploadRes: any = undefined
@@ -165,6 +166,7 @@ function UpsertPostPage() {
             })
 
             if (validation.error) {
+                setPostSavingEnd(true)
                 setPostValidationErrors(validation.error.details.map(e => e.message + "\n"))
             } else {
                 setPostSavingEnd(false)

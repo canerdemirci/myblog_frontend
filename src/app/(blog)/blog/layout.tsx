@@ -6,6 +6,7 @@ import { getServerSession } from 'next-auth'
 import SessionProvider from '@/app/(blog)/blog/(components)/SessionProvider'
 import { clsx } from 'clsx'
 import PageTransition from "@/app/(components)/PageTransition"
+import UpButton from "./(components)/UpButton"
 
 export const metadata: Metadata = {
   title: "Caner Demirci - Kişisel Blog",
@@ -33,6 +34,7 @@ export default async function RootLayout({
             <Header />
               {children}
             <Footer />
+            <UpButton />
           </PageTransition>
         </SessionProvider>
       </body>

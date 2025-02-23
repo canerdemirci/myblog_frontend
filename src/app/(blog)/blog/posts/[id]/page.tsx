@@ -17,6 +17,7 @@ import type { Metadata, ResolvingMetadata } from 'next'
 import { cache, Suspense } from 'react'
 import { MdImage } from 'react-icons/md'
 import ErrorBoundary from '@/app/(components)/ErrorBoundary'
+import UpButton from '../../(components)/UpButton'
 
 type Props = {
     params: { id: string }
@@ -25,8 +26,7 @@ type Props = {
 const fetchPost = cache(async (id: string) => await getPost(id))
 
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata)
-: Promise<Metadata>
-{
+    : Promise<Metadata> {
     try {
         const postId = params.id as string
         const post = await fetchPost(postId)
@@ -61,10 +61,10 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
     }
 }
 
-export default async function PostPage({ params } : Props) {
+export default async function PostPage({ params }: Props) {
     const session = await getServerSession(authOptions)
     const postId = params.id as string
-    
+
     function PostCover(post: Post) {
         return (
             <Image
@@ -157,49 +157,52 @@ export default async function PostPage({ params } : Props) {
             const relatedPosts = await getRelatedPosts(post.tags.map(t => t.name))
 
             return (
-                <main
-                    className={clsx([
-                        'w-full', 'md:w-[85%]', 'lg:w-[75%]', 'xl:w-[65%]',
-                        'md:m-auto', 'md:mb-16', 'bg-white',
-                        'dark:bg-[#0d1116]', 'md:rounded-lg', 'md:drop-shadow-xl',
-                        'md:border', 'dark:border-gray-800', 'border-gray-300'
-                    ])}
-                >
-                    {PostCover(post)}
-                    <div>
-                        {/* Post Title */}
-                        <h1
-                            className={clsx([
-                                montserrat.className, 'p-4', 'text-4xl', 'md:text-5xl',
-                                'font-bold', 'dark:text-gray-100', 'text-gray-700'
-                            ])}
-                        >
-                            {post.title}
-                        </h1>
-                        <div className={clsx('p-4')}>
-                            <div
+                <>
+                    <UpButton />
+                    <main
+                        className={clsx([
+                            'w-full', 'md:w-[85%]', 'lg:w-[75%]', 'xl:w-[65%]',
+                            'md:m-auto', 'md:mb-16', 'bg-white',
+                            'dark:bg-[#0d1116]', 'md:rounded-lg', 'md:drop-shadow-xl',
+                            'md:border', 'dark:border-gray-800', 'border-gray-300'
+                        ])}
+                    >
+                        {PostCover(post)}
+                        <div>
+                            {/* Post Title */}
+                            <h1
                                 className={clsx([
-                                    montserrat.className, 'text-xl', 'dark:text-white'
+                                    montserrat.className, 'p-4', 'text-4xl', 'md:text-5xl',
+                                    'font-bold', 'dark:text-gray-100', 'text-gray-700'
                                 ])}
                             >
-                                {/* Some info about post */}
-                                <div className={clsx([
-                                    'flex', 'mb-4', 'items-center', 'gap-2'
-                                ])}>
-                                    {`${post.createdAt}`} <IoMdEye /> {post.viewCount}
+                                {post.title}
+                            </h1>
+                            <div className={clsx('p-4')}>
+                                <div
+                                    className={clsx([
+                                        montserrat.className, 'text-xl', 'dark:text-white'
+                                    ])}
+                                >
+                                    {/* Some info about post */}
+                                    <div className={clsx([
+                                        'flex', 'mb-4', 'items-center', 'gap-2'
+                                    ])}>
+                                        {`${post.createdAt}`} <IoMdEye /> {post.viewCount}
+                                    </div>
                                 </div>
+                                <ArticleContent content={post.content} />
+                                <Interactions post={post} user={session?.user} />
+                                <Tags post={post} />
+                                <CommentsSection
+                                    user={session?.user}
+                                    postId={post.id}
+                                />
+                                {relatedPosts.length > 0 && RelatedPosts(relatedPosts)}
                             </div>
-                            <ArticleContent content={post.content} />
-                            <Interactions post={post} user={session?.user} />
-                            <Tags post={post} />
-                            <CommentsSection
-                                user={session?.user}
-                                postId={post.id}
-                            />
-                            {relatedPosts.length > 0 && RelatedPosts(relatedPosts)}
                         </div>
-                    </div>
-                </main>
+                    </main>
+                </>
             )
         } catch (error: any) {
             if (error?.data?.status === 404) {
@@ -211,7 +214,7 @@ export default async function PostPage({ params } : Props) {
             }
         }
     }
-    
+
     return (
         <ErrorBoundary fallback={
             <div className={clsx('my-36')}>
@@ -232,7 +235,7 @@ export default async function PostPage({ params } : Props) {
                 >
                     <div
                         className={clsx([
-                            'md:rounded-md',  'bg-gray-300', 'w-full', 'aspect-[40/21]',
+                            'md:rounded-md', 'bg-gray-300', 'w-full', 'aspect-[40/21]',
                             'flex', 'justify-center', 'items-center'
                         ])}
                     >

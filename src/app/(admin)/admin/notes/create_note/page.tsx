@@ -57,10 +57,12 @@ export default function CreateNotePage() {
 
     async function handleSaveButton(e: any) {
         e.preventDefault()
+        setNoteSavingEnd(false)
 
         const validation = createNoteJoiSchema.validate({ content: content, images: noteImages })
 
         if (validation.error) {
+            setNoteSavingEnd(true)
             setNoteValidationErrors(validation.error.details.map(e => e.message + "\n"))
         } else {
             setNoteSavingEnd(false)

@@ -14,7 +14,6 @@ import {
 } from "@/blog_api_actions/bookmark_repo"
 import type { User } from "next-auth"
 import Link from "next/link"
-import Sticky from "./Sticky"
 
 interface Props {
     post: Post
@@ -135,80 +134,79 @@ export default function Interactions({ post, user }: Props) {
     }
 
     return (
-        readyToDisplay && <Sticky>
+        readyToDisplay &&
+        <div
+            className={clsx([
+                "w-60", "m-auto", "rounded-xl", "bg-white", "p-2", "flex", "justify-center", "items-center", "gap-4", "shadow-sm", "border", "border-gray-200", "dark:bg-gray-900", "dark:border-gray-950"
+            ])}
+        >
             <div
                 className={clsx([
-                    "w-60", "m-auto", "rounded-xl", "bg-white", "p-2", "flex", "justify-center", "items-center", "gap-4", "shadow-sm", "border", "border-gray-200", "dark:bg-gray-900", "dark:border-gray-950"
+                    "cursor-pointer", "p-2", "rounded-full", "hover:bg-gray-100",
+                    "dark:hover:bg-gray-700"
                 ])}
             >
-                <div
+                <MdFavorite
+                    size={24}
                     className={clsx([
-                        "cursor-pointer", "p-2", "rounded-full", "hover:bg-gray-100",
-                        "dark:hover:bg-gray-700"
+                        'cursor-pointer ',
+                        likeProcess && ['animate-pulse', 'text-yellow-600'],
+                        isLiked ? 'text-red-500' : 'text-gray-400'
                     ])}
-                >
-                    <MdFavorite
-                        size={24}
-                        className={clsx([
-                            'cursor-pointer ',
-                            likeProcess && ['animate-pulse', 'text-yellow-600'],
-                            isLiked ? 'text-red-500' : 'text-gray-400'
-                        ])}
-                        onClick={handleLike}
-                    />
-                </div>
-                {
-                    user &&
-                    <Link href="#comments-section">
-                        <div
-                            className={clsx([
-                                'cursor-pointer', 'p-2', 'rounded-full', 'hover:bg-gray-100', 'dark:hover:bg-gray-700'
-                            ])}
-                        >
-                            <MdComment
-                                size={24}
-                                className={clsx([
-                                    'cursor-pointer', 'text-green-700', 'dark:text-green-500'
-                                ])}
-                            />
-                        </div>
-                    </Link>
-                }
-                <div
-                    className={clsx([
-                        'group', 'relative', 'cursor-pointer', 'p-2', 'rounded-full', 'hover:bg-gray-100', 'dark:hover:bg-gray-700'
-                    ])}
-                >
-                    <MdShare
-                        size={24}
-                        className={clsx([
-                            'cursor-pointer', 'text-blue-700', 'dark:text-blue-500'
-                        ])}
-                    />
-                    <ShareButtons
-                        title={post.title}
-                        url={
-                            process.env.NEXT_PUBLIC_BASE_URL! + routeMap.blog.posts.postById(post.id)
-                        }
-                        onShare={handleShare}
-                    />
-                </div>
-                <div
-                    className={clsx([
-                        'cursor-pointer', 'p-2', 'rounded-full', 'hover:bg-gray-100', 'dark:hover:bg-gray-700'
-                    ])}
-                >
-                    <MdBookmark
-                        size={24}
-                        className={clsx([
-                            'cursor-pointer',
-                            bookmarkProcess && ['animate-pulse', 'text-yellow-600'],
-                            bookmark ? 'text-red-500' : 'text-gray-400'
-                        ])}
-                        onClick={handleBookmark}
-                    />
-                </div>
+                    onClick={handleLike}
+                />
             </div>
-        </Sticky>
+            {
+                user &&
+                <Link href="#comments-section">
+                    <div
+                        className={clsx([
+                            'cursor-pointer', 'p-2', 'rounded-full', 'hover:bg-gray-100', 'dark:hover:bg-gray-700'
+                        ])}
+                    >
+                        <MdComment
+                            size={24}
+                            className={clsx([
+                                'cursor-pointer', 'text-green-700', 'dark:text-green-500'
+                            ])}
+                        />
+                    </div>
+                </Link>
+            }
+            <div
+                className={clsx([
+                    'group', 'relative', 'cursor-pointer', 'p-2', 'rounded-full', 'hover:bg-gray-100', 'dark:hover:bg-gray-700'
+                ])}
+            >
+                <MdShare
+                    size={24}
+                    className={clsx([
+                        'cursor-pointer', 'text-blue-700', 'dark:text-blue-500'
+                    ])}
+                />
+                <ShareButtons
+                    title={post.title}
+                    url={
+                        process.env.NEXT_PUBLIC_BASE_URL! + routeMap.blog.posts.postById(post.id)
+                    }
+                    onShare={handleShare}
+                />
+            </div>
+            <div
+                className={clsx([
+                    'cursor-pointer', 'p-2', 'rounded-full', 'hover:bg-gray-100', 'dark:hover:bg-gray-700'
+                ])}
+            >
+                <MdBookmark
+                    size={24}
+                    className={clsx([
+                        'cursor-pointer',
+                        bookmarkProcess && ['animate-pulse', 'text-yellow-600'],
+                        bookmark ? 'text-red-500' : 'text-gray-400'
+                    ])}
+                    onClick={handleBookmark}
+                />
+            </div>
+        </div>
     )
 }
