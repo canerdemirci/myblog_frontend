@@ -15,6 +15,17 @@ export async function getStatistics() : Promise<BlogStatistics | never> {
 }
 
 /**
+ * Creates database backup sql file in backend.
+ * @returns string
+ */
+export async function backupDatabase() : Promise<string> {
+    const response = await fetchBlogAPI('/backup/db', { cache: 'no-store' })
+    const json = await response.json()
+    
+    return json.file
+}
+
+/**
  * Uploads cover photos to backend storage with form data (file input).
  * @param data FormData
  * @returns Promise <string | never>

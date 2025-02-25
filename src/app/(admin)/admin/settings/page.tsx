@@ -18,8 +18,10 @@ import Image from 'next/image'
 import { useState } from "react"
 import { getUnusedPostCovers, getUnusedPostImages } from "@/blog_api_actions/post_repo"
 import { routeMap } from "@/utils/routeMap"
-import { deleteCover, deleteNoteImage, deletePostImage } from "@/blog_api_actions"
+import { backupDatabase, deleteCover, deleteNoteImage, deletePostImage } from "@/blog_api_actions"
 import { getUnusedNoteImages } from "@/blog_api_actions/note_repo"
+import StorageIcon from '@mui/icons-material/Storage'
+import { downloadLink } from "@/utils"
 
 export default function Settings() {
     // For unused post covers
@@ -39,6 +41,8 @@ export default function Settings() {
     const [unusedNoteImagesScanning, setUnusedNoteImagesScanning] = useState(false)
     const [unusedNoteImageDeletingId, setUnusedNoteImageDeletingId] = useState(-1)
     const [cleanUnusedNoteImages, setCleanUnusedNoteImages] = useState(false)
+
+    const [backupProcess, setBackupProcess] = useState<boolean>(false)
 
     function handleUnusedCoversScanBtnClick() {
         setUnusedCoversScanning(true)
@@ -111,9 +115,31 @@ export default function Settings() {
             .catch(_ => alert('Bir hata oluştu.'))
             .finally(() => setUnusedNoteImageDeletingId(-1))
     }
+
+    function handleDbBackup() {
+        setBackupProcess(true)
+        backupDatabase()
+            .then(fileName => {
+                alert('Yedekleme başarıyla tamamlandı')
+                downloadLink(routeMap.static.root + `/backup/db/${fileName}`)
+            })
+            .catch(_ => alert('Bir hata oluştu!'))
+            .finally(() => setBackupProcess(false))
+    }
     
     return (
         <AdminPanelPage pageName="Bakım ve Ayarlar">
+            <section>
+                <Button
+                    variant="contained"
+                    color="success"
+                    startIcon={<StorageIcon />}
+                    onClick={handleDbBackup}
+                    disabled={backupProcess}
+                >
+                    {backupProcess ? 'İşlem Devam Ediyor' : 'VERİTABANI YEDEK AL'}
+                </Button>
+            </section>
             {/* Unused post covers scanning section */}
             <section className={clsx([
                 'bg-white', 'rounded-lg', 'border', 'border-gray-300', 'shadow-md', 'my-8'

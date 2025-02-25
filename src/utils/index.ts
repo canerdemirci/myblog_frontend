@@ -1,6 +1,18 @@
 import Joi from "joi"
 import { JWTPayload, SignJWT, jwtVerify } from "jose"
 
+export function downloadLink(file: string) {
+    try {
+        const a = document.createElement('a')
+        document.body.appendChild(a)
+        a.href = file
+        a.click()
+        a.remove()
+    } catch (_) {
+        alert('Bir hata oluştu!')
+    }
+}
+
 export const sortTags = (a: Tag, b: Tag) => {
     if (a.name.toUpperCase() < b.name.toUpperCase()) { return -1 }
     if (a.name.toUpperCase() > b.name.toUpperCase()) { return 1 }
