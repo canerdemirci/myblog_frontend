@@ -1,6 +1,10 @@
 import Joi from "joi"
 import { JWTPayload, SignJWT, jwtVerify } from "jose"
 
+/**
+ * Creates link and downloads the file.
+ * @param file string
+ */
 export function downloadLink(file: string) {
     try {
         const a = document.createElement('a')
@@ -13,24 +17,51 @@ export function downloadLink(file: string) {
     }
 }
 
+/**
+ * Sorts tags by name.
+ * @param a Tag
+ * @param b Tag
+ * @returns 0 | 1 | -1
+ */
 export const sortTags = (a: Tag, b: Tag) => {
     if (a.name.toUpperCase() < b.name.toUpperCase()) { return -1 }
     if (a.name.toUpperCase() > b.name.toUpperCase()) { return 1 }
     return 0
 }
 
+/**
+ * This function is used to slice the data according to the current
+ * page and the number of rows per page.
+ * @param currentPage number
+ * @param rowsPerPage number
+ * @param totalItem number
+ * @returns [number, number]
+ */
 export function paginationDataSliceIndexes(
-    currentPage: number, rowsPerPage: number, totalItem: number) {
+    currentPage: number,
+    rowsPerPage: number,
+    totalItem: number
+) : [number, number]
+{
     const start = currentPage === 0 ? 0 : currentPage * rowsPerPage
     const end = (start + rowsPerPage) > totalItem ? totalItem : (start + rowsPerPage)
 
     return [start, end]
 }
 
+/**
+ * Produces a random string that has 10 characters.
+ * @returns string
+ */
 export function shortKey() {
     return Date.now().toString(36) + Math.random().toString(36).substring(2, 5);
 }
 
+/**
+ * Produces a sha256 hash from the input string.
+ * @param input string
+ * @returns Promise < string >
+ */
 export async function sha256(input: string): Promise<string> {
     const encoder = new TextEncoder()
     const data = encoder.encode(input)
@@ -41,10 +72,21 @@ export async function sha256(input: string): Promise<string> {
     return hashHex
 }
 
+/**
+ * Generates a key from the input string with HMAC algorithm for JWT.
+ * @param secret string
+ * @returns Promise < CryptoKey >
+ */
 export async function generateKey(secret: string): Promise<CryptoKey> {
     const enc = new TextEncoder()
     const keyData = enc.encode(secret)
-    const key = await crypto.subtle.importKey('raw', keyData, { name: 'HMAC', hash: 'SHA-256' }, 
+    const key = await crypto.subtle.importKey(
+        'raw',
+        keyData,
+        {
+            name: 'HMAC',
+            hash: 'SHA-256'
+        }, 
         true,
         ['sign', 'verify']
     )
@@ -52,7 +94,19 @@ export async function generateKey(secret: string): Promise<CryptoKey> {
     return key
 }
 
-export async function signJWT(payload: JWTPayload, secret: string, expIn: string): Promise<string> {
+/**
+ * Creates a JWT token with the given payload and secret.
+ * @param payload JWTPayload
+ * @param secret string
+ * @param expIn string
+ * @returns Promise < string >
+ */
+export async function signJWT(
+    payload: JWTPayload,
+    secret: string,
+    expIn: string
+): Promise<string>
+{
     const key = await generateKey(secret)
 
     const jwt = await new SignJWT(payload)
@@ -63,6 +117,12 @@ export async function signJWT(payload: JWTPayload, secret: string, expIn: string
     return jwt
 }
 
+/**
+ * Verifies the JWT token with the given secret.
+ * @param token string
+ * @param secret string
+ * @returns Promise < JWTPayload | false >
+ */
 export async function verifyJWT(token: string, secret: string): Promise<JWTPayload | false> {
     const key = await generateKey(secret)
 

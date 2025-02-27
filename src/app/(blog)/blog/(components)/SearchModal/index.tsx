@@ -5,10 +5,14 @@ import StaggeredContent from '@/app/(components)/StaggeredContent'
 import Loading from "../Loading"
 import NoData from "../NoData"
 import ErrorElement from "../ErrorElement"
+
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+
 import { getPostSearchResults } from "@/blog_api_actions/post_repo"
+
 import { MdArticle, MdClose } from 'react-icons/md'
+
 import { routeMap } from '@/utils/routeMap'
 import { clsx } from 'clsx'
 import { ApiError } from "@/lib/custom_fetch"
@@ -45,16 +49,18 @@ export default function SearchModal({ onClose }: Props) {
             <div
                 onClick={(e) => e.stopPropagation()}
                 className={clsx([
-                    'overflow-y-auto',  'm-auto', 'rounded-xl', 'bg-white',
-                    'shadow-xl', 'border', 'border-gray-400', 'dark:bg-gray-900',
-                    'dark:border-gray-700',
-                    'w-full', 'h-full',
-                    'sm:max-h-[20rem]', 'sm:w-[50%]', 'sm:mt-20'
+                    'overflow-y-auto',  'm-auto', 'rounded-xl', 'bg-white', 'shadow-xl', 'border',
+                    'border-gray-400', 'w-full', 'h-full',
+                    // sm
+                    'sm:max-h-[20rem]', 'sm:w-[50%]', 'sm:mt-20',
+                    // dark
+                    'dark:bg-gray-900', 'dark:border-gray-700',
                 ])}
             >
                 <div
                     className={clsx([
-                        'flex', 'justify-between', 'items-center', 'border-b', 'dark:border-gray-700', 'p-2', 'border-gray-400'
+                        'flex', 'justify-between', 'items-center', 'border-b', 'border-gray-400',
+                        'p-2', 'dark:border-gray-700'
                     ])}
                 >
                     <h3
@@ -75,12 +81,15 @@ export default function SearchModal({ onClose }: Props) {
                 <div>
                     <input
                         type="text"
-                        placeholder="Makale bulmak için anahtar kelimeleri yazın."
+                        placeholder="Makale arayın..."
                         className={clsx([
-                            'p-2', 'w-full', 'bg-gray-100',
-                            'outline-none', 'focus:bg-gray-200', 'hover:bg-gray-300',
-                            'dark:bg-gray-800', 'dark:text-white', 'dark:focus:bg-blue-900',
-                             'dark:hover:bg-gray-700'
+                            'p-2', 'w-full', 'bg-gray-100', 'outline-none',
+                            // focus
+                            'focus:bg-gray-200', 'dark:focus:bg-blue-900',
+                            // hover
+                            'hover:bg-gray-300',
+                            // dark
+                            'dark:hover:bg-gray-700', 'dark:bg-gray-800', 'dark:text-white',
                         ])}
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
@@ -92,7 +101,7 @@ export default function SearchModal({ onClose }: Props) {
                         status: isFetching,
                         content: (
                             <div className={clsx(["m-auto", "mt-10"])}>
-                                <Loading iconSize={52} text="Yükleniyor..." />
+                                <Loading iconSize={52} text="Aranıyor..." />
                             </div>
                         )
                     }}

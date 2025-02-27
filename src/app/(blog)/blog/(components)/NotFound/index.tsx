@@ -11,6 +11,7 @@ export default function NotFound({ text } : { text: string }) {
                 height={300}
                 className={clsx([
                     'm-auto', 'mt-8', 'w-[400px]', 'h-[175px]',
+                    // xs
                     'xs:w-[500px]', 'xs:h-[300px]'
                 ])}
                 unoptimized

@@ -1,22 +1,21 @@
 'use client'
 
 import { Suspense, useEffect, useState } from "react"
-
-import { useRouter, useSearchParams } from "next/navigation"
-import { clsx } from "clsx"
-
 import Image from 'next/image'
+import { useRouter, useSearchParams } from "next/navigation"
 
 import rehypeSanitize from "rehype-sanitize"
-import { getAdminToken } from "@/lib/sharedFunctions"
 
+import { clsx } from "clsx"
+import { getAdminToken } from "@/lib/sharedFunctions"
 import { routeMap } from "@/utils/routeMap"
+import { ApiError } from "@/lib/custom_fetch"
+import { createPostJoiSchema } from "@/utils"
+
 import { uploadCover, deleteCover, uploadPostImages, deletePostImage } from "@/blog_api_actions"
 import { createPost, getPost, updatePost } from "@/blog_api_actions/post_repo"
 import { getTags } from "@/blog_api_actions/tag_repo"
 import { suggest } from "@/blog_api_actions/gemini_repo"
-import { createPostJoiSchema } from "@/utils"
-import { ApiError } from "@/lib/custom_fetch"
 
 import styled from '@mui/material/styles/styled'
 
@@ -75,7 +74,7 @@ function UpsertPostPage() {
     const [title, setTitle] = useState<string>('')
     const [postImages, setPostImages] = useState<string[]>([])
     const [postContentImageUplading, setPostContentImageUplading] = useState<boolean>(false)
-    const [content, setContent] = useState<string | undefined>('# Makale İçeriği')
+    const [content, setContent] = useState<string | undefined>(undefined)
     const [description, setDescription] = useState<string | undefined>(undefined)
     const [selectedTags, setSelectedTags] = useState<string[]>([])
     const [postSavingEnd, setPostSavingEnd] = useState<boolean>(true)
@@ -392,6 +391,7 @@ function UpsertPostPage() {
                     {/* Post content input */}
                     <MDEditor
                         value={content}
+                        textareaProps={{ placeholder: 'Makale içeriği buraya yazın...' }}
                         data-color-mode="light"
                         height={800}
                         onChange={(value) => setContent(value)}

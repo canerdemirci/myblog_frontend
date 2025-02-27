@@ -1,3 +1,6 @@
+/**
+ * Middleware for /blog and /admin routes.
+ */
 import { NextRequest, NextResponse } from 'next/server'
 import { middleware2 } from './middleware2'
 import { middleware1 } from './middleware1'
@@ -11,6 +14,7 @@ export async function middleware(req: NextRequest) {
         }
     }
 
+    // Protect /admin routes except /admin/login page.
     if (req.nextUrl.pathname.includes('/admin') && !req.nextUrl.pathname.includes('/admin/login')) {
         const response2 = await middleware2(req)
 

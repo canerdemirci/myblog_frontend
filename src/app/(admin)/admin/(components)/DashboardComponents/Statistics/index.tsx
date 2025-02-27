@@ -1,21 +1,24 @@
 'use client'
 
 import { getStatistics } from "@/blog_api_actions"
-import clsx from "clsx"
-import NumberCard from "../NumberCard"
+
 import { MdArticle, MdComment, MdFavorite, MdNote, MdPerson, MdPerson2, MdShare, MdTag }
     from "react-icons/md"
 import { IoMdEye } from "react-icons/io"
+
+import NumberCard from "../NumberCard"
 import DistributionOfPostsByTags from "../DistributionOfPostsByTags"
 import DistributionOfUsersByMonths from "../DistributionOfUsersByMonths"
 import DistributionOfGuestsByMonths from "../DistributionOfGuestsByMonths"
-import { useEffect, useState } from "react"
-import { BlogStatistics } from "@/types/statistics"
-import { ApiError } from "@/lib/custom_fetch"
+import StaggeredContent from "@/app/(components)/StaggeredContent"
 import UISkeleton from "../../UISkeleton"
 import ErrorElement from "../../ErrorElement"
-import StaggeredContent from "@/app/(components)/StaggeredContent"
 
+import { useEffect, useState } from "react"
+import { ApiError } from "@/lib/custom_fetch"
+import clsx from "clsx"
+
+import type { BlogStatistics } from "@/types/statistics"
 
 export default function Statistics() {
     const [statistics, setStatistics] = useState<BlogStatistics | null>(null)

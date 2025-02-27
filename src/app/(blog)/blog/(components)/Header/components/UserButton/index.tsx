@@ -1,10 +1,13 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
+
 import Image from 'next/image'
 import Link from 'next/link'
+
 import { MdAccountCircle, MdAppRegistration, MdLogin, MdLogout } from "react-icons/md"
 import { IoPersonCircle } from "react-icons/io5"
+
 import { routeMap } from '@/utils/routeMap'
 import { clsx } from 'clsx'
 import { useEffect } from 'react'
@@ -35,7 +38,8 @@ export default function UserButton() {
             {/* Menu */}
             <div
                 className={clsx([
-                    'absolute', 'hidden', 'w-28', 'left-[-7rem]', 'top-[-2px]', 'flex-col', 'group-hover:flex', 'bg-gray-300', 'shadow-xl', 'rounded-md'
+                    'absolute', 'hidden', 'w-28', 'left-[-7rem]', 'top-[-2px]', 'bg-gray-300', 'shadow-xl', 'rounded-md', 'flex-col',
+                    'group-hover:flex',
                 ])}
             >
                 {/* Sign in */}
@@ -44,7 +48,9 @@ export default function UserButton() {
                     <Link
                         href="/api/auth/signin"
                         className={clsx([
-                            'flex', 'justify-between', 'items-center', 'gap-2', 'p-2', 'hover:bg-gray-400', 'cursor-pointer', 'rounded-md'
+                            'flex', 'justify-between', 'items-center', 'gap-2', 'p-2',
+                            'cursor-pointer', 'rounded-md',
+                            'hover:bg-gray-400',
                         ])}
                     >
                         <span>Giriş Yap</span>
@@ -57,7 +63,9 @@ export default function UserButton() {
                     <Link
                         href={routeMap.blog.users.register.root}
                         className={clsx([
-                            'flex', 'justify-between', 'items-center', 'gap-2', 'p-2', 'hover:bg-gray-400', 'cursor-pointer rounded-md'
+                            'flex', 'justify-between', 'items-center', 'gap-2', 'p-2',
+                            'cursor-pointer', 'rounded-md',
+                            'hover:bg-gray-400',
                         ])}
                     >
                         <span>Üye Ol</span>
@@ -70,7 +78,8 @@ export default function UserButton() {
                     <Link
                         href={routeMap.blog.users.profile.root}
                         className={clsx([
-                            'flex', 'justify-between', 'items-center', 'gap-2', 'p-2', 'hover:bg-gray-400', 'cursor-pointer rounded-md'
+                            'flex', 'justify-between', 'items-center', 'gap-2', 'p-2',
+                            'cursor-pointer', 'rounded-md', 'hover:bg-gray-400',
                         ])}
                     >
                         <span>Profil</span>
@@ -83,7 +92,8 @@ export default function UserButton() {
                     <Link
                         href="/api/auth/signout"
                         className={clsx([
-                            'flex', 'justify-between', 'items-center', 'gap-2', 'p-2', 'hover:bg-gray-400', 'cursor-pointer', 'rounded-md'
+                            'flex', 'justify-between', 'items-center', 'gap-2', 'p-2',
+                            'cursor-pointer', 'rounded-md', 'hover:bg-gray-400'
                         ])}
                     >
                         <span>Çıkış Yap</span>

@@ -1,3 +1,8 @@
+/**
+ * Refresh token route for admin panel.
+ * It takes refresh token from request body and returns new access token.
+ * If refresh token is invalid, it returns 401 status code.
+ */
 import { NextRequest, NextResponse } from 'next/server'
 import { signJWT } from '@/utils'
 import {

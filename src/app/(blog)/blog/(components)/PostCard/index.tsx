@@ -1,8 +1,8 @@
 import { montserrat } from '@/app/fonts'
 import { FaShareNodes, FaComment, FaEye, FaHeart } from 'react-icons/fa6'
-import Image from 'next/image'
 import { clsx } from 'clsx'
 import { routeMap } from '@/utils/routeMap'
+import Image from 'next/image'
 
 interface Props {
     date: string
@@ -19,7 +19,9 @@ function countsSectionButton(icon: React.ReactNode, count: number) {
     return (
         <span
             className={clsx([
-                "flex", "items-center", "justify-between", "gap-1", "dark:text-white"
+                "flex", "items-center", "justify-between", "gap-1",
+                // dark
+                "dark:text-white"
             ])}
         >
             {icon} {count}
@@ -41,22 +43,23 @@ export default function PostCard({
     return (
         <div
             className={clsx([
-                'bg-gradient-to-br', 'from-white', 'to-gray-50',
-                // Always
-                'bg-white', 'rounded-md', 'shadow-md', 'transition-all', 'border-2',
-                'border-gray-300', 'dark:border-gray-700',
+                'bg-gradient-to-br', 'from-white', 'to-gray-50', 'bg-white', 'rounded-md',
+                'shadow-md', 'transition-all', 'border-2', 'border-gray-300', 'p-2',
                 // Dark
-                'dark:from-gray-800', 'dark:to-gray-950',
-                'dark:hover:shadow-gray-700 dark:hover:shadow-lg',
+                'dark:from-gray-800', 'dark:to-gray-950', 'dark:border-gray-700',
+                'dark:hover:shadow-gray-700', 'dark:hover:shadow-lg', 'dark:hover:brightness-110',
+                'dark:hover:border-gray-400',
                 // Hover
-                'hover:shadow-lg hover:shadow-gray-400', 'dark:hover:border-gray-400',
-                'hover:border-gray-500', 'dark:hover:brightness-110', 'sm:hover:scale-[1.02]',
+                'hover:shadow-lg', 'hover:shadow-gray-400', 
+                'hover:border-gray-500',
+                // sm hover
+                'sm:hover:scale-[1.02]',
                 // 320 - 768
-                'min-[320px]:w-full max-[768px]:w-full',
-                'min-[320px]:m-0 max-[768px]:m-0',
-                'min-[320px]:mb-8 max-[768px]:mb-8', 'p-2'
+                'min-[320px]:w-full', 'max-[768px]:w-full',
+                'min-[320px]:m-0', 'max-[768px]:m-0', 'min-[320px]:mb-8', 'max-[768px]:mb-8',
             ])}
         >
+            {/* Post Cover */}
             <Image
                 src={
                     cover
@@ -71,11 +74,12 @@ export default function PostCard({
                 ])}
                 alt="Makale Kapağı"
             />
+            {/* Post Body */}
             <div className={clsx('p-2')}>
                 <p
                     className={clsx([
-                        `${montserrat.className}`, 'font-bold', 'text-3xl', 'dark:text-white',
-                        'text-gray-700'
+                        `${montserrat.className}`, 'font-bold', 'text-3xl', 'text-gray-700',
+                        'dark:text-white',
                     ])}
                 >
                     {title}
@@ -113,6 +117,7 @@ export default function PostCard({
                         )}
                     </div>
                 </div>
+                {/* Post's Tags */}
                 {
                     tags &&
                     <div

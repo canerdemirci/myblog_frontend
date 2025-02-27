@@ -1,3 +1,9 @@
+/**
+ * This middleware is used to check if the user has a valid access token.
+ * If the access token is invalid, it will check if the user has a valid refresh token.
+ * If the refresh token is valid, it will refresh the access token.
+ * If the refresh token is invalid, it will redirect the user to the login page.
+ */
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyJWT } from '@/utils'
 import { routeMap } from './utils/routeMap'

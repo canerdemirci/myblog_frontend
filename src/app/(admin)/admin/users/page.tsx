@@ -22,12 +22,16 @@ import AdminPanelPage from "../(components)/AdminPanelPage"
 
 import { useEffect, useState } from "react"
 import Image from 'next/image'
+
 import { IoPersonCircle } from "react-icons/io5"
 
 import { paginationDataSliceIndexes } from "@/utils"
-import { getUsers } from "@/blog_api_actions/user_repo"
 import { ApiError } from "@/lib/custom_fetch"
+
+import { getUsers } from "@/blog_api_actions/user_repo"
+
 import clsx from "clsx"
+
 import type { User } from "next-auth"
 
 export default function CommentsPage() {

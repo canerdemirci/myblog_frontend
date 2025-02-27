@@ -1,14 +1,18 @@
 'use client'
 
 import Image from "next/image"
-import clsx from "clsx"
-import { IoPersonCircle } from "react-icons/io5"
-import type { User } from "next-auth"
 import { useState } from "react"
-import { deleteUserAvatar, uploadUserAvatar } from "@/blog_api_actions"
-import { updateUser } from "@/blog_api_actions/user_repo"
+
+import clsx from "clsx"
 import { routeMap } from "@/utils/routeMap"
 import { updateUserJoiSchema } from "@/utils"
+
+import { IoPersonCircle } from "react-icons/io5"
+
+import { deleteUserAvatar, uploadUserAvatar } from "@/blog_api_actions"
+import { updateUser } from "@/blog_api_actions/user_repo"
+
+import type { User } from "next-auth"
 
 export default function UserForm({ user } : { user: User }) {
     const [userImage, setUserImage] = useState<string | null | undefined>(user.image)
@@ -25,7 +29,8 @@ export default function UserForm({ user } : { user: User }) {
                 const validation = updateUserJoiSchema.validate({ id: user.id, name: userName })
 
                 if (validation.error) {
-                    alert('Bir hata oluştu!'
+                    alert(
+                        'Bir hata oluştu!'
                         + validation.error.details.map(e => e.message + "\n")
                     )
                 } else {

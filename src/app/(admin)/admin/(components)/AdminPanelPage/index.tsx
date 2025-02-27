@@ -1,3 +1,7 @@
+/**
+ * Wrapper for admin panel pages
+ */
+
 'use client'
 
 import Header from "@/app/(admin)/admin/(components)/Header"

@@ -1,32 +1,43 @@
-import { getPost, getRelatedPosts } from '@/blog_api_actions/post_repo'
 import { montserrat } from '@/app/fonts'
-import Image from 'next/image'
-import { clsx } from 'clsx'
+
 import { IoMdEye } from 'react-icons/io'
+import { MdImage } from 'react-icons/md'
+
+import Image from 'next/image'
+import Link from 'next/link'
+
+import { cache, Suspense } from 'react'
+
+import { clsx } from 'clsx'
 import { routeMap } from '@/utils/routeMap'
+
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/utils/auth'
+
 import CommentsSection from './(components)/CommentsSection'
 import ArticleContent from './(components)/ArticleContent'
 import Interactions from './(components)/Interactions'
 import NotFound from '../../(components)/NotFound'
 import ErrorElement from '../../(components)/ErrorElement'
 import Tags from './(components)/Tags'
-import Link from 'next/link'
-import type { Metadata, ResolvingMetadata } from 'next'
-import { cache, Suspense } from 'react'
-import { MdImage } from 'react-icons/md'
-import ErrorBoundary from '@/app/(components)/ErrorBoundary'
 import UpButton from '../../(components)/UpButton'
+import ErrorBoundary from '@/app/(components)/ErrorBoundary'
+
+import { getPost, getRelatedPosts } from '@/blog_api_actions/post_repo'
+
+import type { Metadata, ResolvingMetadata } from 'next'
 
 type Props = {
     params: { id: string }
 }
 
+// Used react query to cache the post for preventing multiple requests
+// It will be used in generateMetadata function and Post page
 const fetchPost = cache(async (id: string) => await getPost(id))
 
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata)
-    : Promise<Metadata> {
+    : Promise<Metadata>
+{
     try {
         const postId = params.id as string
         const post = await fetchPost(postId)
@@ -78,7 +89,7 @@ export default async function PostPage({ params }: Props) {
                 priority={true}
                 alt='Makale Kapağı'
                 className={clsx([
-                    'aspect-[40/21]', 'w-full', 'md:rounded-tl-lg', 'md:rounded-tr-lg', 'mb-4'
+                    'aspect-[40/21]', 'w-full', 'mb-4', 'md:rounded-tl-lg', 'md:rounded-tr-lg'
                 ])}
             />
         )
@@ -90,21 +101,17 @@ export default async function PostPage({ params }: Props) {
                 <h2
                     className={clsx([
                         montserrat.className,
-                        'text-center', 'font-bold', 'text-3xl', 'text-gray-800',
-                        'mt-16', 'mb-8', 'dark:text-gray-100'
+                        'text-center', 'font-bold', 'text-3xl', 'text-gray-800', 'mt-16', 'mb-8',
+                        'dark:text-gray-100'
                     ])}
                 >
                     İLGİNİZİ ÇEKEBİLECEK DİĞER MAKALELER
                 </h2>
-                <div className={clsx(['grid', 'sm:grid-cols-2', 'gap-8'])}>
+                <div className={clsx(['grid', 'gap-8', 'sm:grid-cols-2'])}>
                     {relatedPosts.map(rp => (
                         <Link
                             key={rp.id}
                             href={routeMap.blog.posts.postById(rp.id)}
-                            className={clsx([
-                                'break-inside-avoid', 'break-after-avoid-page',
-                                'inline-block', 'w-full'
-                            ])}
                         >
                             <div className={clsx(['flex', 'flex-col', 'gap-4'])}>
                                 <Image
@@ -129,7 +136,7 @@ export default async function PostPage({ params }: Props) {
                                 >
                                     <h3
                                         className={clsx([
-                                            'font-bold', 'dark:text-gray-100', 'text-xl'
+                                            'font-bold', 'text-xl', 'dark:text-gray-100',
                                         ])}
                                     >
                                         {rp.title}
@@ -161,10 +168,14 @@ export default async function PostPage({ params }: Props) {
                     <UpButton />
                     <main
                         className={clsx([
-                            'w-full', 'md:w-[85%]', 'lg:w-[75%]', 'xl:w-[65%]',
-                            'md:m-auto', 'md:mb-16', 'bg-white',
-                            'dark:bg-[#0d1116]', 'md:rounded-lg', 'md:drop-shadow-xl',
-                            'md:border', 'dark:border-gray-800', 'border-gray-300'
+                            'w-full', 'border-gray-300', 'bg-white',
+                            // md
+                            'md:m-auto', 'md:mb-16', 'md:rounded-lg', 'md:drop-shadow-xl',
+                            'md:border', 'md:w-[85%]',
+                            // dark
+                            'dark:bg-[#0d1116]', 'dark:border-gray-800',
+                            // lg, xl  
+                            'lg:w-[75%]', 'xl:w-[65%]',
                         ])}
                     >
                         {PostCover(post)}
@@ -172,8 +183,9 @@ export default async function PostPage({ params }: Props) {
                             {/* Post Title */}
                             <h1
                                 className={clsx([
-                                    montserrat.className, 'p-4', 'text-4xl', 'md:text-5xl',
-                                    'font-bold', 'dark:text-gray-100', 'text-gray-700'
+                                    montserrat.className,
+                                    'p-4', 'text-4xl', 'text-gray-700', 'font-bold',
+                                    'md:text-5xl', 'dark:text-gray-100',
                                 ])}
                             >
                                 {post.title}
@@ -229,28 +241,20 @@ export default async function PostPage({ params }: Props) {
             <Suspense fallback={
                 <main
                     className={clsx([
-                        'relative', 'w-full', 'sm:w-[65%]',
-                        'sm:mx-auto', 'mb-16', 'flex', 'flex-col', 'gap-4', 'animate-pulse'
+                        'relative', 'w-full', 'mb-16', 'flex', 'flex-col', 'gap-4', 'animate-pulse',
+                        'sm:w-[65%]', 'sm:mx-auto',
                     ])}
                 >
                     <div
                         className={clsx([
-                            'md:rounded-md', 'bg-gray-300', 'w-full', 'aspect-[40/21]',
-                            'flex', 'justify-center', 'items-center'
+                            'bg-gray-300', 'w-full', 'aspect-[40/21]',
+                            'flex', 'justify-center', 'items-center', 'md:rounded-md',
                         ])}
                     >
                         <MdImage size={120} className='text-gray-400' />
                     </div>
-                    <div
-                        className={clsx([
-                            'w-[60%]', 'h-5', 'bg-gray-300'
-                        ])}
-                    ></div>
-                    <div
-                        className={clsx([
-                            'w-[30%]', 'h-5', 'bg-gray-300'
-                        ])}
-                    ></div>
+                    <div className={clsx(['w-[60%]', 'h-5', 'bg-gray-300'])}></div>
+                    <div className={clsx(['w-[30%]', 'h-5', 'bg-gray-300'])}></div>
                 </main>
             }>
                 <Post />

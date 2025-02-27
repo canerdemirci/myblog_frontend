@@ -1,19 +1,25 @@
 'use client'
 
 import clsx from "clsx"
+
 import { useEffect, useState } from "react"
+import Link from "next/link"
+
 import { MdBookmark, MdShare, MdComment, MdFavorite } from 'react-icons/md'
+
 import ShareButtons from "@/app/(blog)/blog/(components)/ShareButtons"
+
 import { routeMap } from "@/utils/routeMap"
 import { guestId } from "@/lib/sharedFunctions"
+
 import { addGuestPostInteraction, addUserPostInteraction, isGuestLikedPost, isUserLikedPost }
     from "@/blog_api_actions/post_interaction_repo"
 import {
     createGuestBookmark, createUserBookmark, deleteBookmark,
     getGuestBookmark, getUserBookmark
 } from "@/blog_api_actions/bookmark_repo"
+
 import type { User } from "next-auth"
-import Link from "next/link"
 
 interface Props {
     post: Post
@@ -27,6 +33,7 @@ export default function Interactions({ post, user }: Props) {
     const [likeProcess, setLikeProcess] = useState<boolean>(false)
     const [readyToDisplay, setReadyToDisplay] = useState<boolean>(false)
 
+    // Add view interaction and get like and bookmark status
     useEffect(() => {
         if (!user) {
             Promise.all([
@@ -137,13 +144,15 @@ export default function Interactions({ post, user }: Props) {
         readyToDisplay &&
         <div
             className={clsx([
-                "w-60", "m-auto", "rounded-xl", "bg-white", "p-2", "flex", "justify-center", "items-center", "gap-4", "shadow-sm", "border", "border-gray-200", "dark:bg-gray-900", "dark:border-gray-950"
+                "w-60", "m-auto", "rounded-xl", "bg-white", "p-2", "flex", "justify-center", "items-center", "gap-4", "shadow-sm", "border", "border-gray-200",
+                // dark
+                "dark:bg-gray-900", "dark:border-gray-950"
             ])}
         >
             <div
                 className={clsx([
-                    "cursor-pointer", "p-2", "rounded-full", "hover:bg-gray-100",
-                    "dark:hover:bg-gray-700"
+                    "cursor-pointer", "p-2", "rounded-full",
+                    "hover:bg-gray-100", "dark:hover:bg-gray-700"
                 ])}
             >
                 <MdFavorite

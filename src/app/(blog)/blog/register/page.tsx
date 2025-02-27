@@ -31,7 +31,11 @@ export default function RegisterPage() {
         })
 
         if (validation.error) {
-            setGeneralError('Parolada en az 1 küçük, 1 büyük harf, 1 rakam ve 1 sembol bulunmalıdır ve en az 10 en fazla 50 karakter olmalıdır. Email doğru girilmelidir.')
+            setGeneralError(
+                'Parolada en az 1 küçük, 1 büyük harf, 1 rakam ve 1 sembol ' +
+                'bulunmalıdır ve en az 10 en fazla 50 karakter olmalıdır. ' + 
+                'Email doğru girilmelidir.'
+            )
         } else {
             setGeneralError('')
 
@@ -47,7 +51,10 @@ export default function RegisterPage() {
                     await signIn('credentials')
                 }
             } catch (_) {
-                setGeneralError('Parolada en az 1 küçük, 1 büyük harf, 1 rakam ve 1 sembol bulunmalıdır ve en az 10 en fazla 50 karakter olmalıdır. Email doğru girilmelidir.')
+                setGeneralError(
+                    'Parolada en az 1 küçük, 1 büyük harf, 1 rakam ve 1 sembol ' +
+                    'bulunmalıdır ve en az 10 en fazla 50 karakter olmalıdır. ' +
+                    'Email doğru girilmelidir.')
             } finally {
                 setProcess(false)
             }
@@ -57,7 +64,7 @@ export default function RegisterPage() {
     return (
         <div
             className={clsx([
-                "w-[95%]", "md:w-[30rem]", "my-12", "m-auto", "flex", "flex-col"
+                "w-[95%]", "my-12", "m-auto", "flex", "flex-col", "md:w-[30rem]"
             ])}
         >
             <h1
@@ -71,7 +78,9 @@ export default function RegisterPage() {
                 className={clsx([
                     "w-full", "my-4", "mx-auto", "p-4", "rounded-md", "bg-gray-200",
                     "border", "border-gray-500", "flex", "flex-col", "items-center",
-                    "gap-4", "dark:bg-gray-700", "dark:border-gray-800"
+                    "gap-4",
+                    // dark
+                    "dark:bg-gray-700", "dark:border-gray-800"
                 ])}
                 onSubmit={handleSubmit}
             >
@@ -86,7 +95,16 @@ export default function RegisterPage() {
                     </label>
                     <input
                         className={clsx([
-                            "bg-gray-50", "outline-none", "p-2", "border", "border-gray-400", "rounded-md", "hover:border-gray-700", "focus:border-gray-700", "focus:border-2", "dark:bg-gray-900", "dark:text-white", "dark:focus:border-green-600", "dark:focus:border-2", "dark:hover:border-green-400"
+                            "bg-gray-50", "outline-none", "p-2", "border", "border-gray-400",
+                            "rounded-md",
+                            // dark
+                            "dark:bg-gray-900",
+                            "dark:text-white", "dark:focus:border-green-600",
+                            "dark:focus:border-2", "dark:hover:border-green-400",
+                            // focus
+                            "focus:border-gray-700", "focus:border-2",
+                            // hover
+                            "hover:border-gray-700",
                         ])}
                         value={email}
                         id="email"
@@ -105,7 +123,16 @@ export default function RegisterPage() {
                     </label>
                     <input
                         className={clsx([
-                            "bg-gray-50", "outline-none", "p-2", "border", "border-gray-400", "rounded-md", "hover:border-gray-700", "focus:border-gray-700", "focus:border-2", "dark:bg-gray-900", "dark:text-white", "dark:focus:border-green-600", "dark:focus:border-2", "dark:hover:border-green-400"
+                            "bg-gray-50", "outline-none", "p-2", "border", "border-gray-400",
+                            "rounded-md",
+                            // focus
+                            "focus:border-2", "focus:border-gray-700",
+                            // dark
+                            "dark:bg-gray-900", "dark:text-white",
+                            "dark:focus:border-green-600", "dark:focus:border-2",
+                            "dark:hover:border-green-400",
+                            // hover
+                            "hover:border-gray-700",
                         ])}
                         value={password}
                         id="password"
@@ -122,7 +149,15 @@ export default function RegisterPage() {
                     </label>
                     <input
                         className={clsx([
-                            "bg-gray-50", "outline-none", "p-2", "border", "border-gray-400", "rounded-md", "hover:border-gray-700", "focus:border-gray-700", "focus:border-2", "dark:bg-gray-900", "dark:text-white", "dark:focus:border-green-600", "dark:focus:border-2", "dark:hover:border-green-400"
+                            "bg-gray-50", "outline-none", "p-2", "border", "border-gray-400", "rounded-md",     
+                            // dark
+                            "dark:bg-gray-900", "dark:text-white",
+                            "dark:hover:border-green-400", 
+                            // focus
+                            "focus:border-gray-700", "focus:border-2",
+                            "dark:focus:border-green-600", "dark:focus:border-2",
+                            // hover
+                            "hover:border-gray-700",
                         ])}
                         value={password2}
                         id="password2"
@@ -133,9 +168,12 @@ export default function RegisterPage() {
                 <button
                     className={clsx([
                         "bg-gray-600", "p-2", "w-full", "rounded-md", "font-bold",
-                        "text-gray-100", "hover:bg-gray-700", "dark:bg-green-400",
-                        "dark:text-gray-700", "dark:hover:bg-green-600",
-                        "dark:hover:text-white"
+                        "text-gray-100",
+                        // hover
+                        "hover:bg-gray-700",
+                        // dark
+                        "dark:text-gray-700", "dark:bg-green-400",
+                        "dark:hover:text-white", "dark:hover:bg-green-600",
                     ])}
                     type="submit"
                     disabled={process}

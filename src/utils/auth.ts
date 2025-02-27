@@ -1,3 +1,6 @@
+/**
+ * This file contains the next-auth configuration options.
+ */
 import { Account, AuthOptions, User } from "next-auth"
 
 // Providers
@@ -5,8 +8,13 @@ import GoogleProvider from "next-auth/providers/google"
 import GithubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials"
 
-import { createUser, getUser, getUserByEmailAndPassword, getUserByProviderId }
-    from "@/blog_api_actions/user_repo"
+import {
+    createUser,
+    getUser,
+    getUserByEmailAndPassword,
+    getUserByProviderId
+} from "@/blog_api_actions/user_repo"
+
 import { sha256 } from "@/utils"
 import { JWT } from "next-auth/jwt"
 import { AdapterUser } from "next-auth/adapters"

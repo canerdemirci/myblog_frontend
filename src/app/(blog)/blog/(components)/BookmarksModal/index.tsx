@@ -6,14 +6,15 @@ import StaggeredContent from '@/app/(components)/StaggeredContent'
 import NoData from "../NoData"
 import Loading from "../Loading"
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { clsx } from 'clsx'
 import { routeMap } from '@/utils/routeMap'
 import { guestId } from '@/lib/sharedFunctions'
-import { MdBookmark, MdClose, MdDelete } from 'react-icons/md'
-import { useEffect, useState } from 'react'
-import { deleteBookmark, getGuestBookmarks, getUserBookmarks } from '@/blog_api_actions/bookmark_repo'
-import { useSession } from 'next-auth/react'
 import { ApiError } from "@/lib/custom_fetch"
+import { useSession } from 'next-auth/react'
+import { deleteBookmark, getGuestBookmarks, getUserBookmarks }
+    from '@/blog_api_actions/bookmark_repo'
+import { MdBookmark, MdClose, MdDelete } from 'react-icons/md'
 
 interface Props {
     onClose: () => void
@@ -61,15 +62,23 @@ export default function BookmarksModal({ onClose }: Props) {
                 onClick={(e) => e.stopPropagation()}
                 className={clsx([
                     'overflow-y-auto',  'm-auto', 'rounded-xl', 'bg-white',
-                    'shadow-xl', 'border', 'border-gray-400', 'dark:bg-gray-900',
-                    'sm:w-[100%]', 'sm:mt-0', 'ss:h-screen', 'md:w-[50%]', 'md:mt-20',
-                    'sm:max-h-[20rem]', 'dark:border-gray-700'
+                    'shadow-xl', 'border', 'border-gray-400',
+                    // ss
+                    'ss:h-screen',
+                    // sm
+                    'sm:w-[100%]', 'sm:mt-0', 'sm:max-h-[20rem]',
+                    // md
+                    'md:w-[50%]', 'md:mt-20',
+                    // dark
+                    'dark:bg-gray-900', 'dark:border-gray-700',
                 ])}
             >
                 <div
                     className={clsx([
                         'flex', 'justify-between', 'items-center', 'border-b', 'border-gray-200',
-                        'p-2', 'dark:border-gray-700'
+                        'p-2',
+                        // dark
+                        'dark:border-gray-700'
                     ])}
                 >
                     <h3
@@ -98,9 +107,11 @@ export default function BookmarksModal({ onClose }: Props) {
                     }}
                     error={{
                         status: error !== null,
-                        content: (<div className={clsx(["m-auto", "mt-16"])}>
-                            <ErrorElement iconSize={52} text="Bir hata oluştu!" />
-                        </div>)
+                        content: (
+                            <div className={clsx(["m-auto", "mt-16"])}>
+                                <ErrorElement iconSize={52} text="Bir hata oluştu!" />
+                            </div>
+                        )
                     }}
                     content={{
                         empty: bookmarks.length < 1,
@@ -108,7 +119,10 @@ export default function BookmarksModal({ onClose }: Props) {
                             <div className={clsx(["m-auto", "mt-16"])}>
                                 <NoData
                                     iconSize={52}
-                                    text="Daha sonra okumak için kaydettiğiniz bir makale bulunamadı."
+                                    text={
+                                        "Daha sonra okumak için kaydettiğiniz bir " +
+                                        "makale bulunamadı."
+                                    }
                                 />
                             </div>
                         ),
@@ -119,8 +133,7 @@ export default function BookmarksModal({ onClose }: Props) {
                                         <div
                                             key={b.id}
                                             className={clsx([
-                                                'group',
-                                                'flex', 'justify-between', 'items-center',
+                                                'group', 'flex', 'justify-between', 'items-center',
                                                 'cursor-pointer', 'p-2',  
                                                 'hover:bg-gray-200', 'hover:rounded-xl', 'dark:hover:bg-gray-700'
                                             ])}
@@ -130,15 +143,11 @@ export default function BookmarksModal({ onClose }: Props) {
                                             >
                                                 <MdBookmark
                                                     size={24}
-                                                    className={clsx([
-                                                        'text-gray-300'
-                                                    ])}
+                                                    className={clsx(['text-gray-300'])}
                                                 />
                                                 <Link
                                                     href={routeMap.blog.posts.postById(b.post!.id)}
-                                                    className={clsx([
-                                                        'dark:text-gray-100'
-                                                    ])}
+                                                    className={clsx(['dark:text-gray-100'])}
                                                     onClick={onClose}
                                                 >
                                                     {b.post!.title}
@@ -147,8 +156,8 @@ export default function BookmarksModal({ onClose }: Props) {
                                             <MdDelete
                                                 size={24}
                                                 className={clsx([
-                                                    'hidden',
-                                                    'text-red-400', 'hover:text-red-600',
+                                                    'hidden', 'text-red-400',
+                                                    'hover:text-red-600',
                                                     'group-hover:inline-block'
                                                 ])}
                                                 onClick={() => handleDeleteBookmark(b.id)}

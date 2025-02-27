@@ -1,3 +1,7 @@
+/**
+ * This component is used to animate page transitions.
+ * It uses the `framer-motion` library to animate the page transitions.
+ */
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'

@@ -1,3 +1,7 @@
+/**
+ * This component is used to display content in a staggered manner.
+ * It handles loading, error, not found and empty states.
+ */
 interface Props {
     loading: {
         status: boolean,

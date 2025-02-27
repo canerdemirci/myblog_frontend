@@ -1,6 +1,13 @@
+/**
+ * Page: /blog/notes/[id]
+ */
+
 'use client'
 
 import NoteModal from "../../(components)/NoteModal"
+import Pending from "../../(components)/Pending"
+import ErrorElement from "../../(components)/ErrorElement"
+
 import {
     addGuestNoteInteraction,
     addUserNoteInteraction,
@@ -8,15 +15,15 @@ import {
     isUserLikedNote,
 } from "@/blog_api_actions/note_interaction_repo"
 import { getNote } from "@/blog_api_actions/note_repo"
+
 import { useEffect, useState } from "react"
 import { useRouter, useParams } from "next/navigation"
+import Head from 'next/head'
+import { useSession } from "next-auth/react"
+
 import { routeMap } from "@/utils/routeMap"
 import { guestId } from "@/lib/sharedFunctions"
-import { useSession } from "next-auth/react"
 import { ApiError } from "@/lib/custom_fetch"
-import Pending from "../../(components)/Pending"
-import ErrorElement from "../../(components)/ErrorElement"
-import Head from 'next/head'
 
 export default function NotePage() {
     const { data: session } = useSession()

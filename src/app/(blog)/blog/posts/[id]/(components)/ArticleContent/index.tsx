@@ -1,3 +1,8 @@
+/**
+ * This component is heart of the article page. It renders the content of the article.
+ * It uses the MDEditor.Markdown component to render the markdown content.
+ */
+
 'use client'
 
 import MDEditor from "@uiw/react-md-editor"

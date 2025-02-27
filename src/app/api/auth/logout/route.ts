@@ -1,3 +1,7 @@
+/**
+ * Logout route for admin panel.
+ * Deletes access and refresh tokens from cookies.
+ */
 import { NextResponse } from 'next/server'
 import { ACCESS_TOKEN_NAME, REFRESH_TOKEN_NAME } from '../constants'
 

@@ -11,7 +11,7 @@ export default function Slider({ children }: Props) {
         <section
             className={clsx([
                 "relative", "m-4", "py-4", "overflow-x-auto", "flex", "items-center", "gap-8",
-                "notes-scrollbar", "dark:notes-scrollbar-dark", "select-none"
+                "notes-scrollbar", "select-none", "dark:notes-scrollbar-dark"
             ])}
             onScroll={(e) => {
                 const scrollLeft = e.currentTarget.scrollLeft
@@ -40,16 +40,14 @@ export default function Slider({ children }: Props) {
             <div
                 id="note-left-fade"
                 className={clsx([
-                    'hidden',
-                    'absolute', 'top-0', 'left-0', 'w-14', 'h-full', 'bg-gradient-to-r',
-                    'from-white', 'cursor-pointer', 'dark:from-black'
+                    'hidden', 'absolute', 'top-0', 'left-0', 'w-14', 'h-full',
+                    'bg-gradient-to-r', 'from-white', 'cursor-pointer', 'dark:from-black'
                 ])}
             ></div>
             <div
                 id="note-right-fade"
                 className={clsx([
-                    'hidden',
-                    'absolute', 'top-0', 'right-0', 'w-14', 'h-full', 'bg-gradient-to-l',
+                    'hidden', 'absolute', 'top-0', 'right-0', 'w-14', 'h-full', 'bg-gradient-to-l',
                     'from-white', 'cursor-pointer', 'dark:from-black'
                 ])}
             ></div>

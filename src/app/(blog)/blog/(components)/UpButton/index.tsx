@@ -30,12 +30,14 @@ export default function UpButton() {
         <>
             {show && <div
                 className={clsx([
-                    'rounded-full', 'fixed', 'cursor-pointer', 'shadow-md',
-                    'border', 'border-gray-400', 'dark:border-gray-600',
-                    'p-4', 'bottom-4', 'right-4',
+                    'z-50', 'rounded-full', 'fixed', 'cursor-pointer', 'shadow-md', 'border',
+                    'border-gray-400', 'p-4', 'bottom-4', 'right-4', 'bg-gray-300',
+                    // sm
                     'sm:bottom-6', 'sm:right-6',
-                    'bg-gray-300', 'hover:bg-gray-400',
-                    'dark:bg-gray-200', 'dark:hover:bg-gray-300'
+                    // hover
+                    'hover:bg-gray-400', 'dark:hover:bg-gray-300',
+                    // dark
+                    'dark:border-gray-600', 'dark:bg-gray-200',
                 ])}
                 onClick={() => window.scrollTo({ left: 0, top: 0, behavior: 'smooth' })}
             >

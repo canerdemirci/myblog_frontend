@@ -1,7 +1,16 @@
 'use client'
 
 import clsx from "clsx"
+
+import Image from 'next/image'
+import { useState } from "react"
+import { routeMap } from "@/utils/routeMap"
+import { downloadLink } from "@/utils"
+
 import AdminPanelPage from "../(components)/AdminPanelPage"
+import { StyledTableCell, StyledTableCell2, StyledTableRow }
+    from "../(components)/StyledTableComponents"
+
 import Button from "@mui/material/Button"
 import Typography from "@mui/material/Typography"
 import Paper from "@mui/material/Paper"
@@ -9,19 +18,15 @@ import TableContainer from "@mui/material/TableContainer"
 import Table from "@mui/material/Table"
 import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
-import { StyledTableCell, StyledTableCell2, StyledTableRow }
-    from "../(components)/StyledTableComponents"
 import TableBody from "@mui/material/TableBody"
+
 import DeleteIcon from "@mui/icons-material/Delete"
 import CleanIcon from "@mui/icons-material/Check"
-import Image from 'next/image'
-import { useState } from "react"
+import StorageIcon from '@mui/icons-material/Storage'
+
 import { getUnusedPostCovers, getUnusedPostImages } from "@/blog_api_actions/post_repo"
-import { routeMap } from "@/utils/routeMap"
 import { backupDatabase, deleteCover, deleteNoteImage, deletePostImage } from "@/blog_api_actions"
 import { getUnusedNoteImages } from "@/blog_api_actions/note_repo"
-import StorageIcon from '@mui/icons-material/Storage'
-import { downloadLink } from "@/utils"
 
 export default function Settings() {
     // For unused post covers

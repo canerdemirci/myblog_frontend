@@ -2,16 +2,20 @@
 
 import StaggeredContent from "@/app/(components)/StaggeredContent"
 import PostCard from "../PostCard"
+import TagButtonsSection from "./TagButtonsSection"
+import PostsSkeleton from "./PostsSkeleton"
 import NoData from "../NoData"
 import ErrorElement from "../ErrorElement"
-import Link from "next/link"
-import { routeMap } from "@/utils/routeMap"
+
 import clsx from "clsx"
+import Link from "next/link"
 import { useEffect, useState } from "react"
+import { routeMap } from "@/utils/routeMap"
+
 import { getPosts } from "@/blog_api_actions/post_repo"
 import { getTags } from "@/blog_api_actions/tag_repo"
+
 import { MdAdd, MdDownload } from "react-icons/md"
-import { FaAngleLeft, FaAngleRight } from "react-icons/fa"
 
 export default function PostsSection() {
     const POST_LIMIT = 12
@@ -25,22 +29,20 @@ export default function PostsSection() {
     const [atEnd, setAtEnd] = useState<boolean>(false)
     const [tags, setTags] = useState<Tag[]>([])
     const [selectedTagId, setSelectedTagId] = useState<string>(fakeAllTag.id)
-    
+
+    // Fetch posts by selected tag id and pagination
     useEffect(() => {
         setLoading(true)
         setAtEnd(false)
-
         getPosts({ take: POST_LIMIT, skip: 0 }, selectedTagId === '0' ? undefined : selectedTagId)
             .then(p => setPosts(p))
             .catch(e => setFetchError(e))
             .finally(() => setLoading(false))
     }, [selectedTagId])
 
+    // Fetch tags for tag buttons that related at least one post
     useEffect(() => {
-        getTags().then(t => setTags(
-            // Only tags of has at least one post
-            [fakeAllTag as Tag, ...(t.filter(n => n.postCount > 0))]
-        ))
+        getTags().then(t => setTags([fakeAllTag as Tag, ...(t.filter(n => n.postCount > 0))]))
     }, [])
 
     function handleMoreBtn() {
@@ -69,176 +71,11 @@ export default function PostsSection() {
         }
     }
 
-    function PostsSkeleton() {
-        return (
-            <section className={clsx([
-                'md:grid', 'md:grid-cols-2', 'lg:grid-cols-3', '2xl:grid-cols-4', 'md:gap-8'
-            ])}>
-                {new Array(10).fill('x', 0, 9).map((_, i) => (
-                    <div key={i}>
-                        <div className={clsx([
-                            'bg-gray-300', 'h-80', 'rounded-xl',
-                            'flex', 'shrink-0', 'flex-col', 'justify-center', 'items-center', 
-                            'gap-8', 'animate-pulse',
-                            // 320 - 768
-                            'min-[320px]:w-full max-[768px]:w-full',
-                            'min-[320px]:m-0 max-[768px]:m-0',
-                            'min-[320px]:mb-8 max-[768px]:mb-8',
-                        ])}>
-                            <div className={clsx([
-                                'rounded-xl', 'bg-gray-200', 'w-[90%]', 'h-[40%]', 'mb-4'
-                            ])}></div>
-                            <div className={clsx([
-                                'w-3/4', 'h-2', 'bg-gray-100', 'rounded-md'
-                            ])}></div>
-                            <div className={clsx([
-                                'w-3/4', 'h-2', 'bg-gray-100', 'rounded-md'
-                            ])}></div>
-                            <div className={clsx([
-                                'w-3/4', 'h-2', 'bg-gray-100', 'rounded-md'
-                            ])}></div>
-                        </div>
-                    </div>
-                ))}
-            </section>
-        )
-    }
-
-    function TagButtonsSection() {
-        let scrollInterval: NodeJS.Timeout
-
-        const startScrolling = (direction: 'left' | 'right') => {
-            const tagButtonsSection = document.getElementById("tag-button-section")
-            if (!tagButtonsSection) return
-
-            scrollInterval = setInterval(() => {
-                tagButtonsSection.scrollBy({
-                    left: direction === 'left' ? -10 : 10,
-                    behavior: 'smooth'
-                })
-            }, 50)
-        }
-
-        const stopScrolling = () => {
-            clearInterval(scrollInterval)
-        }
-
-        if (tags.length > 0) return (
-            <div
-                id="tag-button-section"
-                className={clsx([
-                    'flex', 'sticky', 'top-0', 'items-center', 'gap-4', 'select-none',
-                    'overflow-x-auto', 'dark:bg-black', 'bg-gray-50', 'no-scrollbar', 'my-8', 'mx-4'
-                ])}
-                onScroll={(e) => {
-                    const scrollLeft = e.currentTarget.scrollLeft
-                    const clientWidth = e.currentTarget.clientWidth
-                    const scrollWidth = e.currentTarget.scrollWidth
-
-                    document.getElementById('left-fade')!.style.left = `${scrollLeft}px`
-                    document.getElementById('right-fade')!.style.right = `${-scrollLeft}px`
-                    document.getElementById('tag-prevbtn')!.style.left = `${scrollLeft + 5}px`
-                    document.getElementById('tag-nextbtn')!.style.right = `${-scrollLeft + 5}px`
-
-                    // Left fade effect show
-                    if (scrollLeft <= 10) {
-                        document.getElementById('left-fade')!.style.display = 'none'
-                    } else {
-                        document.getElementById('left-fade')!.style.display = 'block'
-                    }
-
-                    // Right fade effect show
-                    if (scrollLeft + clientWidth <= scrollWidth - 10) {
-                        document.getElementById('right-fade')!.style.display = 'block'
-                    } else {
-                        document.getElementById('right-fade')!.style.display = 'none'
-                    }
-
-                    // Prev button show
-                    if (scrollLeft >= 10 && clientWidth >= 640) {
-                        document.getElementById('tag-prevbtn')!.style.display = 'block'
-                    } else {
-                        document.getElementById('tag-prevbtn')!.style.display = 'none'
-                    }
-
-                    // Next button show
-                    if (scrollLeft + clientWidth <= scrollWidth - 10 && clientWidth >= 640) {
-                        document.getElementById('tag-nextbtn')!.style.display = 'block'
-                    } else {
-                        document.getElementById('tag-nextbtn')!.style.display = 'none'
-                    }
-                }}
-            >
-                {/* Left and right fade effects */}
-                <div
-                    id="left-fade"
-                    className={clsx([
-                        'hidden',
-                        'absolute', 'top-0', 'left-0', 'sm:left-[50px]', 'w-14', 'h-full', 'bg-gradient-to-r',
-                        'from-white', 'cursor-pointer', 'dark:from-black'
-                    ])}
-                    onClick={() => handleTagButton('0')}></div>
-                <div
-                    id="right-fade"
-                    className={clsx([
-                        'absolute', 'top-0', 'right-0', 'w-14', 'h-full', 'bg-gradient-to-l',
-                        'from-white', 'cursor-pointer', 'dark:from-black'
-                    ])}
-                    onClick={() => handleTagButton(tags[tags.length-1].id)}></div>
-                {/* Left scroll button */}
-                <div
-                    id="tag-prevbtn"
-                    className={clsx([
-                        'hidden', 'absolute', 'top-[10%]', 'left-0',
-                        'bg-gray-300', 'rounded-full', 'cursor-pointer', 'p-2',
-                        'hover:bg-gray-400'
-                    ])}
-                    onMouseDown={() => startScrolling('left')}
-                    onMouseUp={stopScrolling}
-                    onMouseLeave={stopScrolling}
-                ><FaAngleLeft /></div>
-                {/* Right scroll button */}
-                <div
-                    id="tag-nextbtn"
-                    className={clsx([
-                        'hidden', 'sm:block', 'absolute', 'top-[10%]', 'right-0',
-                        'bg-gray-300', 'rounded-full', 'cursor-pointer', 'p-2',
-                        'hover:bg-gray-400'
-                    ])}
-                    onMouseDown={() => startScrolling('right')}
-                    onMouseUp={stopScrolling}
-                    onMouseLeave={stopScrolling}
-                ><FaAngleRight /></div>
-                {/* Tag buttons */}
-                {tags.map(t => (
-                    <button
-                        key={t.id}
-                        className={clsx([
-                            'p-2', 'flex-shrink-0', 'rounded-md', 'cursor-pointer',
-                            'font-bold', 
-                            selectedTagId === t.id
-                                ? ['bg-red-500', 'text-white']
-                                : [
-                                    'bg-gray-200', 'hover:bg-gray-400',
-                                    'dark:bg-gray-800', 'dark:hover:bg-gray-700',
-                                    'text-gray-600', 'hover:text-gray-800',
-                                    'dark:text-gray-100', 'dark:hover:text-green-300',
-                                ]
-                        ])}
-                        onClick={() => handleTagButton(t.id)}
-                    >
-                        {t.name}
-                    </button>
-                ))}
-            </div>
-        )
-    }
-
     return (
         <StaggeredContent
           loading={{
             status: loading,
-            content: PostsSkeleton(),
+            content: (<PostsSkeleton />),
           }}
           error={{
             status: fetchError !== null,
@@ -265,11 +102,15 @@ export default function PostsSection() {
               <section
                 className={clsx(['relative'])}
               >
-                {TagButtonsSection()}
+                <TagButtonsSection
+                    onClick={handleTagButton}
+                    tags={tags}
+                    selectedTagId={selectedTagId}
+                />
                 <div
                     className={clsx([
+                        'gap-6', 'mx-4',
                         'sm:grid', 'sm:grid-cols-2', 'lg:grid-cols-3', '2xl:grid-cols-4',
-                        'gap-6', 'mx-4'
                     ])}
                 >
                     {posts.map((post, index) => (
@@ -297,12 +138,12 @@ export default function PostsSection() {
                 {/* Add More Button */}
                 {(!atEnd && !loading && posts.length >= POST_LIMIT) && <button
                     className={clsx([
-                        'w-52', 'mx-auto',
-                        'px-4', 'py-2', 'mb-32', 'rounded-xl', 'cursor-pointer',
+                        getMoreloading && ['animate-pulse'],
+                        'w-52', 'mx-auto', 'px-4', 'py-2', 'mb-32', 'rounded-xl', 'cursor-pointer',
                         'bg-gray-100', 'border', 'border-gray-200', 'drop-shadow-md',
-                        'hover:bg-gray-800', 'hover:border-gray-800', 'hover:text-green-400',
                         'flex', 'justify-center', 'items-center', 'gap-2', 'font-bold',
-                        getMoreloading && ['animate-pulse']
+                        // hover
+                        'hover:bg-gray-800', 'hover:border-gray-800', 'hover:text-green-400',
                     ])}
                     onClick={handleMoreBtn}
                 >

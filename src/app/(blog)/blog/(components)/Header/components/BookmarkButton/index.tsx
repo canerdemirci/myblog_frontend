@@ -1,9 +1,7 @@
 'use client'
 
-import { MdBookmark } from 'react-icons/md'
-
 import BookmarksModal from '../../../BookmarksModal'
-
+import { MdBookmark } from 'react-icons/md'
 import { useState } from 'react'
 import { clsx } from 'clsx'
 

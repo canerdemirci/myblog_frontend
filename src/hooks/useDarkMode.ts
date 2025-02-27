@@ -38,7 +38,7 @@ export default function darkMode() {
             document.documentElement.classList.toggle('dark', isDarkMode)
             // For MdEditor
             document.documentElement.setAttribute('data-color-mode', isDarkMode ? 'dark' : 'light')
-            }
+        }
     }, [isDarkMode])
 
     function toggleDarkMode() {

@@ -3,15 +3,22 @@
 import type { User } from "next-auth"
 
 import { routeMap } from "@/utils/routeMap"
+
 import { createComment, deleteComment, getCommentsByPostId, updateComment }
     from "@/blog_api_actions/comment_repo"
+
 import { ApiError } from "@/lib/custom_fetch"
+
 import ThreeDotsMenu from "@/app/(blog)/blog/(components)/ThreeDotsMenu"
 import StaggeredContent from "@/app/(components)/StaggeredContent"
+
 import Image from "next/image"
 import Link from "next/link"
+
 import { FormEvent, useEffect, useState } from "react"
+
 import { IoPersonCircle } from "react-icons/io5"
+
 import { clsx } from "clsx"
 
 interface Props {
@@ -101,8 +108,8 @@ export default function CommentsSection({ user, postId }: Props) {
     function CommentBar() {
         return <div
             className={clsx([
-                "p-2", "mb-6", "border", "border-gray-300",
-                "rounded-xl", "flex", "items-center", "gap-2", "cursor-pointer"
+                "p-2", "mb-6", "border", "border-gray-300", "cursor-pointer",
+                "rounded-xl", "flex", "items-center", "gap-2",
             ])}
             onClick={() => setCommentBarOpen(true)}
         >
@@ -139,8 +146,8 @@ export default function CommentsSection({ user, postId }: Props) {
     function CommentBarNoUser() {
         return  <div
             className={clsx([
-                "p-2", "my-6", "border", "border-gray-300",
-                "rounded-xl", "flex", "items-center", "gap-2", "cursor-pointer"
+                "p-2", "my-6", "border", "border-gray-300", "cursor-pointer",
+                "rounded-xl", "flex", "items-center", "gap-2",
             ])}
         >
             <Link
@@ -158,9 +165,9 @@ export default function CommentsSection({ user, postId }: Props) {
                 <textarea
                     placeholder="Düşüncelerinizi paylaşın, siz de bir yorum bırakın..."
                     className={clsx([
-                        'w-full', 'mt-2 ', 'p-4', 'rounded-xl', 'border',
-                        'border-gray-400', 'dark:bg-gray-900',
-                        'dark:border-gray-700', 'dark:text-gray-100'
+                        'w-full', 'mt-2 ', 'p-4', 'rounded-xl', 'border', 'border-gray-400',
+                        // dark
+                        'dark:bg-gray-900', 'dark:border-gray-700', 'dark:text-gray-100'
                     ])}
                     rows={textareaRows}
                     value={comment}
@@ -203,6 +210,7 @@ export default function CommentsSection({ user, postId }: Props) {
                 <textarea
                     className={clsx([
                         'w-full', 'p-4', 'rounded-xl', 'border', 'border-gray-400',
+                        // dark
                         'dark:bg-gray-900', 'dark:border-gray-700', 'dark:text-gray-100'
                     ])}
                     rows={3}
@@ -242,8 +250,8 @@ export default function CommentsSection({ user, postId }: Props) {
     function Comments() {
         return <div
             className={clsx([
-                "flex", "flex-col", "gap-6", "mt-4", "max-h-[500px]", "overflow-y-auto",
-                "min-h-[120px]"
+                "flex", "flex-col", "gap-6", "mt-4", "overflow-y-auto",
+                "max-h-[500px]", "min-h-[120px]"
             ])}
         >
             {
@@ -309,8 +317,7 @@ export default function CommentsSection({ user, postId }: Props) {
                                     items={[
                                         {
                                             caption: 'Sil',
-                                            disabled: deleteBtnDisabled ||
-                                                updatingId !== '',
+                                            disabled: deleteBtnDisabled || updatingId !== '',
                                             onClick: () => handleDeleteComment(c.id)
                                         },
                                         {

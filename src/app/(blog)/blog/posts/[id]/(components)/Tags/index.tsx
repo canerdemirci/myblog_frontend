@@ -1,13 +1,13 @@
 'use client'
 
 import clsx from "clsx"
+import { routeMap } from "@/utils/routeMap"
 import { montserrat } from '@/app/fonts'
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { getPostsOfTag } from "@/blog_api_actions/post_repo"
 import Loading from "@/app/(blog)/blog/(components)/Loading"
-import { routeMap } from "@/utils/routeMap"
 
 interface Props {
     post: Post
@@ -40,15 +40,11 @@ export default function Tags({ post } : Props) {
                     >
                         ETİKETE AİT MAKALELER
                     </h2>
-                    <div className={clsx(['grid', 'sm:grid-cols-2', 'gap-8'])}>
+                    <div className={clsx(['grid', 'gap-8', 'sm:grid-cols-2'])}>
                         {posts.map(rp => (
                             <Link
                                 key={rp.id}
                                 href={routeMap.blog.posts.postById(rp.id)}
-                                className={clsx([
-                                    'break-inside-avoid', 'break-after-avoid-page',
-                                    'inline-block', 'w-full'
-                                ])}
                             >
                                 <div className={clsx(['flex', 'flex-col', 'gap-4'])}>
                                     <Image
@@ -101,7 +97,7 @@ export default function Tags({ post } : Props) {
             <section>
                 <div
                     className={clsx([
-                        "mb-8", "flex", "items-center", "justify-start", "flex-wrap"
+                        "mb-8", "mt-16", "flex", "items-center", "justify-start", "flex-wrap"
                     ])}
                 >
                     {
@@ -110,9 +106,11 @@ export default function Tags({ post } : Props) {
                                 key={i}
                                 className={clsx([
                                     montserrat.className, 'text-xs', 'block', 'p-2', 'mr-3', 'mb-3', 'rounded-lg', 'bg-gray-200', 'border-gray-100',
-                                    'cursor-pointer', 'hover:bg-gray-300',
-                                    'dark:hover:bg-gray-500', 'dark:bg-gray-800',
-                                    'dark:text-white'
+                                    'cursor-pointer',
+                                    // dark
+                                    'dark:bg-gray-800', 'dark:text-white',
+                                    // hover
+                                    'hover:bg-gray-300', 'dark:hover:bg-gray-500',
                                 ])}
                                 onClick={() => handleClick(t.name)}
                             >

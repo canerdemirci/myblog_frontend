@@ -5,17 +5,7 @@ export const leagueSpartan = League_Spartan({
     subsets: ['latin'],
 })
 
-export const firaCode = Fira_Code({
-    style: 'normal',
-    subsets: ['latin'],
-})
-
 export const caveat = Caveat({
-    style: 'normal',
-    subsets: ['latin'],
-})
-
-export const robotoMono = Roboto_Mono({
     style: 'normal',
     subsets: ['latin'],
 })

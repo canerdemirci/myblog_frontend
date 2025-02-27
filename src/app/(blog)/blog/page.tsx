@@ -1,3 +1,7 @@
+/**
+ * @module Blog Page
+ * @description Blog main page
+ */
 import NotesSection from './(components)/NotesSection'
 import PostsSection from './(components)/PostsSection'
 import UpButton from './(components)/UpButton'

@@ -1,3 +1,6 @@
+/**
+ * Custom fetch utility functions for the blog external api and Next.js internal APIs.
+ */
 import { createUserToken } from "./sharedFunctions"
 
 export class ApiError extends Error {

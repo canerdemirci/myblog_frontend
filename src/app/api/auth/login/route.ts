@@ -1,3 +1,7 @@
+/**
+ * Login route for admin panel.
+ * Creates access and refresh tokens and store them as cookies.
+ */
 import { NextRequest, NextResponse } from 'next/server'
 import { sha256, signJWT } from '@/utils'
 import {

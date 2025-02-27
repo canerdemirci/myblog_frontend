@@ -47,7 +47,7 @@ export default function ThreeDotsMenu({ items } : Props) {
                         key={index}
                         className={clsx([
                             i.disabled ? 'text-gray-200' : 'text-gray-700',
-                            'p-2', 'rounded-md', 'hover:bg-gray-200', 'text-sm'
+                            'p-2', 'rounded-md', 'text-sm', 'hover:bg-gray-200'
                         ])}
                         onClick={i.disabled ? undefined : () => {
                             i.onClick()

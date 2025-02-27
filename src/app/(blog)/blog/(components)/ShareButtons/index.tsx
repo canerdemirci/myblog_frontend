@@ -21,7 +21,11 @@ export default function ShareButtons({ onShare, url, title }: Props) {
         <div
             className={clsx([
                 "absolute", "hidden", "rounded-md", "p-2", "justify-center", "items-center",
-                "gap-2", "bg-white", "shadow-lg", "left-[-4.5rem]", "group-hover:flex", "dark:bg-gray-900"
+                "gap-2", "bg-white", "shadow-lg", "left-[-4.5rem]",
+                // group-hover
+                "group-hover:flex",
+                // dark
+                "dark:bg-gray-900"
             ])}
         >
             <FacebookShareButton

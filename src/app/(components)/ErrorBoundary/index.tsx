@@ -1,3 +1,6 @@
+/**
+ * This component is used to catch errors in the component tree below it and display a fallback UI.
+ */
 'use client'
 
 import { Component, ErrorInfo, ReactNode } from 'react'

@@ -3,19 +3,22 @@
 import { useEffect, useState } from "react"
 
 import { useRouter } from "next/navigation"
+import { routeMap } from "@/utils/routeMap"
+import { getAdminToken } from "@/lib/sharedFunctions"
+import { createNoteJoiSchema } from "@/utils"
+import { ApiError } from "@/lib/custom_fetch"
 import { clsx } from "clsx"
 
+// For markdown editor
 import rehypeSanitize from "rehype-sanitize"
 
-import { routeMap } from "@/utils/routeMap"
 import { createNote } from "@/blog_api_actions/note_repo"
-import { createNoteJoiSchema } from "@/utils"
-import { getAdminToken } from "@/lib/sharedFunctions"
-import { ApiError } from "@/lib/custom_fetch"
+import { deleteNoteImage, uploadNoteImages } from "@/blog_api_actions"
 
 // My components
 import AlertModal from "../../(components)/AlertModal"
 import AdminPanelPage from "../../(components)/AdminPanelPage"
+import ImageUploader from "../../(components)/ImageUploader"
 
 // 3 party components
 import MDEditor from "@uiw/react-md-editor"
@@ -26,14 +29,12 @@ import Paper from "@mui/material/Paper"
 import Button from "@mui/material/Button"
 import CircularProgress from "@mui/material/CircularProgress"
 import Backdrop from "@mui/material/Backdrop"
-import ImageUploader from "../../(components)/ImageUploader"
-import { deleteNoteImage, uploadNoteImages } from "@/blog_api_actions"
 
 export default function CreateNotePage() {
     const router = useRouter()
 
     // For creating note
-    const [content, setContent] = useState<string>('# Note İçeriği')
+    const [content, setContent] = useState<string>('')
     const [noteImages, setNoteImages] = useState<string[]>([])
     const [noteContentImageUplading, setNoteContentImageUplading] = useState<boolean>(false)
     const [noteSavingEnd, setNoteSavingEnd] = useState<boolean>(true)
@@ -117,6 +118,9 @@ export default function CreateNotePage() {
                     {/* Note content input */}
                     <MDEditor
                         value={content}
+                        textareaProps={{
+                            placeholder: 'Not içeriğini buraya yazın...',
+                        }}
                         data-color-mode="light"
                         height={800}
                         onChange={(value) => setContent(value ?? '')}

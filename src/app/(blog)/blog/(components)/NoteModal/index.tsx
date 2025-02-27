@@ -1,17 +1,23 @@
 'use client'
 
 import MDEditor from '@uiw/react-md-editor'
+
 import Modal from "../Modal"
 import ShareButtons from "../ShareButtons"
+
 import { MdClose } from "react-icons/md"
 import { PiNotePencilBold } from "react-icons/pi"
 import { FaShareNodes, FaEye, FaHeart } from 'react-icons/fa6'
+
 import { guestId } from "@/lib/sharedFunctions"
 import { routeMap } from "@/utils/routeMap"
 import { clsx } from 'clsx'
+
 import { useState } from "react"
+
 import { addGuestNoteInteraction, addUserNoteInteraction }
     from "@/blog_api_actions/note_interaction_repo"
+
 import type { User } from "next-auth"
 
 interface Props {
@@ -30,9 +36,10 @@ function countsSectionButton(
     return (
         <span
             className={clsx([
-                'flex', 'items-center', 'justify-between', 'gap-2', 'dark:text-white', 
                 disabled !== true ? ['cursor-pointer', 'hover:scale-110'] : '',
-                'transition-transform'
+                'flex', 'items-center', 'justify-between', 'gap-2', 'transition-transform',
+                // dark
+                'dark:text-white',
             ])}
             onClick={!disabled ? onClick : undefined}
         >
@@ -98,23 +105,28 @@ export default function NoteModal({ user, note, isLiked, onClose } : Props) {
         <Modal onClose={onClose}>
             <div
                 className={clsx([
-                    'w-screen', 'h-screen', 'md:w-3/5', 'md:h-3/4', 'flex', 'flex-col',
-                    'rounded-md', 'bg-white', 'm-auto', 'md:mt-10', 'drop-shadow-2xl',
-                    'border-gray-300', 'border', 'dark:bg-[#0d1116]', 'dark:border-gray-800',
-                    'no-scrollbar'
+                    'w-screen', 'h-screen', 'flex', 'flex-col', 'rounded-md', 'bg-white',
+                    'm-auto', 'border-gray-300', 'border', 'no-scrollbar', 'drop-shadow-2xl',
+                    // md
+                    'md:w-3/5', 'md:h-3/4', 'md:mt-10',
+                    // dark
+                    'dark:bg-[#0d1116]', 'dark:border-gray-800',
+                    
                 ])}
                 onClick={(e) => e.stopPropagation()}
             >
                 <div
                     className={clsx([
                         'flex', 'justify-between', 'items-center', 'p-2', 'bg-gray-100',
-                        'dark:bg-gray-800', 'rounded-tl-md', 'rounded-tr-md'
+                        'rounded-tl-md', 'rounded-tr-md', 'dark:bg-gray-800'
                     ])}
                 >
                     <h1
                         className={clsx([
-                            'text-xl', 'dark:text-green-200', 'flex', 'justify-center',
-                            'items-center', 'gap-2', 'font-bold', 'italic'
+                            'text-xl', 'flex', 'justify-center', 'items-center', 'gap-2',
+                            'font-bold', 'italic',
+                            // dark
+                            'dark:text-green-200'
                         ])}
                     >
                         <PiNotePencilBold color='red' /> Not

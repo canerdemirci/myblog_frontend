@@ -1,8 +1,8 @@
 import { getNotes } from "@/blog_api_actions/note_repo"
-import clsx from "clsx"
-import { Suspense } from "react"
 import NoteCard from "../NoteCard"
 import Slider from "./Slider"
+import clsx from "clsx"
+import { Suspense } from "react"
 
 function Skeleton() {
   return (
@@ -22,6 +22,10 @@ function Skeleton() {
   )
 }
 
+/**
+ * This component fetches notes from the API and renders them in a slider.
+ * If there is an error while fetching notes, it shows an error message.
+ */
 async function Notes() {
   try {
     const notes = await getNotes(50)
@@ -29,9 +33,7 @@ async function Notes() {
     return (
       <Slider>
         {/* Note Cards */}
-        {notes.map(n => (
-          <NoteCard key={n.id} note={n} />
-        ))}
+        {notes.map(n => (<NoteCard key={n.id} note={n} />))}
       </Slider>
     )
   } catch (error: any) {
