@@ -1,0 +1,89 @@
+{
+    "HomePage": {
+        "title": "Caner Demirci - Kişisel Blog",
+        "empty": "Sistemde kayıtlı makale bulunamadı.",
+        "loading": "YÜKLENİYOR...",
+        "more": "DAHA FAZLA"
+    },
+    "Header": {
+        "catchWord": "A Developer Diary"
+    },
+    "PostPage": {
+        "relatedPostsTitle": "İLGİNİZİ ÇEKEBİLECEK DİĞER MAKALELER",
+        "coverAlt": "Makale Kapağı",
+        "notfound": "Makale bulunamadı.",
+        "loadingTagPosts": "Yükleniyor...",
+        "potOfTagsTitle": "ETİKETE AİT MAKALELER"
+    },
+    "PostCard": {
+        "coverAlt": "Makale Kapağı"
+    },
+    "Bookmark": {
+        "deleteConfirm": "Daha sonra okuma listenizden kaldırmak istediğinizden emin misiniz?",
+        "title": "Kaydettiğiniz Makaleler",
+        "loading": "Yükleniyor...",
+        "empty": "Daha sonra okumak için kaydettiğiniz bir makale bulunamadı."
+    },
+    "UserButton": {
+        "photoAlt": "Profil fotoğrafı",
+        "login": "Giriş Yap",
+        "register": "Üye Ol",
+        "profile": "Profil",
+        "logout": "Çıkış Yap"
+    },
+    "NoteModal": {
+        "title": "Not"
+    },
+    "SearchModal": {
+        "title": "Makale Arama",
+        "placeholder": "Makale arayın...",
+        "searching": "Aranıyor...",
+        "notfound": "Hiçbir sonuç bulunamadı."
+    },
+    "CommentsSection": {
+        "fetchError": "Hata! Yorumlar gösterilemiyor. Sayfayı yenilemeyi deneyebilirsiniz.",
+        "saveError": "Yorumunuz kaydedilirken bir hata oluştu.",
+        "updateError": "Yorumunuz güncellenirken bir hata oluştu.",
+        "deleteError": "Yorumunuz silinirken bir hata oluştu.",
+        "profilePhotoAlt": "Profil fotoğrafı",
+        "leaveComment": "Düşüncelerinizi paylaşın, siz de bir yorum bırakın...",
+        "saveBtn": "Kaydet",
+        "cancelBtn": "İptal",
+        "cancelBtn2": "Vazgeç",
+        "updateBtn": "Güncelle",
+        "delete": "Sil",
+        "edit": "Düzenle",
+        "signupForComment": "Yorum bırakmak için üye olabilirsiniz.",
+        "loading": "Yorumlar yükleniyor...",
+        "empty": "Henüz hiç yorum yok."
+    },
+    "RegisterPage": {
+        "unmatchedPassError": "Parolalar uyuşmuyor.",
+        "passwordRules": "Parolada en az 1 küçük, 1 büyük harf, 1 rakam ve 1 sembol bulunmalıdır ve en az 10 en fazla 50 karakter olmalıdır. Email doğru girilmelidir.",
+        "newMembership": "Yeni üyelik",
+        "email": "E-Posta",
+        "password": "Parola",
+        "password2": "Parola Tekrarı",
+        "register": "Kaydol"
+    },
+    "ProfilePage": {
+        "saveMessage": "Değişiklikler kaydedildi.",
+        "photoError": "Profil fotoğrafı yüklenirken bir hata oluştu.",
+        "title": "Kullanıcı Profili",
+        "photoTitle": "Profil Fotoğrafı",
+        "warning": "Dosya boyutu 5 Mb tan fazla olamaz.",
+        "userName": "Kullanıcı Adı",
+        "email": "E-Posta Adresi",
+        "process": "İşleniyor...",
+        "save": "Değişiklikleri Kaydet",
+        "namePlaceholder": "İsim Soyisim veya Takma ad"
+    },
+    "Footer": {
+        "title": "© 2024 Caner Demirci - Kişisel Blog Sitem"
+    },
+    "ErrorMessages": {
+        "basic": "Bir hata oluştu!",
+        "modalTitle": "Hata",
+        "fetchError": "İçerik yüklenirken bir hata oluştu."
+    }
+}

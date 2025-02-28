@@ -1,0 +1,89 @@
+{
+    "HomePage": {
+        "title": "Caner Demirci's Personal Blog",
+        "empty": "No article found in the system.",
+        "loading": "LOADING...",
+        "more": "MORE"
+    },
+    "Header": {
+        "catchWord": "A Developer Diary"
+    },
+    "PostPage": {
+        "relatedPostsTitle": "RELATED POSTS",
+        "coverAlt": "Post Cover",
+        "notfound": "Post not found.",
+        "loadingTagPosts": "Yükleniyor...",
+        "potOfTagsTitle": "ETİKETE AİT MAKALELER"
+    },
+    "PostCard": {
+        "coverAlt": "Post Cover"
+    },
+    "Bookmark": {
+        "deleteConfirm": "Are you sure to remove this post from your bookmark list?",
+        "title": "Your Bookmarks",
+        "loading": "Loading...",
+        "empty": "Not found any bookmark."
+    },
+    "UserButton": {
+        "photoAlt": "Profile photo",
+        "login": "Login",
+        "register": "Register",
+        "profile": "Profile",
+        "logout": "Logout"
+    },
+    "NoteModal": {
+        "title": "Note"
+    },
+    "SearchModal": {
+        "title": "Search Article",
+        "placeholder": "Search article...",
+        "searching": "Searching...",
+        "notfound": "No result found."
+    },
+    "CommentsSection": {
+        "fetchError": "Error! Comments cannot be displayed. You can try refreshing the page.",
+        "saveError": "An error occurred while saving your comment.",
+        "updateError": "An error occurred while updating your comment.",
+        "deleteError": "An error occurred while deleting your comment.",
+        "profilePhotoAlt": "Profile photo",
+        "leaveComment": "Share your thoughts, leave a comment...",
+        "saveBtn": "Save",
+        "cancelBtn": "Cancel",
+        "cancelBtn2": "Cancel",
+        "updateBtn": "Update",
+        "delete": "Delete",
+        "edit": "Edit",
+        "signupForComment": "You can sign up to leave a comment.",
+        "loading": "Loading comments...",
+        "empty": "No comments yet."
+    },
+    "RegisterPage": {
+        "unmatchedPassError": "Passwords do not match.",
+        "passwordRules": "Password must include at least 1 lowercase, 1 uppercase, 1 digit, 1 symbol and be at least 10 characters long and at most 50 characters long. Email must be entered correctly.",
+        "newMembership": "New Membership",
+        "email": "E-Mail",
+        "password": "Password",
+        "password2": "Password Again",
+        "register": "Register"
+    },
+    "ProfilePage": {
+        "saveMessage": "Changes saved.",
+        "photoError": "An error occurred while uploading the profile photo.",
+        "title": "User Profile",
+        "photoTitle": "Profile Photo",
+        "warning": "File can't be more than 5 Mb.",
+        "userName": "User Name",
+        "email": "E-Mail Address",
+        "process": "Processing...",
+        "save": "Save Changes",
+        "namePlaceholder": "Name Surname or Nickname"
+    },
+    "Footer": {
+        "title": "© 2024 Caner Demirci - My Personal Blog"
+    },
+    "ErrorMessages": {
+        "basic": "Something went wrong!",
+        "modalTitle": "Error",
+        "fetchError": "Something went wrong while fetching content."
+    }
+}
