@@ -19,7 +19,7 @@ export default function BookmarkButton() {
                 className={clsx(['cursor-pointer', 'text-red-500'])}
                 onClick={() => setOpen(prev => !prev)}
             />
-            {open && <BookmarksModal onClose={handleClose} />}
+            <BookmarksModal isOpen={open} onClose={handleClose} />
         </div>
     )
 }

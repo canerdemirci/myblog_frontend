@@ -18,11 +18,15 @@ import { MdBookmark, MdClose, MdDelete } from 'react-icons/md'
 import { useTranslations } from "next-intl"
 
 interface Props {
+    isOpen: boolean
     onClose: () => void
 }
 
-export default function BookmarksModal({ onClose }: Props) {
+export default function BookmarksModal({ isOpen, onClose }: Props) {
+    if (!isOpen) return null
+    
     const { data: session } = useSession()
+    
     const t = useTranslations('Bookmark')
     const tErr = useTranslations('ErrorMessages')
 
@@ -47,7 +51,7 @@ export default function BookmarksModal({ onClose }: Props) {
                 .catch(e => setError(e))
                 .finally(() => setIsFetching(false))
         }
-    }, [])
+    }, [isOpen])
 
     function handleDeleteBookmark(id: string) {
         if (confirm(t('deleteConfirm'))) {
