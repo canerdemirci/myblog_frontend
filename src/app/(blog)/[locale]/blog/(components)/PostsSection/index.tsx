@@ -19,11 +19,11 @@ import { getTags } from "@/blog_api_actions/tag_repo"
 import { MdAdd, MdDownload } from "react-icons/md"
 
 export default function PostsSection() {
-    const POST_LIMIT = 12
-    const fakeAllTag = { id: '0', name: 'Hepsi', postCount: 0 }
-
     const tErr = useTranslations('ErrorMessages')
     const t = useTranslations('HomePage')
+    
+    const POST_LIMIT = 12
+    const fakeAllTag = { id: '0', name: t('allTag'), postCount: 0 }
 
     const [posts, setPosts] = useState<Post[]>([])
     const [loading, setLoading] = useState<boolean>(true)

@@ -3,7 +3,8 @@
         "title": "Caner Demirci's Personal Blog",
         "empty": "No article found in the system.",
         "loading": "LOADING...",
-        "more": "MORE"
+        "more": "MORE",
+        "allTag": "All"
     },
     "Header": {
         "catchWord": "A Developer Diary"
@@ -12,8 +13,8 @@
         "relatedPostsTitle": "RELATED POSTS",
         "coverAlt": "Post Cover",
         "notfound": "Post not found.",
-        "loadingTagPosts": "Yükleniyor...",
-        "potOfTagsTitle": "ETİKETE AİT MAKALELER"
+        "loadingTagPosts": "Loading...",
+        "potOfTagsTitle": "POSTS OF TAG"
     },
     "PostCard": {
         "coverAlt": "Post Cover"

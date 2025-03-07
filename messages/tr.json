@@ -3,7 +3,8 @@
         "title": "Caner Demirci - Kişisel Blog",
         "empty": "Sistemde kayıtlı makale bulunamadı.",
         "loading": "YÜKLENİYOR...",
-        "more": "DAHA FAZLA"
+        "more": "DAHA FAZLA",
+        "allTag": "Hepsi"
     },
     "Header": {
         "catchWord": "A Developer Diary"

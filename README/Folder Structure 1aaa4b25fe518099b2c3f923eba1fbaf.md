@@ -1,0 +1,72 @@
+# Folder Structure
+
+![Screenshot 2025-03-02 at 21.01.36.png](Folder%20Structure%201aaa4b25fe518099b2c3f923eba1fbaf/Screenshot_2025-03-02_at_21.01.36.png)
+
+- **./ (root):**
+    - .env.development
+    - .env.production
+    - .gitignore
+    - next-env.d.ts
+    - next.config.mjs
+    - package.json
+    - pnpm-lock.yaml
+    - postcss.config.mjs
+    - tailwind.config.ts
+    - tsconfig.json
+    - README.md
+- **messages:** Language json files
+    - en.json: English
+    - tr.json: Turkish
+- **public:** Used for serving static assets.
+- **src**
+    - **app:** Includes page routes and api routes
+        - **(admin):** Admin panel codes.
+            - **admin:** Admin panel base route.
+                - **(components):** Components for using in Admin Panel.
+                - **comments:** Page that displays comments.
+                - **login:** Admin panel login page.
+                - **notes**
+                    - **create_note:** Note creating page.
+                    - **page.tsx:** Page that displays notes.
+                - **posts**
+                    - **upsert_post:** Note creating and updating page.
+                    - **page.tsx:** Page that displays posts.
+                - **settings:** Settings page
+                - **tags:** Tag creating and displaying page.
+                - **users:** User displaying page.
+                - **layout.tsx:** Root layout for admin panel.
+                - **page.tsx:** Admin panel main page. Blog statistics displayed in this page.
+            - **theme.ts:** Mui theme.
+        - **(blog):** Blog codes.
+            - **[locale]**
+                - **blog**
+                    - **(components):** Components for blog.
+                    - **notes**
+                        - **[id]/page.tsx:** Note page by note id.
+                    - **posts**
+                        - **[id]/page.tsx:** Post page by post id.
+                        - **(components):** Components for posts.
+                    - **register:** Signup page for users.
+                    - **users**
+                        - **profile:** User profile page.
+                    - **layout.tsx:** Root layout for blog.
+                    - **page.tsx:** Main blog page.
+        - **(components):** General components.
+        - **api:** Internal api codes.
+            - **[…nextauth]:** Routes for next-auth
+            - **login:** Login route for admin panel.
+            - **logout:** Logout route for admin panel.
+            - **refresh:** Refreshing admin token route.
+        - favicon.ico
+        - **fonts.ts:** Font module for app.
+        - **globals.css:** Global css codes.
+    - **blog_api_actions:** Server actions for using blog rest api.
+    - **hooks:** Custom hooks.
+    - **i18n:** For internationalazation.
+    - **lib:** For some special reusable codes.
+    - **types:** Typescript types, enums and interfaces.
+    - **utils:** Utility codes.
+    - **constants.ts:** Constants for project.
+    - **middleware.ts:** Main middleware.
+    - **middleware1.ts:** Middleware for saving guest ip addresses.
+    - **middleware2.ts:** Middleware for protecting admin panel routes.
